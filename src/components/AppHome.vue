@@ -1,5 +1,15 @@
 <template>
   <Title>Home</Title>
+  <Title>Home</Title>
+  <Title>Home</Title>
+  <Title>Home</Title>
+  <Title>Home</Title>
+  <Title>Home</Title>
+  <Title>Home</Title>
+  <Title>Home</Title>
+  <Title>Home</Title>
+  <Title>Home</Title>
+  <Title>Home</Title>
 </template>
 
 <script setup lang="ts">
