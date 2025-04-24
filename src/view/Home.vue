@@ -142,5 +142,5 @@ const handleClick = (index: number) => {
 </script>
 
 <style scoped lang="scss">
-@use "./AppHome.module.scss" as *;
+@use "./Home.module.scss" as *;
 </style>

@@ -21,5 +21,6 @@ module.exports = {
         endOfLine: "auto",
       },
     ],
+    "vue/multi-word-component-names": "off",
   },
 };

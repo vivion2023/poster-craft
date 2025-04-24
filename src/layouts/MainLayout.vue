@@ -89,7 +89,7 @@ import {
   Row,
   Col,
 } from "ant-design-vue";
-import LogoBox from "@/components/LogoBox.vue";
+import LogoBox from "@/components/Logo.vue";
 </script>
 
 <style scoped lang="scss">

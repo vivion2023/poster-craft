@@ -1,8 +1,8 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
-import AppHome from "../components/AppHome.vue";
+import AppHome from "../view/Home.vue";
 import MainLayout from "@/layouts/MainLayout.vue";
-import TemplateDetail from "@/components/TemplateDetail.vue";
-import PostEditor from "@/components/Editor/PostEditor.vue";
+import TemplateDetail from "@/view/TemplateDetail.vue";
+import PostEditor from "@/view/Editor.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
