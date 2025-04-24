@@ -1,8 +1,9 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
-import AppHome from "../view/Home.vue";
+import Home from "../view/Home.vue";
 import MainLayout from "@/layouts/MainLayout.vue";
 import TemplateDetail from "@/view/TemplateDetail.vue";
-import PostEditor from "@/view/Editor.vue";
+import Editor from "@/view/Editor.vue";
+import Login from "@/view/Login.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -12,7 +13,7 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: "",
         name: "home",
-        component: AppHome,
+        component: Home,
       },
       {
         path: "/template/:id",
@@ -22,9 +23,14 @@ const routes: Array<RouteRecordRaw> = [
     ],
   },
   {
+    path: "/login",
+    name: "login",
+    component: Login,
+  },
+  {
     path: "/editor",
     name: "editor",
-    component: PostEditor,
+    component: Editor,
   },
 ];
 
