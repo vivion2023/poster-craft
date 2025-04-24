@@ -14,17 +14,17 @@ const routes: Array<RouteRecordRaw> = [
         name: "home",
         component: AppHome,
       },
+      {
+        path: "/template/:id",
+        name: "template",
+        component: TemplateDetail,
+      },
     ],
   },
   {
     path: "/editor",
     name: "editor",
     component: PostEditor,
-  },
-  {
-    path: "/template/:id",
-    name: "template",
-    component: TemplateDetail,
   },
 ];
 

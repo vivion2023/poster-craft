@@ -77,8 +77,8 @@
     </div>
 
     <Row :gutter="[16, 24]">
-      <Col :span="6" v-for="item in hotItems" :key="item.title">
-        <div class="hot-item">
+      <Col :span="6" v-for="(item, index) in hotItems" :key="item.title">
+        <a class="hot-item" @click="handleClick(index)">
           <a-card hoverable style="width: 240px">
             <template #cover>
               <img alt="example" :src="item.image" />
@@ -87,7 +87,7 @@
               <template #description>{{ item.description }}</template>
             </a-card-meta>
           </a-card>
-        </div>
+        </a>
       </Col>
     </Row>
   </div>
@@ -95,7 +95,7 @@
 
 <script setup lang="ts">
 import { Typography, InputSearch, Row, Col } from "ant-design-vue";
-import { computed } from "vue";
+import { useRouter } from "vue-router";
 
 const { Title } = Typography;
 
@@ -131,6 +131,12 @@ const hotItems = [
     image: "https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png",
   },
 ];
+
+const router = useRouter();
+
+const handleClick = (index: number) => {
+  router.push(`/template/${index + 1}`);
+};
 </script>
 
 <style scoped lang="scss">

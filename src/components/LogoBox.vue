@@ -24,6 +24,7 @@ export default {
   justify-content: center;
   align-items: center;
   height: 100%;
+  min-width: 130px;
 }
 
 :deep(.ant-space) {

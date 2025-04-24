@@ -1,21 +1,31 @@
+.layout,
+.main,
+.footer,
+body,
+html {
+  width: 100%;
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
 .layout {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
 
   .header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
     height: 64px;
     width: 100%;
     display: flex;
     z-index: 1;
-    background-color: #212121bb;
+    background-color: #0c141cf6;
     box-shadow: #0000001a 0 12px 15px 0;
     justify-content: space-between;
     align-items: center;
+
+    .login-button {
+      margin-left: 20px;
+    }
   }
 
   .main {
@@ -27,7 +37,8 @@
     color: #999;
 
     .footer-inner {
-      width: 1200px;
+      max-width: 1200px;
+      width: 100%;
       margin: 0 auto;
       padding: 24px 0 10px 0;
     }
@@ -98,5 +109,21 @@
         }
       }
     }
+  }
+}
+
+@media (max-width: 900px) {
+  .main-container {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .left-container,
+  .right-container {
+    width: 100%;
+    margin-bottom: 16px;
+  }
+  .footer-inner {
+    flex-direction: column;
+    align-items: flex-start;
   }
 }

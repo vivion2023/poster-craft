@@ -3,7 +3,7 @@
     <LayoutHeader class="header">
       <div class="left"><LogoBox></LogoBox></div>
       <div class="right">
-        <Button type="primary">登录</Button>
+        <Button type="primary" class="login-button">登录</Button>
       </div>
     </LayoutHeader>
     <LayoutContent class="main">
