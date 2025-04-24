@@ -24,8 +24,19 @@
     }
 
     .search-input {
-      width: 40%;
+      width: 50%;
       box-shadow: 0 12px 24px 0 rgba(30, 29, 32, 0.8);
+    }
+
+    :deep(.ant-input) {
+      border-radius: 20px 0 0 20px !important;
+    }
+
+    :deep(.ant-btn) {
+      border-radius: 0 20px 20px 0 !important;
+    }
+    :deep(.anticon) {
+      font-size: 18px;
     }
   }
 }

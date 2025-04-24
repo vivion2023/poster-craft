@@ -152,6 +152,11 @@ const onFinishFailed = (errorInfo: any) => {
         font-size: 18px;
         width: 100%;
       }
+
+      :deep(.ant-input-affix-wrapper) {
+        border-radius: 10px;
+      }
+
       button {
         margin-top: 20px;
         border-radius: 20px;
