@@ -13,7 +13,69 @@
         </keep-alive>
       </router-view>
     </LayoutContent>
-    <LayoutFooter class="footer"> footer </LayoutFooter>
+    <LayoutFooter class="footer">
+      <div class="footer-inner">
+        <div class="footer-Info">
+          <Row :gutter="16" style="margin-left: -8px; margin-right: -8px">
+            <Col :span="6">
+              <div class="footer-item">
+                <h2>慕课乐高</h2>
+                <p>购买课程</p>
+                <p>联系我们</p>
+                <p>关注我们</p>
+              </div>
+            </Col>
+            <Col :span="6">
+              <div class="footer-item">
+                <h2>设计制作帮助</h2>
+                <p>关于我们</p>
+                <p>联系我们</p>
+                <p>关注我们</p>
+              </div>
+            </Col>
+            <Col :span="6">
+              <div class="footer-item">
+                <h2>审核问题</h2>
+                <p>关于我们</p>
+                <p>联系我们</p>
+                <p>关注我们</p>
+              </div>
+            </Col>
+            <Col :span="6">
+              <div class="footer-item">
+                <h2>其他问题</h2>
+                <p>关于我们</p>
+                <p>联系我们</p>
+                <p>关注我们</p>
+              </div>
+            </Col>
+          </Row>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span> © 慕课网（imooc.com）版权所有 | </span>
+        <span>
+          <ul>
+            <li>
+              <a href="#"> 津ICP备20000929号-2 </a>
+            </li>
+            <li>
+              <a href="#"> 购买课程 </a>
+            </li>
+            <li>
+              <a href="#"> 作业和打卡 </a>
+            </li>
+            <li>
+              <a href="#"> 联系我们 </a>
+            </li>
+            <li>
+              <a href="#"> 帮助 </a>
+            </li>
+          </ul>
+        </span>
+      </div>
+    </LayoutFooter>
   </Layout>
 </template>
 
@@ -24,36 +86,12 @@ import {
   LayoutContent,
   LayoutFooter,
   Button,
+  Row,
+  Col,
 } from "ant-design-vue";
 import LogoBox from "@/components/LogoBox.vue";
 </script>
 
 <style scoped lang="scss">
-.layout {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-
-  .header {
-    height: 64px;
-    width: 100%;
-    display: flex;
-    position: sticky;
-    top: 0;
-    background-color: #000000a6;
-    box-shadow: #0000001a 0 12px 15px 0;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .main {
-    flex: 1;
-  }
-
-  .footer {
-    height: 314px;
-    background-color: #333;
-    color: #999;
-  }
-}
+@use "./MainLayout.module.scss" as *;
 </style>

@@ -1,0 +1,123 @@
+.banner {
+  height: 450px;
+  background-image: url("@/assets/banner.png");
+  background-size: cover;
+  background-position: center;
+
+  .banner-text {
+    position: absolute;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    top: 26%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    .title {
+      color: #fff;
+      font-size: 2.2rem;
+      font-weight: 400;
+      text-shadow: 0 0 1px rgba(68, 92, 116, 0.02),
+        0 2px 8px rgba(57, 76, 96, 0.15);
+      margin-bottom: 24px;
+    }
+
+    .search-input {
+      width: 40%;
+      box-shadow: 0 12px 24px 0 rgba(30, 29, 32, 0.8);
+    }
+  }
+}
+.welcome-container {
+  // height: 176px;
+  background-color: #f2f2f2;
+  padding: 30px 0 20px 0;
+
+  .welcome-inner {
+    height: 100%;
+    width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .welcome-item {
+      height: 100%;
+      width: 380px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+
+      .icon {
+        width: 70px;
+        height: 70px;
+        display: block;
+        margin-bottom: 12px;
+      }
+
+      h3 {
+        font-size: 18px;
+        font-weight: 500;
+        color: #333;
+      }
+
+      p {
+        font-size: 14px;
+        color: #666;
+      }
+    }
+  }
+}
+.content-container {
+  min-height: 85vh;
+  max-width: 1200px;
+  padding: 0 24px 24px 30px;
+  margin: 20px auto 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .hot-title {
+    text-align: center;
+    margin-bottom: 20px;
+    .hot-template {
+      font-size: 24px;
+      font-weight: 500;
+      color: #222;
+
+      &::before,
+      &::after {
+        content: "";
+        display: inline-block;
+        width: 57px;
+        height: 1px;
+        background: #c5c5c5;
+        vertical-align: middle;
+        margin: 0 26px;
+      }
+      &::before {
+        margin-right: 26px;
+      }
+      &::after {
+        margin-left: 26px;
+      }
+
+      .hot-item {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    }
+  }
+}
+
+svg.icon {
+  overflow: visible;
+
+  path {
+    transform-origin: center;
+  }
+}

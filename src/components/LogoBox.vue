@@ -12,6 +12,12 @@ import { Space, Typography } from "ant-design-vue";
 const { Title } = Typography;
 </script>
 
+<script lang="ts">
+export default {
+  name: "LogoBox",
+};
+</script>
+
 <style scoped lang="scss">
 .logo-box {
   display: flex;
