@@ -83,10 +83,10 @@
         <a class="hot-item" @click="handleClick(index)">
           <a-card hoverable style="width: 240px">
             <template #cover>
-              <img alt="example" :src="item.image" />
+              <img alt="example" :src="item.coverImg" />
             </template>
             <a-card-meta :title="item.title">
-              <template #description>{{ item.description }}</template>
+              <template #description>{{ item.author }}</template>
             </a-card-meta>
           </a-card>
         </a>
@@ -98,41 +98,13 @@
 <script setup lang="ts">
 import { Typography, InputSearch, Row, Col } from "ant-design-vue";
 import { useRouter } from "vue-router";
-
+import { useStore } from "vuex";
+import { computed } from "vue";
+import { GlobalDataProps } from "@/store/index";
 const { Title } = Typography;
 
-const hotItems = [
-  {
-    title: "欧洲街拍",
-    description: "www.instagram.com",
-    image: "https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png",
-  },
-  {
-    title: "欧洲街拍",
-    description: "www.instagram.com",
-    image: "https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png",
-  },
-  {
-    title: "欧洲街拍",
-    description: "www.instagram.com",
-    image: "https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png",
-  },
-  {
-    title: "欧洲街拍",
-    description: "www.instagram.com",
-    image: "https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png",
-  },
-  {
-    title: "欧洲街拍",
-    description: "www.instagram.com",
-    image: "https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png",
-  },
-  {
-    title: "欧洲街拍",
-    description: "www.instagram.com",
-    image: "https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png",
-  },
-];
+const store = useStore<GlobalDataProps>();
+const hotItems = computed(() => store.state.templates);
 
 const router = useRouter();
 
