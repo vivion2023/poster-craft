@@ -2,12 +2,12 @@
   <div class="template-detail">
     <section class="main-container">
       <div class="left-container">
-        <img src="@/assets/poster1.png" alt="poster1" />
+        <img :src="template?.coverImg" alt="`poster${props.id}`" />
       </div>
       <div class="right-container">
         <div class="right-container">
           <div class="title-container">
-            <Title :level="3">前端架构师直播海报</Title>
+            <Title :level="3">{{ template?.title }}</Title>
             <Paragraph>未命名作品</Paragraph>
           </div>
 
@@ -15,7 +15,7 @@
             <div class="writer-icon">
               <UserOutlined />
             </div>
-            <span>该模板由XX创作</span>
+            <span>该模板由{{ template?.author }}创作</span>
           </div>
 
           <div class="qrcode">
@@ -40,11 +40,24 @@ import { Typography } from "ant-design-vue";
 import { UserOutlined } from "@ant-design/icons-vue";
 import QrcodeVue from "qrcode.vue";
 import type { SizeType } from "ant-design-vue/es/config-provider";
-import { ref } from "vue";
+import { ref, computed, defineProps } from "vue";
+import { useRoute } from "vue-router";
+import { useStore } from "vuex";
+import { GlobalDataProps } from "@/store/index";
 
 const { Title, Paragraph } = Typography;
 const size = ref<SizeType>("large");
 const qrcodeValue = "https://www.baidu.com";
+
+const route = useRoute();
+const props = defineProps<{
+  id: string;
+}>();
+
+const store = useStore<GlobalDataProps>();
+const template = computed(() =>
+  store.state.templates.find((item) => item.id === Number(route.params.id))
+);
 </script>
 
 <style scoped lang="scss">

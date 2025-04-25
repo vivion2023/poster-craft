@@ -79,8 +79,8 @@
     </div>
 
     <Row :gutter="[16, 24]">
-      <Col :span="6" v-for="(item, index) in hotItems" :key="item.title">
-        <a class="hot-item" @click="handleClick(index)">
+      <Col :span="6" v-for="item in hotItems" :key="item.id">
+        <a class="hot-item" @click="handleClick(item.id)">
           <a-card hoverable style="width: 240px">
             <template #cover>
               <img alt="example" :src="item.coverImg" />
@@ -108,8 +108,8 @@ const hotItems = computed(() => store.state.templates);
 
 const router = useRouter();
 
-const handleClick = (index: number) => {
-  router.push(`/template/${index + 1}`);
+const handleClick = (id: number) => {
+  router.push(`/template/${id}`);
 };
 </script>
 
