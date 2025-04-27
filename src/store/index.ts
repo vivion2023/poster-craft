@@ -103,12 +103,19 @@ const testData: TemplateProps[] = [
 const store = createStore({
   state: {
     templates: testData,
-    user: {
+    user: <UserProps>{
       isLogin: false,
     },
   },
   getters: {},
-  mutations: {},
+  mutations: {
+    login(state) {
+      state.user = { ...state.user, isLogin: true, userName: "vivion" };
+    },
+    logout(state) {
+      state.user = { isLogin: false };
+    },
+  },
   actions: {},
   modules: {},
 });

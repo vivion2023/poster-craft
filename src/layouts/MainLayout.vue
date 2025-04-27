@@ -3,13 +3,7 @@
     <LayoutHeader class="header">
       <div class="left"><LogoBox></LogoBox></div>
       <div class="right">
-        <Button
-          type="primary"
-          shape="round"
-          class="login-button"
-          @click="handleLogin"
-          >登录</Button
-        >
+        <UserProfile />
       </div>
     </LayoutHeader>
     <LayoutContent class="main">
@@ -91,18 +85,14 @@ import {
   LayoutHeader,
   LayoutContent,
   LayoutFooter,
-  Button,
   Row,
   Col,
 } from "ant-design-vue";
 import LogoBox from "@/components/Logo.vue";
 import { useRouter } from "vue-router";
+import UserProfile from "@/components/UserProfile.vue";
 
 const router = useRouter();
-
-const handleLogin = () => {
-  router.push("/login");
-};
 </script>
 
 <style scoped lang="scss">

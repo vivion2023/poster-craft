@@ -80,16 +80,22 @@
 
     <Row :gutter="[16, 24]">
       <Col :span="6" v-for="item in hotItems" :key="item.id">
-        <a class="hot-item" @click="handleClick(item.id)">
+        <router-link
+          class="hot-item"
+          :to="{ name: 'template', params: { id: item.id } }"
+          style="display: block"
+        >
           <a-card hoverable style="width: 240px">
             <template #cover>
               <img alt="example" :src="item.coverImg" />
             </template>
             <a-card-meta :title="item.title">
-              <template #description>{{ item.author }}</template>
+              <template #description
+                >{{ item.author }} {{ item.copiedCount }}</template
+              >
             </a-card-meta>
           </a-card>
-        </a>
+        </router-link>
       </Col>
     </Row>
   </div>
@@ -108,9 +114,9 @@ const hotItems = computed(() => store.state.templates);
 
 const router = useRouter();
 
-const handleClick = (id: number) => {
-  router.push(`/template/${id}`);
-};
+// const handleClick = (id: number) => {
+//   router.push(`/template/${id}`);
+// };
 </script>
 
 <style scoped lang="scss">
