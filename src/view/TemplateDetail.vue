@@ -2,7 +2,7 @@
   <div class="template-detail">
     <section class="main-container">
       <div class="left-container">
-        <img :src="template?.coverImg" alt="`poster${props.id}`" />
+        <img :src="template?.coverImg" :alt="`poster${currentId}`" />
       </div>
       <div class="right-container">
         <div class="right-container">
@@ -40,7 +40,7 @@ import { Typography } from "ant-design-vue";
 import { UserOutlined } from "@ant-design/icons-vue";
 import QrcodeVue from "qrcode.vue";
 import type { SizeType } from "ant-design-vue/es/config-provider";
-import { ref, computed, defineProps } from "vue";
+import { ref, computed } from "vue";
 import { useRoute } from "vue-router";
 import { useStore } from "vuex";
 import { GlobalDataProps } from "@/store/index";
@@ -50,14 +50,10 @@ const size = ref<SizeType>("large");
 const qrcodeValue = "https://www.baidu.com";
 
 const route = useRoute();
-const props = defineProps<{
-  id: string;
-}>();
 
 const store = useStore<GlobalDataProps>();
-const template = computed(() =>
-  store.state.templates.find((item) => item.id === Number(route.params.id))
-);
+const currentId = computed(() => Number(route.params.id));
+const template = computed(() => store.getters.getTemplateById(currentId.value));
 </script>
 
 <style scoped lang="scss">

@@ -89,10 +89,7 @@ import {
   Col,
 } from "ant-design-vue";
 import LogoBox from "@/components/Logo.vue";
-import { useRouter } from "vue-router";
 import UserProfile from "@/components/UserProfile.vue";
-
-const router = useRouter();
 </script>
 
 <style scoped lang="scss">

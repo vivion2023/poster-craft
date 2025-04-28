@@ -103,20 +103,13 @@
 
 <script setup lang="ts">
 import { Typography, InputSearch, Row, Col } from "ant-design-vue";
-import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 import { computed } from "vue";
 import { GlobalDataProps } from "@/store/index";
 const { Title } = Typography;
 
 const store = useStore<GlobalDataProps>();
-const hotItems = computed(() => store.state.templates);
-
-const router = useRouter();
-
-// const handleClick = (id: number) => {
-//   router.push(`/template/${id}`);
-// };
+const hotItems = computed(() => store.state.templates.data);
 </script>
 
 <style scoped lang="scss">
