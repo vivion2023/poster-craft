@@ -5,10 +5,15 @@
     </LayoutSider>
     <LayoutContent class="preview-container">
       <p>画布区域</p>
-      <div class="preview-layer">
-        <div v-for="component in components" :key="component.id">
-          {{ component.props.text }}
-        </div>
+      <div class="preview-list">
+        <component
+          v-for="component in components"
+          :key="component.id"
+          :is="component.name"
+          class="preview-item"
+        >
+          <LText v-bind="component.props" />
+        </component>
       </div>
     </LayoutContent>
     <LayoutSider width="300px">
@@ -22,7 +27,7 @@ import { LayoutSider, LayoutContent } from "ant-design-vue";
 import { GlobalDataProps } from "@/store";
 import { useStore } from "vuex";
 import { computed } from "vue";
-
+import LText from "@/components/LText.vue";
 const store = useStore<GlobalDataProps>();
 const components = computed(() => store.state.editor.components);
 </script>
@@ -43,7 +48,7 @@ const components = computed(() => store.state.editor.components);
     justify-content: center;
     align-items: center;
 
-    .preview-layer {
+    .preview-list {
       background-color: white;
       width: 50%;
       height: 50%;

@@ -26,6 +26,7 @@ export const testComponents: ComponentData[] = [
     name: "l-text",
     props: {
       text: "hello",
+      fontSize: "20px",
     },
   },
   {
@@ -33,6 +34,7 @@ export const testComponents: ComponentData[] = [
     name: "l-text",
     props: {
       text: "hello2",
+      fontSize: "10px",
     },
   },
   {
@@ -40,6 +42,7 @@ export const testComponents: ComponentData[] = [
     name: "l-text",
     props: {
       text: "hello3",
+      fontSize: "15px",
     },
   },
 ];
