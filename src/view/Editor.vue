@@ -52,6 +52,10 @@ const components = computed(() => store.state.editor.components);
       background-color: white;
       width: 50%;
       height: 50%;
+
+      .preview-item {
+        position: relative;
+      }
     }
   }
   .property-container {

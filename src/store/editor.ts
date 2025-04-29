@@ -35,6 +35,7 @@ export const testComponents: ComponentData[] = [
     props: {
       text: "hello2",
       fontSize: "10px",
+      color: "red",
     },
   },
   {
@@ -43,6 +44,7 @@ export const testComponents: ComponentData[] = [
     props: {
       text: "hello3",
       fontSize: "15px",
+      fontWeight: "bold",
     },
   },
 ];
