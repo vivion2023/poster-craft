@@ -3,18 +3,16 @@
     <LayoutSider width="300px">
       <div class="siderbar-container">
         组件列表
-        <ComponentList :list="defaultComponents" />
+        <ComponentList
+          :list="defaultComponents"
+          @on-item-click="handleItemClick"
+        />
       </div>
     </LayoutSider>
     <LayoutContent class="preview-container">
       <p>画布区域</p>
       <div class="preview-list">
-        <LText
-          v-for="component in components"
-          :key="component.id"
-          v-bind="component.props"
-          class="preview-item"
-        />
+        <ComponentList :list="components" />
       </div>
     </LayoutContent>
     <LayoutSider width="300px">
@@ -34,6 +32,10 @@ import ComponentList from "@/components/ComponentList.vue";
 const store = useStore<GlobalDataProps>();
 const components = computed(() => store.state.editor.components);
 const defaultComponents = computed(() => defaultTextTemplates);
+
+const handleItemClick = (props: any) => {
+  store.commit("addComponent", props);
+};
 </script>
 
 <style scoped lang="scss">

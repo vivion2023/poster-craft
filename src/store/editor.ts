@@ -54,6 +54,16 @@ const editor: Module<EditorProps, GlobalDataProps> = {
     currentElement: "",
     components: testComponents,
   },
+  mutations: {
+    addComponent(state, props: any) {
+      const newComponent = {
+        id: uuidv4(),
+        name: "l-text",
+        ...props,
+      };
+      state.components.push(newComponent);
+    },
+  },
 };
 
 export default editor;
