@@ -1,19 +1,20 @@
 <template>
   <div class="editor">
     <LayoutSider width="300px">
-      <div class="siderbar-container">组件列表</div>
+      <div class="siderbar-container">
+        组件列表
+        <ComponentList :list="defaultComponents" />
+      </div>
     </LayoutSider>
     <LayoutContent class="preview-container">
       <p>画布区域</p>
       <div class="preview-list">
-        <component
+        <LText
           v-for="component in components"
           :key="component.id"
-          :is="component.name"
+          v-bind="component.props"
           class="preview-item"
-        >
-          <LText v-bind="component.props" />
-        </component>
+        />
       </div>
     </LayoutContent>
     <LayoutSider width="300px">
@@ -28,8 +29,11 @@ import { GlobalDataProps } from "@/store";
 import { useStore } from "vuex";
 import { computed } from "vue";
 import LText from "@/components/LText.vue";
+import { defaultTextTemplates } from "@/defaultTemplates";
+import ComponentList from "@/components/ComponentList.vue";
 const store = useStore<GlobalDataProps>();
 const components = computed(() => store.state.editor.components);
+const defaultComponents = computed(() => defaultTextTemplates);
 </script>
 
 <style scoped lang="scss">

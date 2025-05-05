@@ -25,6 +25,12 @@ const props = withDefaults(
 const styleProps = computed(() => pick(props, textStylePropNames));
 </script>
 
+<script lang="ts">
+export default {
+  name: "LText",
+};
+</script>
+
 <style scoped lang="scss">
 .l-text-component {
   position: relative !important;

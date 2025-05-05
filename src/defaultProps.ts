@@ -31,7 +31,7 @@ export const commonDefaultProps: CommonComponentProps = {
   url: "",
   // size
   height: "",
-  width: "373px",
+  width: "",
   paddingLeft: "0px",
   paddingRight: "0px",
   paddingTop: "0px",
@@ -75,9 +75,9 @@ export const textDefaultProps: TextComponentProps = {
   fontStyle: "normal",
   textDecoration: "none",
   lineHeight: "1",
-  textAlign: "left",
+  // textAlign: "left",
   color: "#000000",
-  backgroundColor: "",
+  // backgroundColor: "",
   ...commonDefaultProps,
 };
 export const imageDefaultProps: ImageComponentProps = {
