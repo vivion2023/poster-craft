@@ -9,7 +9,7 @@ export interface EditorProps {
   // 一些项目信息，之后补充
 }
 
-interface ComponentData {
+export interface ComponentData {
   // 元素的属性
   props: {
     [key: string]: any;
@@ -55,6 +55,13 @@ const editor: Module<EditorProps, GlobalDataProps> = {
     components: testComponents,
     currentElement: "",
   },
+  getters: {
+    currentElement: (state) => {
+      return state.components.find(
+        (component) => component.id === state.currentElement
+      );
+    },
+  },
   mutations: {
     addComponent(state, payload: any) {
       const newComponent = {
@@ -65,6 +72,9 @@ const editor: Module<EditorProps, GlobalDataProps> = {
         },
       };
       state.components.push(newComponent);
+    },
+    setActive(state, currentID: string) {
+      state.currentElement = currentID;
     },
   },
 };

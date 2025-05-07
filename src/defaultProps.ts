@@ -1,6 +1,7 @@
 import { without } from "lodash-es";
 
 export interface CommonComponentProps {
+  tag?: string;
   // actions
   actionType?: string;
   url?: string;
@@ -26,6 +27,7 @@ export interface CommonComponentProps {
   right?: string;
 }
 export const commonDefaultProps: CommonComponentProps = {
+  tag: "div",
   // actions
   actionType: "",
   url: "",

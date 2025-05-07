@@ -1,5 +1,5 @@
 <template>
-  <component :is="tag" :style="styleProps" class="l-text-component">
+  <component :is="props.tag" :style="styleProps" class="l-text-component">
     {{ props.text }}
   </component>
 </template>
@@ -13,13 +13,9 @@ import {
   textStylePropNames,
 } from "../defaultProps";
 
-const props = withDefaults(
-  defineProps<TextComponentProps & { tag?: string }>(),
-  {
-    tag: "div",
-    ...textDefaultProps,
-  }
-);
+const props = withDefaults(defineProps<TextComponentProps>(), {
+  ...textDefaultProps,
+});
 
 // 只获取样式相关的属性，并保证正确的优先级
 const styleProps = computed(() => pick(props, textStylePropNames));

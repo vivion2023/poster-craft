@@ -12,37 +12,61 @@
     <LayoutContent class="preview-container">
       <p>画布区域</p>
       <div class="preview-list">
-        <LText
+        <edit-wrapper
           v-for="component in components"
           :key="component.id"
-          :is="component.name"
-          v-bind="component.props"
-          :tag="component.props.tag"
+          :id="component.id"
+          @set-active="setActive"
         >
-          {{ component.props.text }}
-        </LText>
+          <component
+            :is="componentMap[component.name]"
+            v-bind="component.props"
+          >
+            {{ component.props.text }}
+          </component>
+        </edit-wrapper>
       </div>
     </LayoutContent>
     <LayoutSider width="300px">
-      <div class="property-container">组件属性</div>
+      <div class="property-container">
+        组件属性
+        <div class="property-item">
+          {{ currentElement ? currentElement.props : "" }}
+        </div>
+      </div>
     </LayoutSider>
   </div>
 </template>
 
 <script setup lang="ts">
 import { LayoutSider, LayoutContent } from "ant-design-vue";
-import { GlobalDataProps } from "@/store";
+import { ComponentData, GlobalDataProps } from "@/store";
 import { useStore } from "vuex";
-import { computed } from "vue";
+import { computed, DefineComponent } from "vue";
 import LText from "@/components/LText.vue";
 import { defaultTextTemplates } from "@/defaultTemplates";
 import ComponentList from "@/components/ComponentList.vue";
+import EditWrapper from "@/components/EditWrapper.vue";
 const store = useStore<GlobalDataProps>();
 const components = computed(() => store.state.editor.components);
 const defaultComponents = computed(() => defaultTextTemplates);
-console.log(components.value);
+const currentElement = computed<ComponentData | null>(
+  () => store.getters.currentElement
+);
+
+// 字符串到实际组件的映射
+const componentMap: {
+  [key: string]: DefineComponent<any, any, any>;
+} = {
+  "l-text": LText,
+};
+
 const handleItemClick = (props: any) => {
   store.commit("addComponent", props);
+};
+
+const setActive = (id: string) => {
+  store.commit("setActive", id);
 };
 </script>
 
