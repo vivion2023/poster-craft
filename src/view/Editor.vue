@@ -12,7 +12,15 @@
     <LayoutContent class="preview-container">
       <p>画布区域</p>
       <div class="preview-list">
-        <ComponentList :list="components" />
+        <LText
+          v-for="component in components"
+          :key="component.id"
+          :is="component.name"
+          v-bind="component.props"
+          :tag="component.props.tag"
+        >
+          {{ component.props.text }}
+        </LText>
       </div>
     </LayoutContent>
     <LayoutSider width="300px">
@@ -32,7 +40,7 @@ import ComponentList from "@/components/ComponentList.vue";
 const store = useStore<GlobalDataProps>();
 const components = computed(() => store.state.editor.components);
 const defaultComponents = computed(() => defaultTextTemplates);
-
+console.log(components.value);
 const handleItemClick = (props: any) => {
   store.commit("addComponent", props);
 };

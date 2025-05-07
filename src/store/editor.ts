@@ -25,6 +25,7 @@ export const testComponents: ComponentData[] = [
     id: uuidv4(),
     name: "l-text",
     props: {
+      tag: "div",
       text: "hello",
       fontSize: "20px",
     },
@@ -33,6 +34,7 @@ export const testComponents: ComponentData[] = [
     id: uuidv4(),
     name: "l-text",
     props: {
+      tag: "div",
       text: "hello2",
       fontSize: "10px",
       color: "red",
@@ -42,24 +44,25 @@ export const testComponents: ComponentData[] = [
     id: uuidv4(),
     name: "l-text",
     props: {
+      tag: "h2",
       text: "hello3",
-      fontSize: "15px",
-      fontWeight: "bold",
     },
   },
 ];
 
 const editor: Module<EditorProps, GlobalDataProps> = {
   state: {
-    currentElement: "",
     components: testComponents,
+    currentElement: "",
   },
   mutations: {
-    addComponent(state, props: any) {
+    addComponent(state, payload: any) {
       const newComponent = {
         id: uuidv4(),
         name: "l-text",
-        ...props,
+        props: {
+          ...payload.props,
+        },
       };
       state.components.push(newComponent);
     },

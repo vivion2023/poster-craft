@@ -6,7 +6,7 @@
       :key="item.id"
       @click="onItemClick(item)"
     >
-      <LText v-bind="item.props" :tag="item.tag" />
+      <LText v-bind="item.props" :tag="item.props.tag" />
     </div>
   </div>
 </template>

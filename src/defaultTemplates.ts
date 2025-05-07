@@ -2,8 +2,8 @@ import { v4 as uuidv4 } from "uuid";
 export const defaultTextTemplates = [
   {
     id: uuidv4(),
-    tag: "h2",
     props: {
+      tag: "h2",
       text: "大标题",
       fontSize: "24px",
       fontWeight: "bold",
@@ -11,24 +11,24 @@ export const defaultTextTemplates = [
   },
   {
     id: uuidv4(),
-    tag: "p",
     props: {
+      tag: "p",
       text: "正文内容",
       fontSize: "16px",
     },
   },
   {
     id: uuidv4(),
-    tag: "a",
     props: {
+      tag: "a",
       text: "链接内容",
       color: "#1890ff",
     },
   },
   {
     id: uuidv4(),
-    tag: "button",
     props: {
+      tag: "button",
       text: "按钮内容",
       paddingLeft: "10px",
       paddingRight: "10px",
