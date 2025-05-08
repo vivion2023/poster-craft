@@ -17,6 +17,7 @@
           :key="component.id"
           :id="component.id"
           @set-active="setActive"
+          :active="component.id === currentElementId"
         >
           <component
             :is="componentMap[component.name]"
@@ -53,6 +54,7 @@ const defaultComponents = computed(() => defaultTextTemplates);
 const currentElement = computed<ComponentData | null>(
   () => store.getters.currentElement
 );
+const currentElementId = computed(() => currentElement.value?.id);
 
 // 字符串到实际组件的映射
 const componentMap: {
