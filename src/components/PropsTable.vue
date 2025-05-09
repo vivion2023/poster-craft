@@ -1,7 +1,10 @@
 <template>
   <div class="props-table">
-    <div v-for="(value, key) in finalProps" :key="key" class="prop-item">
-      <component v-if="value" :is="value.component" :value="value.value" />
+    <div class="prop-item" v-for="(value, key) in finalProps" :key="key">
+      <span class="label" v-if="value.text">{{ value.text }}：</span>
+      <div class="prop-component">
+        <component v-if="value" :is="value.component" :value="value.value" />
+      </div>
     </div>
   </div>
 </template>
@@ -10,7 +13,7 @@
 import { defineProps, computed } from "vue";
 import { reduce } from "lodash";
 import type { TextComponentProps } from "../defaultProps";
-import { mapPropsToForm, PropToFormType } from "../propsMap";
+import { mapPropsToForm, PropToFormType, convertValueType } from "../propsMap";
 const props = defineProps<{
   props: {
     type: TextComponentProps;
@@ -25,12 +28,12 @@ const finalProps = computed(() => {
       const newKey = key as keyof TextComponentProps;
       const item = mapPropsToForm[newKey];
       if (item) {
-        item.value = value;
+        item.value = convertValueType(value, item.valueType);
         result[newKey] = item;
       }
       return result;
     },
-    {} as PropToFormType
+    {} as Required<PropToFormType>
   );
 });
 </script>
@@ -41,3 +44,12 @@ export default defineComponent({
   name: "PropsTable",
 });
 </script>
+
+<style lang="scss" scoped>
+.props-table {
+  .prop-item {
+    display: flex;
+    margin-bottom: 10px;
+  }
+}
+</style>
