@@ -1,18 +1,19 @@
 import { TextComponentProps } from "./defaultProps";
 
 export interface PropToForm {
-  component: string;
-  subComponent?: string;
-  value?: any;
+  component: string; // 组件名称
+  subComponent?: string; // 子组件名称
   extraProps?: {
     [key: string]: any;
-  };
-  text?: string;
+  }; // 子组件的额外属性
+  text?: string; // 组件的文本名称
   options?: {
     text: string;
     value: any;
-  }[];
-  initialTransform?: (value: any) => any;
+  }[]; // 组件的选项
+  initialTransform?: (value: any) => any; // 初始值的类型转换
+  valueProp?: any; // 组件的值属性
+  eventName?: string; // 组件的事件名称
 }
 
 export type PropToFormType = {

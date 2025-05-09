@@ -34,6 +34,7 @@
         <PropsTable
           v-if="currentElement && currentElement.props"
           :props="currentElement.props"
+          @change="handleChange"
         />
         <div class="property-item">
           {{ currentElement ? currentElement.props : "" }}
@@ -47,7 +48,7 @@
 import { LayoutSider, LayoutContent } from "ant-design-vue";
 import { ComponentData, GlobalDataProps } from "@/store";
 import { useStore } from "vuex";
-import { computed, DefineComponent } from "vue";
+import { computed, DefineComponent, ref } from "vue";
 import LText from "@/components/LText.vue";
 import { defaultTextTemplates } from "@/defaultTemplates";
 import ComponentList from "@/components/ComponentList.vue";
@@ -74,6 +75,10 @@ const handleItemClick = (props: any) => {
 
 const setActive = (id: string) => {
   store.commit("setActive", id);
+};
+
+const handleChange = (value: { key: string; value: any }) => {
+  console.log(value);
 };
 </script>
 
