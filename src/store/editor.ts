@@ -29,6 +29,7 @@ export const testComponents: ComponentData[] = [
       text: "hello",
       fontSize: "20px",
       lineHeight: "1",
+      textAlign: "left",
     },
   },
   {
@@ -39,6 +40,7 @@ export const testComponents: ComponentData[] = [
       text: "hello2",
       fontSize: "10px",
       color: "red",
+      fontFamily: "无",
     },
   },
   {
