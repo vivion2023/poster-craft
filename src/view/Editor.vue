@@ -31,6 +31,10 @@
     <LayoutSider width="300px">
       <div class="property-container">
         组件属性
+        <PropsTable
+          v-if="currentElement && currentElement.props"
+          :props="currentElement.props"
+        />
         <div class="property-item">
           {{ currentElement ? currentElement.props : "" }}
         </div>
@@ -48,6 +52,7 @@ import LText from "@/components/LText.vue";
 import { defaultTextTemplates } from "@/defaultTemplates";
 import ComponentList from "@/components/ComponentList.vue";
 import EditWrapper from "@/components/EditWrapper.vue";
+import PropsTable from "@/components/PropsTable.vue";
 const store = useStore<GlobalDataProps>();
 const components = computed(() => store.state.editor.components);
 const defaultComponents = computed(() => defaultTextTemplates);
@@ -77,11 +82,12 @@ const setActive = (id: string) => {
   height: 100vh;
   display: flex;
   .siderbar-container {
-    background-color: yellow;
+    padding: 20px;
+    background-color: #fff;
     height: 100vh;
   }
   .preview-container {
-    background-color: grey;
+    background-color: rgb(210, 210, 210);
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -99,8 +105,9 @@ const setActive = (id: string) => {
     }
   }
   .property-container {
-    background-color: purple;
+    background-color: #fff;
     height: 100vh;
+    padding: 20px;
   }
 }
 </style>

@@ -28,6 +28,7 @@ export const testComponents: ComponentData[] = [
       tag: "div",
       text: "hello",
       fontSize: "20px",
+      lineHeight: "1",
     },
   },
   {

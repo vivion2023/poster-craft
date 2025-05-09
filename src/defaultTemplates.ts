@@ -7,6 +7,7 @@ export const defaultTextTemplates = [
       text: "大标题",
       fontSize: "24px",
       fontWeight: "bold",
+      lineHeight: "1",
     },
   },
   {
