@@ -79,6 +79,22 @@ const editor: Module<EditorProps, GlobalDataProps> = {
     setActive(state, currentID: string) {
       state.currentElement = currentID;
     },
+    updateComponent(state, { key, value }) {
+      const currentComponent = state.components.find(
+        (component) => component.id === state.currentElement
+      );
+      if (currentComponent) {
+        currentComponent.props[key] = value;
+      }
+    },
+  },
+  actions: {
+    addComponent({ commit }, payload: any) {
+      commit("addComponent", payload);
+    },
+    setActive({ commit }, currentID: string) {
+      commit("setActive", currentID);
+    },
   },
 };
 

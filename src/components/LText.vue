@@ -19,6 +19,7 @@ const props = withDefaults(defineProps<TextComponentProps>(), {
 
 // 只获取样式相关的属性，并保证正确的优先级
 const styleProps = computed(() => pick(props, textStylePropNames));
+console.log(styleProps.value.textAlign);
 </script>
 
 <script lang="ts">

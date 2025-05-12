@@ -48,7 +48,7 @@
 import { LayoutSider, LayoutContent } from "ant-design-vue";
 import { ComponentData, GlobalDataProps } from "@/store";
 import { useStore } from "vuex";
-import { computed, DefineComponent, ref } from "vue";
+import { computed, DefineComponent } from "vue";
 import LText from "@/components/LText.vue";
 import { defaultTextTemplates } from "@/defaultTemplates";
 import ComponentList from "@/components/ComponentList.vue";
@@ -78,7 +78,7 @@ const setActive = (id: string) => {
 };
 
 const handleChange = (value: { key: string; value: any }) => {
-  console.log(value);
+  store.commit("updateComponent", value);
 };
 </script>
 

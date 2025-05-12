@@ -12,6 +12,7 @@ export interface PropToForm {
     value: any;
   }[]; // 组件的选项
   initialTransform?: (value: any) => any; // 初始值的类型转换
+  afterTransform?: (value: any) => any; // 转换后的值的类型转换
   valueProp?: any; // 组件的值属性
   eventName?: string; // 组件的事件名称
 }
@@ -27,17 +28,20 @@ export const mapPropsToForm: PropToFormType = {
     extraProps: {
       rows: 3,
     },
+    afterTransform: (e: any) => e.target.value,
   },
   fontSize: {
     text: "字号",
     component: "a-input-number",
     initialTransform: (value: string) => parseFloat(value),
     // parseFloat 将字符串转换为数字 如 "12px" 转换为 12
+    afterTransform: (e: any) => (e ? `${e}px` : ""),
   },
   lineHeight: {
     text: "行高",
     component: "a-slider",
     initialTransform: (value: string) => parseFloat(value),
+    afterTransform: (e: number) => e.toString(),
     extraProps: {
       min: 0,
       max: 3,
@@ -53,6 +57,7 @@ export const mapPropsToForm: PropToFormType = {
       { text: "居中", value: "center" },
       { text: "右对齐", value: "right" },
     ],
+    afterTransform: (e: any) => e.target.value,
   },
   fontFamily: {
     text: "字体",

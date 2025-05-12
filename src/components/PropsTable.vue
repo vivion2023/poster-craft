@@ -75,7 +75,10 @@ const finalProps = computed(() => {
           eventName,
           events: {
             [eventName]: (e: any) => {
-              emit("change", { key, value: e });
+              emit("change", {
+                key,
+                value: item.afterTransform ? item.afterTransform(e) : e,
+              });
             },
           },
         };

@@ -77,9 +77,9 @@ export const textDefaultProps: TextComponentProps = {
   fontStyle: "normal",
   textDecoration: "none",
   lineHeight: "1",
-  // textAlign: "left",
+  textAlign: "left",
   color: "#000000",
-  // backgroundColor: "",
+  backgroundColor: "",
   ...commonDefaultProps,
 };
 export const imageDefaultProps: ImageComponentProps = {
