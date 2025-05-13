@@ -53,7 +53,7 @@ import LText from "@/components/LText.vue";
 import { defaultTextTemplates } from "@/defaultTemplates";
 import ComponentList from "@/components/ComponentList.vue";
 import EditWrapper from "@/components/EditWrapper.vue";
-import PropsTable from "@/components/PropsTable.vue";
+import PropsTable from "@/components/PropsTable";
 const store = useStore<GlobalDataProps>();
 const components = computed(() => store.state.editor.components);
 const defaultComponents = computed(() => defaultTextTemplates);

@@ -1,0 +1,12 @@
+.props-table .prop-item {
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.props-table .prop-item .label {
+  width: 100px;
+}
+
+.props-table .prop-item .prop-component {
+  flex: 1;
+}
