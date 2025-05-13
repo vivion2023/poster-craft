@@ -16,7 +16,9 @@
               :key="key"
               :value="option.value"
             >
-              {{ option.text }}
+              <slot :option="option">
+                {{ option.text }}
+              </slot>
             </component>
           </template>
         </component>
@@ -26,7 +28,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, computed, defineEmits } from "vue";
+import { defineProps, computed, defineEmits, VNode } from "vue";
 import { reduce } from "lodash";
 import type { TextComponentProps } from "../defaultProps";
 import { mapPropsToForm, PropToFormType } from "../propsMap";
@@ -44,7 +46,7 @@ interface FormProps {
   }; // 子组件的额外属性
   text?: string; // 组件的文本名称
   options?: {
-    text: string;
+    text: string | VNode;
     value: any;
   }[]; // 组件的选项
   valueProp?: any; // 组件的值属性
