@@ -1,31 +1,31 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
-    <p>这是一个示例组件，用于演示单元测试。</p>
+    <button @click="count++">{{ count }}</button>
+    <Hello msg="1234"></Hello>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, ref } from "vue";
+import Hello from "./Hello.vue";
 
 export default defineComponent({
   name: "HelloWorld",
+  components: {
+    Hello,
+  },
   props: {
-    msg: {
-      type: String,
-      required: true,
-    },
+    msg: String,
+  },
+  setup() {
+    const count = ref(1);
+    return { count };
   },
 });
 </script>
 
 <style scoped>
-.hello {
-  padding: 20px;
-  border: 1px solid #eee;
-  border-radius: 4px;
-  margin: 20px 0;
-}
 h1 {
   font-size: 1.5em;
   margin-bottom: 15px;
