@@ -25,6 +25,7 @@
           >
             {{ component.props.text }}
           </component>
+          <a class="delete-btn" @click="handleDelete(component.id)"> 删除 </a>
         </edit-wrapper>
       </div>
     </LayoutContent>
@@ -80,6 +81,10 @@ const setActive = (id: string) => {
 const handleChange = (value: { key: string; value: any }) => {
   store.commit("updateComponent", value);
 };
+
+const handleDelete = (id: string) => {
+  store.commit("deleteComponent", id);
+};
 </script>
 
 <style scoped lang="scss">
@@ -107,6 +112,14 @@ const handleChange = (value: { key: string; value: any }) => {
       .preview-item {
         position: relative;
       }
+    }
+
+    .delete-btn {
+      color: red;
+      display: flex;
+      justify-content: right;
+      align-items: center;
+      cursor: pointer;
     }
   }
   .property-container {

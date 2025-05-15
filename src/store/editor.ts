@@ -87,6 +87,14 @@ const editor: Module<EditorProps, GlobalDataProps> = {
         currentComponent.props[key] = value;
       }
     },
+    deleteComponent(state, id: string) {
+      const index = state.components.findIndex(
+        (component) => component.id === id
+      );
+      if (index !== -1) {
+        state.components.splice(index, 1);
+      }
+    },
   },
   actions: {
     addComponent({ commit }, payload: any) {
@@ -94,6 +102,9 @@ const editor: Module<EditorProps, GlobalDataProps> = {
     },
     setActive({ commit }, currentID: string) {
       commit("setActive", currentID);
+    },
+    deleteComponent({ commit }, id: string) {
+      commit("deleteComponent", id);
     },
   },
 };
