@@ -1,12 +1,15 @@
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
-    <button @click="count++">{{ count }}</button>
-    <Hello msg="1234"></Hello>
-  </div>
+  <h1>{{ msg }}</h1>
+  <button @click="setCount">{{ count }}</button>
+  <input type="text" v-model="todo" />
+  <button @click="addTodo">add</button>
+  <ul>
+    <li v-for="(todo, index) in todos" :key="index">{{ todo }}</li>
+  </ul>
+  <Hello msg="1234"></Hello>
 </template>
 
-<script lang="ts">
+<script>
 import { defineComponent, ref } from "vue";
 import Hello from "./Hello.vue";
 
@@ -18,9 +21,22 @@ export default defineComponent({
   props: {
     msg: String,
   },
-  setup() {
+  emits: ["send"],
+  setup(props, context) {
+    const todo = ref("");
+    const todos = ref([]);
     const count = ref(1);
-    return { count };
+    const setCount = () => {
+      count.value++;
+    };
+    const addTodo = () => {
+      if (todo.value) {
+        todos.value.push(todo.value);
+        context.emit("send", todo.value);
+        todo.value = "";
+      }
+    };
+    return { count, todo, todos, addTodo, setCount };
   },
 });
 </script>
