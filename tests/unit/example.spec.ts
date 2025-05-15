@@ -1,10 +1,14 @@
 import { shallowMount, mount } from "@vue/test-utils";
+import flushPromises from "flush-promises";
 import HelloWorld from "@/components/HelloWorld.vue";
 import Hello from "@/components/Hello.vue";
+import axios from "axios";
+jest.mock("axios");
+const mockAxios = axios as jest.Mocked<typeof axios>;
 
 describe("HelloWorld.vue", () => {
+  const msg = "new message";
   it("renders props.msg when passed", () => {
-    const msg = "new message";
     const wrapper = shallowMount(HelloWorld, {
       props: { msg },
     });
@@ -51,5 +55,24 @@ describe("HelloWorld.vue", () => {
     // 测试emit事件是否触发正确
     expect(sendEvents).toBeTruthy();
     expect(sendEvents[0]).toEqual([todoContent]);
+  });
+
+  it.only("should load user message when click load button", async () => {
+    const msg = "new message";
+    const wrapper = shallowMount(HelloWorld, {
+      props: { msg },
+    });
+    mockAxios.get.mockResolvedValue({
+      data: {
+        username: "viking",
+      },
+    });
+    await wrapper.find(".loadUser").trigger("click");
+    expect(mockAxios.get).toHaveBeenCalled();
+    expect(wrapper.find(".loading").exists()).toBeTruthy();
+    await flushPromises();
+    // 界面更新完毕
+    expect(wrapper.find(".loading").exists()).toBeFalsy();
+    expect(wrapper.find(".username").text()).toBe("viking");
   });
 });
