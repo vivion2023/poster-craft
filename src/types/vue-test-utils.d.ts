@@ -1,5 +1,5 @@
 declare module "@vue/test-utils" {
-  import { ComponentPublicInstance, DefineComponent } from "vue";
+  import { ComponentPublicInstance, Component } from "vue";
 
   export interface VueWrapper<T extends ComponentPublicInstance> {
     vm: T;
@@ -9,13 +9,17 @@ declare module "@vue/test-utils" {
       selector: K
     ): DOMWrapper<HTMLElementTagNameMap[K]>;
     find<T extends Element>(selector: string): DOMWrapper<T>;
-    findComponent<T extends DefineComponent>(
+    findAll<K extends keyof HTMLElementTagNameMap>(
+      selector: K
+    ): DOMWrapper<HTMLElementTagNameMap[K]>[];
+    findAll<T extends Element>(selector: string): DOMWrapper<T>[];
+    findComponent<T extends Component>(
       component: T
-    ): VueWrapper<InstanceType<T>>;
+    ): VueWrapper<ComponentPublicInstance>;
     findComponent(selector: string): VueWrapper<ComponentPublicInstance>;
-    findAllComponents<T extends DefineComponent>(
+    findAllComponents<T extends Component>(
       component: T
-    ): VueWrapper<InstanceType<T>>[];
+    ): VueWrapper<ComponentPublicInstance>[];
     findAllComponents(selector: string): VueWrapper<ComponentPublicInstance>[];
     html(): string;
     text(): string;
@@ -40,18 +44,18 @@ declare module "@vue/test-utils" {
     trigger(eventName: string, options?: {}): Promise<void>;
   }
 
-  export function mount<T extends DefineComponent>(
+  export function mount<T extends Component>(
     component: T,
     options?: {}
-  ): VueWrapper<InstanceType<T>>;
+  ): VueWrapper<ComponentPublicInstance>;
   export function mount<T extends ComponentPublicInstance>(
     component: {},
     options?: {}
   ): VueWrapper<T>;
-  export function shallowMount<T extends DefineComponent>(
+  export function shallowMount<T extends Component>(
     component: T,
     options?: {}
-  ): VueWrapper<InstanceType<T>>;
+  ): VueWrapper<ComponentPublicInstance>;
   export function shallowMount<T extends ComponentPublicInstance>(
     component: {},
     options?: {}

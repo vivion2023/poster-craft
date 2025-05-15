@@ -2,7 +2,7 @@
   <h1>{{ msg }}</h1>
   <button @click="setCount">{{ count }}</button>
   <input type="text" v-model="todo" />
-  <button @click="addTodo">add</button>
+  <button class="addTodo" @click="addTodo">add</button>
   <ul>
     <li v-for="(todo, index) in todos" :key="index">{{ todo }}</li>
   </ul>

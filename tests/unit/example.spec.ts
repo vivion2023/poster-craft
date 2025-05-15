@@ -20,4 +20,26 @@ describe("HelloWorld.vue", () => {
     await wrapper.find("button").trigger("click");
     expect(wrapper.find("button").text()).toBe("2");
   });
+
+  it("should add tood when fill the input and click the button", async () => {
+    const msg = "new message";
+    const todoContent = "buy milk";
+    const wrapper = shallowMount(HelloWorld, {
+      props: { msg },
+    });
+    // Vue Test Utils 2.x中移除了setValue方法
+    // 获取input元素,直接设置属性然后触发input事件
+    const input = wrapper.find("input");
+    input.element.value = todoContent;
+    await input.trigger("input");
+
+    expect(wrapper.find("input").element.value).toBe(todoContent);
+    await wrapper.find(".addTodo").trigger("click");
+    // 2.x中toHaveLength方法被移除了
+    // expect(wrapper.find("li").toHaveLength(1));
+    const items = wrapper.findAll("li");
+    expect(items.length).toBe(1);
+
+    expect(items[0].text()).toBe(todoContent);
+  });
 });
