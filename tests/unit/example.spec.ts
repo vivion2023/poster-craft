@@ -41,5 +41,15 @@ describe("HelloWorld.vue", () => {
     expect(items.length).toBe(1);
 
     expect(items[0].text()).toBe(todoContent);
+
+    // 测试emit事件
+    console.log(wrapper.emitted());
+    // 测试emit事件是否存在
+    expect(wrapper.emitted()).toHaveProperty("send");
+    // 测试emit事件是否触发
+    const sendEvents = wrapper.emitted("send");
+    // 测试emit事件是否触发正确
+    expect(sendEvents).toBeTruthy();
+    expect(sendEvents[0]).toEqual([todoContent]);
   });
 });
