@@ -4,7 +4,7 @@ import { keyBy, reduce } from "lodash";
 import type { TextComponentProps } from "../defaultProps";
 import { mapPropsToForm, PropToFormType } from "../propsMap";
 import "./PropsTable.css";
-
+import ColorPicker from "@/components/ColorPicker.vue";
 const mapToComponent = {
   "a-textarea": Input.TextArea,
   "a-input-number": InputNumber,
@@ -13,6 +13,7 @@ const mapToComponent = {
   "a-radio-button": Radio.Button,
   "a-select": Select,
   "a-select-option": Select.Option,
+  ColorPicker,
 } as any;
 
 interface FormProps {

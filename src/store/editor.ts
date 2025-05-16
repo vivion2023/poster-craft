@@ -30,6 +30,7 @@ export const testComponents: ComponentData[] = [
       fontSize: "20px",
       lineHeight: "1",
       textAlign: "left",
+      color: "#000000",
     },
   },
   {
