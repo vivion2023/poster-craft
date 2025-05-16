@@ -59,6 +59,7 @@ describe("UserProfile component", () => {
         },
       },
     });
+    jest.useFakeTimers();
   });
 
   it("should render login button when login is false", async () => {
@@ -80,6 +81,8 @@ describe("UserProfile component", () => {
     await wrapper.find(".user-profile-dropdown div").trigger("click");
     expect(store.state.user.isLogin).toBeFalsy();
     expect(message.success).toHaveBeenCalledTimes(1);
+    jest.runAllTimers();
+    expect(mockedRoutes).toEqual(["/"]);
   });
 
   afterEach(() => {
