@@ -2,7 +2,8 @@ import UserProfile from "@/components/UserProfile.vue";
 import { mount } from "@vue/test-utils";
 import { VueWrapper } from "@vue/test-utils";
 import { message } from "ant-design-vue";
-import { template } from "lodash-es";
+import store from "@/store/index";
+import { useRouter } from "vue-router";
 const msg = "new message";
 let wrapper: VueWrapper<any>;
 jest.mock("ant-design-vue", () => ({
@@ -10,21 +11,27 @@ jest.mock("ant-design-vue", () => ({
     success: jest.fn(),
   },
 }));
-jest.mock("vuex");
-jest.mock("vue-router");
+
+const mockedRoutes: string[] = [];
+jest.mock("vue-router", () => ({
+  useRouter: () => ({
+    push: (url: string) => mockedRoutes.push(url),
+  }),
+}));
 
 // 模拟 Vuex store
-import { useStore } from "vuex";
-const mockStore = {
-  state: {
-    user: {
-      isLogin: false,
-      userName: "vivion",
-    },
-  },
-  commit: jest.fn(),
-};
-(useStore as jest.Mock).mockReturnValue(mockStore);
+// import { useStore } from "vuex";
+// import { provide } from "vue";
+// const mockStore = {
+//   state: {
+//     user: {
+//       isLogin: false,
+//       userName: "vivion",
+//     },
+//   },
+//   commit: jest.fn(),
+// };
+// (useStore as jest.Mock).mockReturnValue(mockStore);
 
 const mockComponent = {
   template: "<div><slot></slot></div>",
@@ -47,6 +54,9 @@ describe("UserProfile component", () => {
     wrapper = mount(UserProfile, {
       global: {
         components: globalComponent,
+        provide: {
+          store,
+        },
       },
     });
   });
@@ -66,5 +76,13 @@ describe("UserProfile component", () => {
     console.log(wrapper.html());
   });
 
-  // afterAll(() => {})
+  it("should call logout and show message, call router.push after timeout", async () => {
+    await wrapper.find(".user-profile-dropdown div").trigger("click");
+    expect(store.state.user.isLogin).toBeFalsy();
+    expect(message.success).toHaveBeenCalledTimes(1);
+  });
+
+  afterEach(() => {
+    (message as jest.Mocked<typeof message>).success.mockReset();
+  });
 });

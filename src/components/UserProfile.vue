@@ -29,7 +29,7 @@ const store = useStore();
 // const isLogin = computed(() => store.state.user.isLogin);
 const user = computed(() => store.state.user);
 const login = () => {
-  // store.commit("login");
+  store.commit("login");
   message.success("登录成功", 2);
 };
 
