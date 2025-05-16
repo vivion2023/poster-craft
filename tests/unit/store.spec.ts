@@ -32,7 +32,7 @@ describe("test vuex store", () => {
     });
   });
 
-  describe("test templates module", () => {
+  describe("test editor module", () => {
     it("should have default components", () => {
       expect(store.state.editor.components).toHaveLength(testComponents.length);
     });
@@ -41,6 +41,20 @@ describe("test vuex store", () => {
       expect(store.state.editor.currentElement).toBe(testComponents[0].id);
       const currentElement = store.getters.currentElement;
       expect(currentElement.id).toBe(testComponents[0].id);
+    });
+    it("add component should works fine", () => {
+      const payload = {
+        props: {
+          text: "text1",
+        },
+      };
+      store.commit("addComponent", payload);
+      expect(store.state.editor.components).toHaveLength(
+        cloneComponents.length + 1
+      );
+      const lastItem = last(store.state.editor.components);
+      console.log(lastItem);
+      expect(lastItem?.props.text).toBe("text1");
     });
   });
 });
