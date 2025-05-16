@@ -3,34 +3,31 @@ import flushPromises from "flush-promises";
 import HelloWorld from "@/components/HelloWorld.vue";
 import Hello from "@/components/Hello.vue";
 import axios from "axios";
+import { VueWrapper } from "@vue/test-utils";
 jest.mock("axios");
+
+const msg = "new message";
 const mockAxios = axios as jest.Mocked<typeof axios>;
+let wrapper: VueWrapper<any>;
 
 describe("HelloWorld.vue", () => {
-  const msg = "new message";
-  it("renders props.msg when passed", () => {
-    const wrapper = shallowMount(HelloWorld, {
+  beforeAll(() => {
+    wrapper = shallowMount(HelloWorld, {
       props: { msg },
     });
+  });
+  it("renders props.msg when passed", () => {
     console.log(wrapper.findComponent(Hello as any).props());
     expect(wrapper.text()).toMatch(msg);
   });
 
   it("should update the count when clicking the button", async () => {
-    const msg = "new message";
-    const wrapper = shallowMount(HelloWorld, {
-      props: { msg },
-    });
     await wrapper.find("button").trigger("click");
     expect(wrapper.find("button").text()).toBe("2");
   });
 
   it("should add tood when fill the input and click the button", async () => {
-    const msg = "new message";
     const todoContent = "buy milk";
-    const wrapper = shallowMount(HelloWorld, {
-      props: { msg },
-    });
     // Vue Test Utils 2.x中移除了setValue方法
     // 获取input元素,直接设置属性然后触发input事件
     const input = wrapper.find("input");
@@ -57,11 +54,7 @@ describe("HelloWorld.vue", () => {
     expect(sendEvents[0]).toEqual([todoContent]);
   });
 
-  it.only("should load user message when click load button", async () => {
-    const msg = "new message";
-    const wrapper = shallowMount(HelloWorld, {
-      props: { msg },
-    });
+  it("should load user message when click load button", async () => {
     mockAxios.get.mockResolvedValue({
       data: {
         username: "viking",
@@ -74,5 +67,23 @@ describe("HelloWorld.vue", () => {
     // 界面更新完毕
     expect(wrapper.find(".loading").exists()).toBeFalsy();
     expect(wrapper.find(".username").text()).toBe("viking");
+  });
+
+  it("should load user message when click load button", async () => {
+    mockAxios.get.mockResolvedValue({
+      data: {
+        username: "viking",
+      },
+    });
+    await wrapper.find(".loadUser").trigger("click");
+    expect(mockAxios.get).toHaveBeenCalledTimes(1);
+    expect(wrapper.find(".loading").exists()).toBeTruthy();
+    await flushPromises();
+    // 界面更新完毕
+    expect(wrapper.find(".loading").exists()).toBeFalsy();
+    expect(wrapper.find(".username").text()).toBe("viking");
+  });
+  afterEach(() => {
+    mockAxios.get.mockReset();
   });
 });
