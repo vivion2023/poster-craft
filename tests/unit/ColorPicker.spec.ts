@@ -24,7 +24,7 @@ describe("UserProfile component", () => {
     });
   });
 
-  it.only("should render the correct interface", () => {
+  it("should render the correct interface", () => {
     // <div><input></div>
     // <ul class="picked-color-list">
     //   <li class="item-0" or class="transparent-item">
@@ -50,38 +50,29 @@ describe("UserProfile component", () => {
     // 测试最后一个元素是否为特殊的类名
     const lastItem = wrapper.find("li:last-child div")
       .element as HTMLDivElement;
-    expect(lastItem.classList.contains("transparent-back")).toBeTruthy();
+    expect(lastItem.classList.contains("transparent-item")).toBeTruthy();
   });
 
   it("should send the correct event when change input", async () => {
     // 测试input修改后，是否发送对应的事件和对应的值
     const blackHex = "#000000";
     const input = wrapper.find("input");
-    // await input.setValue(blackHex);
-    // 触发 input 事件
-    await input.trigger("input", {
-      target: {
-        value: blackHex,
-      },
-    });
+    // 使用 element.value 设置值，然后触发 input 事件
+    input.element.value = blackHex;
+    await input.trigger("input");
 
-    // 触发 change 事件
-    await input.trigger("change", {
-      target: {
-        value: blackHex,
-      },
-    });
-
-    expect(wrapper.emitted()).toHaveProperty("change");
+    expect(wrapper.emitted()).toHaveProperty("change"); // 是否发送change事件
     const events = wrapper.emitted("change");
-    expect(events[0]).toEqual([blackHex]);
+    expect(events[0]).toEqual([blackHex]); // 是否发送正确的值
   });
 
-  it("should send the correct event when clicking color list", () => {
+  it("should send the correct event when clicking color list", async () => {
     // 测试点击颜色列表后，是否发送对应的事件和对应的值
     const firstItem = wrapper.find("li:first-child div");
-    firstItem.trigger("click");
+    expect(firstItem.exists()).toBeTruthy();
+    await firstItem.trigger("click");
+    expect(wrapper.emitted()).toHaveProperty("change"); // 是否发送change事件
     const events = wrapper.emitted("change");
-    expect(events[1]).toEqual([defaultColors[0]]);
+    expect(events[1]).toEqual([defaultColors[0]]); // 是否发送正确的值
   });
 });

@@ -2,7 +2,11 @@
   <div>
     <div class="color-picker">
       <div class="native-color-container">
-        <input type="color" :value="value" />
+        <input
+          type="color"
+          :value="value"
+          @input="onChange($event.target.value)"
+        />
       </div>
       <ul class="picked-color-list">
         <li v-for="(item, key) in colors" :key="key" :class="`item-${key}`">
@@ -10,8 +14,9 @@
             class="color-item"
             :style="{ backgroundColor: item }"
             v-if="item.startsWith('#')"
+            @click.prevent="onChange(item)"
           ></div>
-          <div v-else class="color-item transparent-back"></div>
+          <div v-else class="color-item transparent-item"></div>
         </li>
       </ul>
     </div>
@@ -43,6 +48,15 @@ export default defineComponent({
       type: Array as PropType<string[]>,
       default: () => defaultColors,
     },
+  },
+  emits: ["change"],
+  setup(props, context) {
+    const onChange = (color: string) => {
+      context.emit("change", color);
+    };
+    return {
+      onChange,
+    };
   },
 });
 </script>
