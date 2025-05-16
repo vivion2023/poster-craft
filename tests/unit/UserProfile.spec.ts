@@ -1,10 +1,15 @@
 import UserProfile from "@/components/UserProfile.vue";
 import { mount } from "@vue/test-utils";
 import { VueWrapper } from "@vue/test-utils";
+import { message } from "ant-design-vue";
 import { template } from "lodash-es";
 const msg = "new message";
 let wrapper: VueWrapper<any>;
-jest.mock("ant-design-vue");
+jest.mock("ant-design-vue", () => ({
+  message: {
+    success: jest.fn(),
+  },
+}));
 jest.mock("vuex");
 jest.mock("vue-router");
 
@@ -46,10 +51,12 @@ describe("UserProfile component", () => {
     });
   });
 
-  it("should render login button when login is false", () => {
+  it("should render login button when login is false", async () => {
     expect(wrapper.find("button").exists()).toBeTruthy;
     console.log(wrapper.html());
     expect(wrapper.find("div").text()).toBe("登录");
+    await wrapper.find("div").trigger("click");
+    expect(message.success).toHaveBeenCalled();
   });
 
   it("should render username when login is true", async () => {
