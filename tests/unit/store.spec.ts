@@ -1,7 +1,7 @@
 import { testComponents, ComponentData } from "@/store/editor";
 import { testData } from "@/store/templates";
 import { TextComponentProps } from "@/defaultProps";
-import { last, clone } from "lodash-es";
+import { last, clone, values, update } from "lodash-es";
 import store from "@/store";
 const cloneComponents = clone(testComponents);
 describe("test vuex store", () => {
@@ -55,6 +55,18 @@ describe("test vuex store", () => {
       const lastItem = last(store.state.editor.components);
       console.log(lastItem);
       expect(lastItem?.props.text).toBe("text1");
+    });
+
+    it("update component should works fine", () => {
+      store.commit("setActive", testComponents[0].id);
+      const newProps = {
+        key: "text",
+        value: "update",
+      };
+      store.commit("updateComponent", newProps);
+      const currentElement: ComponentData = store.getters.currentElement;
+      console.log(currentElement);
+      expect(currentElement.props.text).toBe("update");
     });
   });
 });
