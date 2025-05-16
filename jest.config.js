@@ -10,5 +10,5 @@ module.exports = {
   },
   moduleFileExtensions: ["vue", "js", "ts", "tsx"],
   setupFilesAfterEnv: ["<rootDir>/tests/jest-setup.ts"],
-  transformIgnorePatterns: ["/node_modules/(?!(lodash-es|axios))"],
+  transformIgnorePatterns: ["/node_modules/(?!(lodash-es|axios|rgb-hex|vue))"],
 };

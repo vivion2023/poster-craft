@@ -16,6 +16,7 @@
     "flush-promises": "^1.0.2",
     "lodash-es": "^4.17.21",
     "qrcode.vue": "^3.6.0",
+    "rgb-hex": "^4.1.0",
     "uuid": "^11.1.0",
     "vue": "^3.3.0",
     "vue-router": "^4.0.13",
