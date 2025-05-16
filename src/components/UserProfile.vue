@@ -1,18 +1,20 @@
 <template>
-  <div v-if="!isLogin" class="user-profile-component">
-    <Button type="primary" shape="round" @click="login"> 登录 </Button>
-  </div>
+  <a-button
+    type="primary"
+    v-if="!user.isLogin"
+    class="user-profile-component"
+    @click="login"
+    >登录</a-button
+  >
   <div v-else>
-    <div class="user-profile">
-      <a-dropdown class="user-profile- component">
-        <router-link to="/login">{{ user }}</router-link>
-        <template v-slot:overlay>
-          <a-menu class="user-profile-dropdown">
-            <a-menu-item key="0" @click="logout"> 退出 </a-menu-item>
-          </a-menu>
-        </template>
-      </a-dropdown>
-    </div>
+    <a-dropdown-button class="user-profile-component">
+      <router-link to="/setting">{{ user.userName }}</router-link>
+      <template v-slot:overlay>
+        <a-menu class="user-profile-dropdown">
+          <a-menu-item key="0" @click="logout"> 退出 </a-menu-item>
+        </a-menu>
+      </template>
+    </a-dropdown-button>
   </div>
 </template>
 
@@ -24,8 +26,8 @@ import { useStore } from "vuex";
 
 const router = useRouter();
 const store = useStore();
-const isLogin = computed(() => store.state.user.isLogin);
-const user = computed(() => store.state.user.userName);
+// const isLogin = computed(() => store.state.user.isLogin);
+const user = computed(() => store.state.user);
 const login = () => {
   store.commit("login");
   message.success("登录成功", 2);
