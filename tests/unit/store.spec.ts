@@ -31,4 +31,16 @@ describe("test vuex store", () => {
       expect(selectTemplate.title).toBe("前端架构师海报");
     });
   });
+
+  describe("test templates module", () => {
+    it("should have default components", () => {
+      expect(store.state.editor.components).toHaveLength(testComponents.length);
+    });
+    it("should get current component when set active one component", () => {
+      store.commit("setActive", testComponents[0].id);
+      expect(store.state.editor.currentElement).toBe(testComponents[0].id);
+      const currentElement = store.getters.currentElement;
+      expect(currentElement.id).toBe(testComponents[0].id);
+    });
+  });
 });
