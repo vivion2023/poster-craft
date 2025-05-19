@@ -6,7 +6,12 @@
       <span v-else-if="fileStatus === 'error'">上传失败</span>
       <span v-else>点击上传</span>
     </button>
-    <input type="file" ref="fileInput" :style="{ display: 'none' }" />
+    <input
+      type="file"
+      ref="fileInput"
+      :style="{ display: 'none' }"
+      @change="handleFileChange"
+    />
   </div>
 </template>
 
@@ -31,6 +36,8 @@ export default defineComponent({
     };
 
     const handleFileChange = (e: Event) => {
+      fileStatus.value = "loading";
+
       const target = e.target as HTMLInputElement;
       const files = target.files;
       if (files) {
