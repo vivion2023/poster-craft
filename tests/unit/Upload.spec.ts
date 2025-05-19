@@ -3,6 +3,7 @@ import Uploader from "@/components/Uploader.vue";
 import axios from "axios";
 import flushPromises from "flush-promises";
 jest.mock("axios");
+jest.useFakeTimers();
 // 模拟axios
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 let wrapper: VueWrapper<any>;
@@ -25,8 +26,8 @@ describe("Uploader component", () => {
   });
 
   it("upload process should works fine", async () => {
-    // change e.target.files
-    // create a file
+    // 改变 e.target.files
+    // 新建一个 file
     const mockedPromise = new Promise((resolve) => {
       setTimeout(() => {
         resolve({ status: "success" });
@@ -58,19 +59,29 @@ describe("Uploader component", () => {
       writable: false,
     });
 
-    // 1. 点击按钮
+    // 点击按钮
     expect(wrapper.find("button span").text()).toBe("点击上传");
     await wrapper.find("button").trigger("click");
 
-    // 2. 触发 change 事件，应该立即变为 loading 状态
+    // 触发 change 事件，应该立即变为 loading 状态
     await wrapper.find("input").trigger("change");
     expect(wrapper.find("button span").text()).toBe("正在上传");
 
-    // 3. 等待上传完成
-    expect(mockedAxios.post).toHaveBeenCalledTimes(1);
-    await mockedPromise;
+    // button 为 disabled
+    expect(
+      wrapper.find("button").element.hasAttribute("disabled")
+    ).toBeTruthy();
+    // 列表长度修改，并且有正确的class
+    expect(wrapper.findAll("li").length).toBe(1);
+    const fileItem = wrapper.find("li:first-child");
+    expect(fileItem.element.hasAttribute("upload-loading"));
+
     await flushPromises();
-    expect(wrapper.find("button span").text()).toBe("上传成功");
+    expect(wrapper.find("button span").text()).toBe("正在上传");
+    // 有正确的class，并且文件名称相对应
+    jest.runAllTimers();
+    expect(fileItem.element.hasAttribute("upload-success"));
+    expect(fileItem.find(".filename").text()).toBe(testFile.name);
   });
 
   it("should return error text when post is rejected", async () => {
@@ -83,6 +94,14 @@ describe("Uploader component", () => {
     await wrapper.find("input").trigger("change");
     expect(mockedAxios.post).toHaveBeenCalledTimes(2);
     await flushPromises();
-    expect(wrapper.find("button span").text()).toBe("上传失败");
+    expect(wrapper.find("button span").text()).toBe("点击上传");
+
+    // 列表长度修改，并且有正确的class
+    expect(wrapper.findAll("li").length).toBe(2);
+    const lastItem = wrapper.find("li:last-child");
+    expect(lastItem.element.hasAttribute("upload-error"));
+    // 点击删除按钮
+    await lastItem.find(".delete-icon").trigger("click");
+    expect(wrapper.findAll("li").length).toBe(1);
   });
 });
