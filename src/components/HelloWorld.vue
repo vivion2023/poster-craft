@@ -52,7 +52,6 @@ export default defineComponent({
       axios
         .get("https://api.github.com/users/1")
         .then((res: any) => {
-          console.log(res);
           user.data = res.data;
         })
         .catch(() => {

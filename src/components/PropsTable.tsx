@@ -5,6 +5,7 @@ import type { TextComponentProps } from "../defaultProps";
 import { mapPropsToForm, PropToFormType } from "../propsMap";
 import "./PropsTable.css";
 import ColorPicker from "@/components/ColorPicker.vue";
+import IconSwitch from "@/components/IconSwitch.vue";
 const mapToComponent = {
   "a-textarea": Input.TextArea,
   "a-input-number": InputNumber,
@@ -14,6 +15,7 @@ const mapToComponent = {
   "a-select": Select,
   "a-select-option": Select.Option,
   ColorPicker,
+  IconSwitch,
 } as any;
 
 interface FormProps {
@@ -66,6 +68,9 @@ const PropsTable = defineComponent({
               eventName,
               events: {
                 ["on" + capitalizeFirstLetter(eventName)]: (e: any) => {
+                  console.log("e", e);
+                  console.log("key", key);
+                  console.log("item", item);
                   emit("change", {
                     key,
                     value: item.afterTransform ? item.afterTransform(e) : e,

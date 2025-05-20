@@ -31,6 +31,7 @@ export const testComponents: ComponentData[] = [
       lineHeight: "1",
       textAlign: "left",
       color: "#000000",
+      fontWeight: "normal",
     },
   },
   {
@@ -42,6 +43,7 @@ export const testComponents: ComponentData[] = [
       fontSize: "10px",
       color: "red",
       fontFamily: "无",
+      fontWeight: "normal",
     },
   },
   {

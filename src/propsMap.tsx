@@ -86,4 +86,11 @@ export const mapPropsToForm: PropToFormType = {
     text: "字体颜色",
     component: "ColorPicker",
   },
+  fontWeight: {
+    text: "加粗",
+    component: "IconSwitch",
+    extraProps: {
+      tooltip: "加粗",
+    },
+  },
 };
