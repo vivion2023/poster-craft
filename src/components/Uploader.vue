@@ -1,9 +1,20 @@
 <template>
   <div class="file-upload">
-    <button @click="triggerUpload" :disabled="isUploading">
-      <span v-if="isUploading">正在上传</span>
-      <span v-else>点击上传</span>
-    </button>
+    <div class="upload-trigger" @click="triggerUploaded">
+      <slot v-if="isUploading" name="loading">
+        <button disabled>正在上传</button>
+      </slot>
+      <slot
+        name="uploaded"
+        v-else-if="lastFileData && lastFileData.loaded"
+        :uploadedData="lastFileData.data"
+      >
+        <button>点击上传</button>
+      </slot>
+      <slot v-else name="default">
+        <button>点击上传</button>
+      </slot>
+    </div>
     <input
       type="file"
       ref="fileInput"
@@ -37,6 +48,7 @@ import {
   DeleteOutlined,
 } from "@ant-design/icons-vue";
 import axios from "axios";
+import { last } from "lodash";
 import { v4 as uuidv4 } from "uuid";
 type UploadStatus = "ready" | "loading" | "success" | "error";
 export interface UploadFile {
@@ -45,6 +57,7 @@ export interface UploadFile {
   name: string;
   status: UploadStatus;
   raw: File;
+  resp?: any;
 }
 export default defineComponent({
   components: {
@@ -64,7 +77,19 @@ export default defineComponent({
     const isUploading = computed(() => {
       return uploadFiles.value.some((file) => file.status === "loading");
     });
-    const triggerUpload = () => {
+
+    const lastFileData = computed(() => {
+      const lastFile = last(uploadFiles.value);
+      if (lastFile) {
+        return {
+          loaded: lastFile.status === "success",
+          data: lastFile.resp,
+        };
+      }
+      return false;
+    });
+
+    const triggerUploaded = () => {
       if (fileInput.value) {
         fileInput.value.click();
       }
@@ -94,6 +119,7 @@ export default defineComponent({
           .then((resp) => {
             console.log(resp.data);
             fileObj.status = "success";
+            fileObj.resp = resp.data;
           })
           .catch((err) => {
             console.log(err);
@@ -113,11 +139,12 @@ export default defineComponent({
 
     return {
       fileInput,
-      triggerUpload,
+      triggerUploaded,
       isUploading,
       handleFileChange,
       handleDelete,
       uploadFiles,
+      lastFileData,
     };
   },
 });

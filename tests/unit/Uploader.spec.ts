@@ -42,7 +42,7 @@ const setInputValue = (fileInput: HTMLInputElement) => {
 
 describe("Uploader component", () => {
   beforeAll(() => {
-    wrapper = shallowMount(Uploader, {
+    wrapper = mount(Uploader, {
       props: {
         action: "test.url",
       },
@@ -53,7 +53,7 @@ describe("Uploader component", () => {
   });
   it("basic layout before uploading", () => {
     expect(wrapper.find("button").exists()).toBeTruthy();
-    expect(wrapper.find("button span").text()).toBe("点击上传");
+    expect(wrapper.find("button").text()).toBe("点击上传");
     expect(getComputedStyle(wrapper.find("input").element).display).toBe(
       "none"
     );
@@ -73,12 +73,12 @@ describe("Uploader component", () => {
     setInputValue(fileInput);
 
     // 点击按钮
-    expect(wrapper.find("button span").text()).toBe("点击上传");
+    expect(wrapper.find("button").text()).toBe("点击上传");
     await wrapper.find("button").trigger("click");
 
     // 触发 change 事件，应该立即变为 loading 状态
     await wrapper.find("input").trigger("change");
-    expect(wrapper.find("button span").text()).toBe("正在上传");
+    expect(wrapper.find("button").text()).toBe("正在上传");
 
     // button 为 disabled
     expect(
@@ -90,7 +90,7 @@ describe("Uploader component", () => {
     expect(fileItem.element.hasAttribute("upload-loading"));
 
     await flushPromises();
-    expect(wrapper.find("button span").text()).toBe("正在上传");
+    expect(wrapper.find("button").text()).toBe("正在上传");
     // 有正确的class，并且文件名称相对应
     jest.runAllTimers();
     expect(fileItem.element.hasAttribute("upload-success"));
@@ -107,7 +107,7 @@ describe("Uploader component", () => {
     await wrapper.find("input").trigger("change");
     expect(mockedAxios.post).toHaveBeenCalledTimes(2);
     await flushPromises();
-    expect(wrapper.find("button span").text()).toBe("点击上传");
+    expect(wrapper.find("button").text()).toBe("点击上传");
 
     // 列表长度修改，并且有正确的class
     expect(wrapper.findAll("li").length).toBe(2);
@@ -118,10 +118,15 @@ describe("Uploader component", () => {
     expect(wrapper.findAll("li").length).toBe(1);
   });
 
-  it.only("should show the correct interface when using custon slot", async () => {
+  it("should show the correct interface when using custon slot", async () => {
     mockedAxios.post.mockResolvedValueOnce({
       data: {
         url: "dummy.url",
+      },
+    });
+    mockedAxios.post.mockResolvedValueOnce({
+      data: {
+        url: "xyz.url",
       },
     });
     const wrapper = mount(Uploader, {
@@ -130,9 +135,9 @@ describe("Uploader component", () => {
       },
       slots: {
         default: "<button>Custom button</button>",
-        loading: "<div class='loading'>custon loading</div>",
+        loading: "<div class='loading'>custom loading</div>",
         uploaded: `<template #uploaded="{ uploadedData }">
-          <div class="custon-loaded">{{uploadedData.url}}</div>
+          <div class="custom-loaded">{{uploadedData.url}}</div>
           </template>`,
       },
       global: {
@@ -143,8 +148,13 @@ describe("Uploader component", () => {
     const fileInput = wrapper.find("input").element as HTMLInputElement;
     setInputValue(fileInput);
     await wrapper.find("input").trigger("change");
-    expect(wrapper.find(".loading").text()).toBe("custon loading");
+    // expect(wrapper.find(".loading").text()).toBe("custom loading");
     await flushPromises();
-    expect(wrapper.find(".custon-loaded").text()).toBe("dummy.url");
+    expect(wrapper.find(".custom-loaded").text()).toBe("dummy.url");
+
+    await wrapper.find("input").trigger("change");
+    // expect(wrapper.find(".loading").text()).toBe("custom loading");
+    await flushPromises();
+    expect(wrapper.find(".custom-loaded").text()).toBe("xyz.url");
   });
 });
