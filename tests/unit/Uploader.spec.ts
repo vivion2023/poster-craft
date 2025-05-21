@@ -2,6 +2,7 @@ import { shallowMount, VueWrapper, mount } from "@vue/test-utils";
 import Uploader from "@/components/Uploader.vue";
 import axios from "axios";
 import flushPromises from "flush-promises";
+import { emptyProps } from "ant-design-vue/es/empty";
 jest.mock("axios");
 jest.useFakeTimers();
 // 模拟axios
@@ -229,6 +230,31 @@ describe("Uploader component", () => {
     const firstItem = wrapper.find("li:first-child");
     expect(firstItem.element.hasAttribute("upload-success"));
     expect(firstItem.find(".filename").text()).toBe("new_name.docx");
+  });
+
+  it("testing drag and drop function", async () => {
+    mockedAxios.post.mockResolvedValueOnce({ data: { url: "dummy.url" } });
+    const wrapper = shallowMount(Uploader, {
+      props: {
+        action: "test.url",
+        drag: true,
+      },
+    });
+    const uploadArea = wrapper.find(".upload-area");
+    await uploadArea.trigger("dragover");
+    // 拖拽时，上传区域有 is-drag-over 类名
+    expect(uploadArea.element.classList.contains("is-drag-over")).toBe(true);
+    await uploadArea.trigger("dragleave");
+    // 拖拽离开时，上传区域没有 is-drag-over 类名
+    expect(uploadArea.element.classList.contains("is-drag-over")).toBe(false);
+    await uploadArea.trigger("drop", {
+      dataTransfer: {
+        files: [testFile],
+      },
+    });
+    expect(mockedAxios.post).toHaveBeenCalled();
+    await flushPromises();
+    expect(wrapper.findAll("li").length).toBe(1);
   });
 
   afterEach(() => {
