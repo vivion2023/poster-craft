@@ -1,8 +1,24 @@
 <template>
   <div class="app-container">
     <Uploader
-      action="https://run.mocky.io/v3/dff682b1-f1f6-4ec1-ab36-c735534a6583"
-    />
+      action="https://run.mocky.io/v3/e988be00-32a8-4cb1-a6cf-7b11299ba003"
+      drag
+    >
+      <div class="upload-container">
+        <h4>上传图片</h4>
+      </div>
+      <template #loading>
+        <div class="upload-container">
+          <h4>上传中</h4>
+        </div>
+      </template>
+      <template #uploaded="{ uploadedData }">
+        <div class="uploaded-area">
+          <img :src="uploadedData.data.url" alt="uploaded" />
+          <h3>重新上传</h3>
+        </div>
+      </template>
+    </Uploader>
     <router-view />
   </div>
 </template>
@@ -17,4 +33,17 @@ export default {
 };
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+.uploaded-area {
+  text-align: center;
+  h3 {
+    margin-top: 8px;
+    color: #666;
+  }
+}
+img {
+  width: 10%;
+  height: 10%;
+  object-fit: cover;
+}
+</style>
