@@ -16,6 +16,9 @@
         v-else-if="lastFileData && lastFileData.loaded"
         :uploadedData="lastFileData.data"
       >
+        <div v-if="lastFileData.data.url" class="uploaded-image">
+          <img :src="lastFileData.data.url" class="preview-image" />
+        </div>
         <button>点击上传</button>
       </slot>
       <!-- 上传失败 -->
@@ -32,9 +35,15 @@
     <ul>
       <li
         :class="`uploaded-file upload-${file.status}`"
-        v-for="file in uploadedFiles"
+        v-for="file in fileList"
         :key="file.uid"
       >
+        <img
+          v-if="file.url && listType === 'picture'"
+          :src="file.url"
+          class="upload-list-thumbnail"
+          :alt="file.name"
+        />
         <!-- 上传中 -->
         <span v-if="file.status === 'loading'" class="file-icon"
           ><LoadingOutlined
@@ -42,7 +51,7 @@
         <!-- 上传成功 -->
         <span v-else class="file-icon"><FileOutlined /></span>
         <span class="filename">{{ file.name }}</span>
-        <button class="delete-icon" @click="handleDelete(file.uid)">
+        <button class="delete-icon" @click="removeFile(file.uid)">
           <DeleteOutlined />
         </button>
       </li>
@@ -61,6 +70,7 @@ import axios from "axios";
 import { last } from "lodash";
 import { v4 as uuidv4 } from "uuid";
 type UploadStatus = "ready" | "loading" | "success" | "error";
+type FileListType = "picture" | "text";
 type CheckUpload = (file: File) => boolean | Promise<boolean | File>;
 // 上传文件的类型
 export interface UploadFile {
@@ -70,6 +80,7 @@ export interface UploadFile {
   status: UploadStatus; // 文件的状态
   raw: File; // 文件的原始对象
   resp?: any; // 文件上传后的响应
+  url?: string; // 文件上传后的url
 }
 export default defineComponent({
   components: {
@@ -92,21 +103,26 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
+    listType: {
+      // 上传列表类型
+      type: String as PropType<FileListType>,
+      default: "picture",
+    },
   },
   setup(props) {
     const fileInput = ref<HTMLInputElement | null>(null);
     // 上传后返回的文件列表
-    const uploadedFiles = ref<UploadFile[]>([]);
+    const fileList = ref<UploadFile[]>([]);
     // 是否正在上传
     const isUploading = computed(() => {
-      return uploadedFiles.value.some((file) => file.status === "loading");
+      return fileList.value.some((file) => file.status === "loading");
     });
     // 是否正在拖拽
     const isDragOver = ref(false);
 
     // 上传成功后显示的图片
     const lastFileData = computed(() => {
-      const lastFile = last(uploadedFiles.value);
+      const lastFile = last(fileList.value);
       if (lastFile) {
         return {
           loaded: lastFile.status === "success",
@@ -136,7 +152,7 @@ export default defineComponent({
         raw: uploadedFile,
       });
       // 将文件对象添加到文件列表中
-      uploadedFiles.value.push(fileObj);
+      fileList.value.push(fileObj);
       // 上传文件
       axios
         .post(props.action, formData, {
@@ -198,10 +214,8 @@ export default defineComponent({
     };
 
     // 删除文件
-    const handleDelete = (uid: string) => {
-      uploadedFiles.value = uploadedFiles.value.filter(
-        (file) => file.uid !== uid
-      );
+    const removeFile = (uid: string) => {
+      fileList.value = fileList.value.filter((file) => file.uid !== uid);
     };
 
     // 事件
@@ -243,8 +257,8 @@ export default defineComponent({
       triggerUpload,
       isUploading,
       handleFileChange,
-      handleDelete,
-      uploadedFiles,
+      removeFile,
+      fileList,
       lastFileData,
       isDragOver,
       events,
@@ -287,6 +301,12 @@ export default defineComponent({
   &.is-drag-over {
     border: 2px dashed #1890ff;
     background: rgba(#1890ff, 0.2);
+  }
+
+  .preview-image {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
   }
 
   button {

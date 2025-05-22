@@ -12,12 +12,7 @@
           <h4>上传中</h4>
         </div>
       </template>
-      <template #uploaded="{ uploadedData }">
-        <div class="uploaded-area">
-          <img :src="uploadedData.data.url" alt="uploaded" />
-          <h3>重新上传</h3>
-        </div>
-      </template>
+      <template #uploaded> </template>
     </Uploader>
     <router-view />
   </div>
@@ -25,10 +20,21 @@
 
 <script lang="ts">
 import Uploader from "./components/Uploader.vue";
+import { ref } from "vue";
 export default {
   name: "App",
   components: {
     Uploader,
+  },
+  setup() {
+    const uploader = ref();
+    const callUpload = () => {
+      uploader.value.submit();
+    };
+    return {
+      uploader,
+      callUpload,
+    };
   },
 };
 </script>
@@ -41,9 +47,9 @@ export default {
     color: #666;
   }
 }
-img {
-  width: 10%;
-  height: 10%;
-  object-fit: cover;
-}
+// img {
+//   width: 10%;
+//   height: 10%;
+//   object-fit: cover;
+// }
 </style>
