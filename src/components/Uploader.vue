@@ -31,37 +31,39 @@
       :style="{ display: 'none' }"
       @change="handleFileChange"
     />
-    <ul class="upload-list" v-if="showUploadList">
-      <li
-        :class="`uploaded-file upload-${file.status}`"
-        v-for="file in fileList"
-        :key="file.uid"
-      >
-        <img
-          v-if="file.url && listType === 'picture'"
-          :src="file.url"
-          class="upload-list-thumbnail"
-          :alt="file.name"
-        />
-        <!-- 上传中 -->
-        <span v-if="file.status === 'loading'" class="file-icon">
-          <LoadingOutlined />
-        </span>
-        <!-- 进度条 -->
-        <div v-if="file.status === 'loading'" class="progress-wrapper">
-          <div
-            class="progress-inner"
-            :style="{ width: file.percentage + '%' }"
-          ></div>
-        </div>
-        <!-- 上传成功 -->
-        <span v-else class="file-icon"><FileOutlined /></span>
-        <span class="filename">{{ file.name }}</span>
-        <button class="delete-icon" @click="removeFile(file.uid)">
-          <DeleteOutlined />
-        </button>
-      </li>
-    </ul>
+    <div class="upload-list-container" v-if="showUploadList">
+      <ul class="upload-list">
+        <li
+          :class="`uploaded-file upload-${file.status}`"
+          v-for="file in fileList"
+          :key="file.uid"
+        >
+          <img
+            v-if="file.url && listType === 'picture'"
+            :src="file.url"
+            class="upload-list-thumbnail"
+            :alt="file.name"
+          />
+          <!-- 上传中 -->
+          <span v-if="file.status === 'loading'" class="file-icon">
+            <LoadingOutlined />
+          </span>
+          <!-- 进度条 -->
+          <div v-if="file.status === 'loading'" class="progress-wrapper">
+            <div
+              class="progress-inner"
+              :style="{ width: file.percentage + '%' }"
+            ></div>
+          </div>
+          <!-- 上传成功 -->
+          <span v-else class="file-icon"><FileOutlined /></span>
+          <span class="filename">{{ file.name }}</span>
+          <button class="delete-icon" @click="removeFile(file.uid)">
+            <DeleteOutlined />
+          </button>
+        </li>
+      </ul>
+    </div>
     <!-- 手动上传按钮 -->
     <div
       v-if="!autoUploadProp && fileList.some((f) => f.status === 'ready')"
@@ -388,42 +390,70 @@ export default defineComponent({
   color: black;
 }
 // 上传区域
-.file-upload .upload-area {
-  cursor: pointer;
-  overflow: hidden;
-  &.is-drag-over {
-    border: 2px dashed #1890ff;
-    background: rgba(#1890ff, 0.2);
+.file-upload {
+  .upload-area {
+    cursor: pointer;
+    overflow: hidden;
+    margin-bottom: 15px;
+    &.is-drag-over {
+      border: 2px dashed #1890ff;
+      background: rgba(#1890ff, 0.2);
+    }
   }
+}
+
+.upload-list-container {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  margin-top: 12px;
 }
 
 .upload-list {
   list-style-type: none;
+  padding: 0;
+  margin: 0;
 
   li {
-    transition: all 0.5s cubic-bezier(0.55, 0, 0.1, 1);
+    transition: all 0.3s ease;
     font-size: 14px;
-    line-height: 1.8;
-    margin-top: 5px;
+    padding: 12px 15px;
+    display: flex;
+    align-items: center;
     box-sizing: border-box;
-    border-radius: 4px;
-    min-width: 200px;
+    border-bottom: 1px solid #f0f0f0;
     position: relative;
 
-    &:first-child {
-      margin-top: 10px;
+    &:last-child {
+      border-bottom: none;
+    }
+
+    &:hover {
+      background-color: #f5f5f5;
+
+      .delete-icon {
+        display: block;
+      }
     }
 
     .file-icon {
+      display: flex;
+      align-items: center;
+      margin-right: 10px;
       svg {
-        margin-right: 5px;
         color: rgba(0, 0, 0, 0.45);
       }
     }
+
     .filename {
-      margin-left: 5px;
-      margin-right: 40px;
+      flex: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      color: #333;
     }
+
     &.upload-error {
       color: #f5222d;
       svg {
@@ -431,55 +461,39 @@ export default defineComponent({
       }
     }
 
-    img {
-      margin-right: 8px; // 添加间距
-    }
-
-    .file-status {
-      display: block;
-      position: absolute;
-      right: 5px;
-      top: 0;
-      line-height: inherit;
-    }
     .delete-icon {
-      display: none;
-      position: absolute;
-      right: 7px;
-      top: 0;
-      line-height: inherit;
+      background: none;
+      border: none;
+      color: #999;
       cursor: pointer;
-    }
-    &:hover {
-      background-color: #efefef;
-      .file-status {
-        display: none;
-      }
-      .delete-icon {
-        display: block;
+      padding: 0;
+      margin-left: 10px;
+      transition: color 0.2s;
+
+      &:hover {
+        color: #ff4d4f;
       }
     }
   }
 }
 
 .upload-list-thumbnail {
-  vertical-align: middle;
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 4px;
+  margin-right: 10px;
   display: inline-block;
-  width: 70px; // 调整大小
-  height: 70px; // 调整大小
-  position: relative;
-  z-index: 1;
-  background-color: #fff;
-  object-fit: cover; // 确保图片比例正确
-  border-radius: 4px; // 可选：添加圆角
+  vertical-align: middle;
 }
 
 .progress-wrapper {
-  width: 100%;
+  flex: 1;
+  margin: 0 10px;
   height: 4px;
   background-color: #f5f5f5;
   border-radius: 2px;
-  margin-top: 4px;
+
   .progress-inner {
     height: 100%;
     background-color: #1890ff;
