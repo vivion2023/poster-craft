@@ -57,7 +57,9 @@
           </div>
           <!-- 上传成功 -->
           <span v-else class="file-icon"><FileOutlined /></span>
-          <span class="filename">{{ file.name }}</span>
+          <a-tooltip :title="file.name" placement="top">
+            <span class="filename">{{ file.name }}</span>
+          </a-tooltip>
           <button class="delete-icon" @click="removeFile(file.uid)">
             <DeleteOutlined />
           </button>
@@ -82,6 +84,7 @@ import {
   DeleteOutlined,
   CodeSandboxCircleFilled,
 } from "@ant-design/icons-vue";
+import { Tooltip } from "ant-design-vue";
 import axios, { type AxiosProgressEvent } from "axios";
 import { last } from "lodash";
 import { v4 as uuidv4 } from "uuid";
@@ -105,6 +108,7 @@ export default defineComponent({
     LoadingOutlined,
     FileOutlined,
     DeleteOutlined,
+    ATooltip: Tooltip,
   },
   props: {
     action: {
