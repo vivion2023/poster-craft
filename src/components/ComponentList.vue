@@ -52,7 +52,6 @@ const onImageUploaded = async (resp: UploadResp) => {
 
   const maxWidth = 200;
   newComponent.props.width = width > maxWidth ? `${maxWidth}px` : `${width}px`;
-  console.log("newComponent.props.width", newComponent.props.width);
 
   emit("on-item-click", newComponent);
 };

@@ -45,8 +45,9 @@
         />
         <!-- 上传中 -->
         <span v-if="file.status === 'loading'" class="file-icon"
-          ><LoadingOutlined
-        /></span>
+          ><LoadingOutlined />
+          <span class="progress-bar">进度条</span>
+        </span>
         <!-- 上传成功 -->
         <span v-else class="file-icon"><FileOutlined /></span>
         <span class="filename">{{ file.name }}</span>
