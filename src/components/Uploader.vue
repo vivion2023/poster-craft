@@ -30,6 +30,8 @@
       ref="fileInput"
       :style="{ display: 'none' }"
       @change="handleFileChange"
+      multiple
+      accept="image/*"
     />
     <div class="upload-list-container" v-if="showUploadList">
       <ul class="upload-list">
@@ -285,31 +287,33 @@ export default defineComponent({
     // 上传文件
     const uploadFiles = (files: null | FileList) => {
       if (files) {
-        const uploadedFile = files[0];
-        if (props.beforeUpload) {
-          // 上传前检查
-          const result = props.beforeUpload(uploadedFile);
-          if (result && result instanceof Promise) {
-            result
-              .then((processedFile) => {
-                // 如果返回的是文件对象，则上传文件
-                if (processedFile && processedFile instanceof File) {
-                  handleUpload(processedFile);
-                } else {
-                  throw new Error(
-                    "beforeUpload Promise should return File object"
-                  );
-                }
-              })
-              .catch((err) => {
-                console.log(err);
-              });
-          } else if (result === true) {
+        // 处理所有选中的文件，而不仅仅是第一个
+        Array.from(files).forEach((uploadedFile) => {
+          if (props.beforeUpload) {
+            // 上传前检查
+            const result = props.beforeUpload(uploadedFile);
+            if (result && result instanceof Promise) {
+              result
+                .then((processedFile) => {
+                  // 如果返回的是文件对象，则上传文件
+                  if (processedFile && processedFile instanceof File) {
+                    handleUpload(processedFile);
+                  } else {
+                    throw new Error(
+                      "beforeUpload Promise should return File object"
+                    );
+                  }
+                })
+                .catch((err) => {
+                  console.log(err);
+                });
+            } else if (result === true) {
+              handleUpload(uploadedFile);
+            }
+          } else {
             handleUpload(uploadedFile);
           }
-        } else {
-          handleUpload(uploadedFile);
-        }
+        });
       }
     };
 
