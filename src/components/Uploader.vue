@@ -7,7 +7,8 @@
     >
       <!-- 上传中 -->
       <slot v-if="isUploading" name="loading">
-        <button disabled>正在上传</button>
+        <LoadingOutlined spin />
+        <h4>上传中</h4>
       </slot>
       <!-- 上传成功后显示的图片 -->
       <slot
@@ -17,13 +18,14 @@
       >
         <div v-if="lastFileData.url" class="uploaded-image">
           <img :src="lastFileData.url" class="uploaded-preview" />
-          <button class="upload-btn">点击上传</button>
+          <h4 class="upload-btn">点击上传</h4>
         </div>
         <button v-else>点击上传</button>
       </slot>
       <!-- 默认 -->
       <slot v-else name="default">
-        <button>点击上传</button>
+        <FileImageOutlined />
+        <h4>上传图片</h4>
       </slot>
     </div>
     <input
