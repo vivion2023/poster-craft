@@ -4,11 +4,7 @@
     action="https://run.mocky.io/v3/2b8ae831-4f51-43e0-8a4d-7160a85c18b6"
     :show-upload-list="true"
     :beforeUpload="commonUploadCheck"
-    @success="
-      (data) => {
-        handleUploadSuccess(data.resp, data.file);
-      }
-    "
+    @success="onSuccess"
   >
     <div class="uploader-container">
       <FileImageOutlined />
@@ -41,13 +37,24 @@ export default {
     LoadingOutlined,
   },
   emits: ["success"],
-  setup(props, { emit }) {
+  setup(
+    _props: Record<string, never>,
+    {
+      emit,
+    }: { emit: (event: "success", payload: { resp: any; file: File }) => void }
+  ) {
     const handleUploadSuccess = (resp: any, file: File) => {
       emit("success", { resp, file });
     };
+
+    const onSuccess = (data: { resp: any; file: File }) => {
+      handleUploadSuccess(data.resp, data.file);
+    };
+
     return {
       commonUploadCheck,
       handleUploadSuccess,
+      onSuccess,
     };
   },
 };

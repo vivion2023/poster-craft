@@ -44,10 +44,16 @@
           :alt="file.name"
         />
         <!-- 上传中 -->
-        <span v-if="file.status === 'loading'" class="file-icon"
-          ><LoadingOutlined />
-          <span class="progress-bar">进度条</span>
+        <span v-if="file.status === 'loading'" class="file-icon">
+          <LoadingOutlined />
         </span>
+        <!-- 进度条 -->
+        <div v-if="file.status === 'loading'" class="progress-wrapper">
+          <div
+            class="progress-inner"
+            :style="{ width: file.percentage + '%' }"
+          ></div>
+        </div>
         <!-- 上传成功 -->
         <span v-else class="file-icon"><FileOutlined /></span>
         <span class="filename">{{ file.name }}</span>
@@ -67,10 +73,11 @@ import {
   DeleteOutlined,
   CodeSandboxCircleFilled,
 } from "@ant-design/icons-vue";
-import axios from "axios";
+import axios, { type AxiosProgressEvent } from "axios";
 import { last } from "lodash";
 import { v4 as uuidv4 } from "uuid";
 type UploadStatus = "ready" | "loading" | "success" | "error";
+// 上传进度百分比
 type FileListType = "picture" | "text";
 type CheckUpload = (file: File) => boolean | Promise<boolean | File>;
 // 上传文件的类型
@@ -82,6 +89,7 @@ export interface UploadFile {
   raw: File; // 文件的原始对象
   resp?: any; // 文件上传后的响应
   url?: string; // 文件上传后的url
+  percentage?: number; // 上传进度
 }
 export default defineComponent({
   components: {
@@ -155,6 +163,7 @@ export default defineComponent({
         name: uploadedFile.name,
         status: "ready",
         raw: uploadedFile,
+        percentage: 0,
       });
 
       if (props.listType === "picture") {
@@ -182,11 +191,17 @@ export default defineComponent({
       formData.append(fileObj.name, fileObj.raw);
 
       fileObj.status = "loading";
+      fileObj.percentage = 0;
 
       return axios
         .post(props.action, formData, {
           headers: {
             "Content-Type": "multipart/form-data",
+          },
+          onUploadProgress: (e: AxiosProgressEvent) => {
+            if (e.total) {
+              fileObj.percentage = Math.round((e.loaded * 100) / e.total);
+            }
           },
         })
         .then((resp) => {
@@ -201,10 +216,12 @@ export default defineComponent({
           if (resp.data.url) {
             fileObj.url = resp.data.url;
           }
+          fileObj.percentage = 100;
           return resp;
         })
         .catch((err) => {
           fileObj.status = "error";
+          fileObj.percentage = 0;
           emit("error", {
             error: err,
             file: fileObj,
@@ -424,5 +441,19 @@ export default defineComponent({
   background-color: #fff;
   object-fit: cover; // 确保图片比例正确
   border-radius: 4px; // 可选：添加圆角
+}
+
+.progress-wrapper {
+  width: 100%;
+  height: 4px;
+  background-color: #f5f5f5;
+  border-radius: 2px;
+  margin-top: 4px;
+  .progress-inner {
+    height: 100%;
+    background-color: #1890ff;
+    border-radius: 2px;
+    transition: width 0.3s ease;
+  }
 }
 </style>
