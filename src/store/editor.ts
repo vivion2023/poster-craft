@@ -54,13 +54,6 @@ export const testComponents: ComponentData[] = [
       text: "hello3",
     },
   },
-  {
-    id: uuidv4(),
-    name: "l-image",
-    props: {
-      src: "https://imgcps.jd.com/img-cubic/creative_server_cia_jdcloud/v2/2020220/100128082318/FocusFullshop/CkRqZnMvdDEvMTM3MDU0LzIzLzQ0NTI3LzIxODU2Ni82NmU4YTlhMEYwMjM0ODE5OS84MjdjYjJiMjdmYTU1OTY0LnBuZxIFNzA1LXQwAjj8pntCFgoS5bCP57Gz5pm66IO95omL546vEAFCFgoS5a6e5oOg5LiN5a656ZSZ6L-HEAJCEAoM56uL5Y2z5oqi6LStEAZCCgoG5LyY6LSoEAdYjpPlgPUC/cr/s/q.jpg",
-    },
-  },
 ];
 
 const editor: Module<EditorProps, GlobalDataProps> = {
@@ -76,15 +69,8 @@ const editor: Module<EditorProps, GlobalDataProps> = {
     },
   },
   mutations: {
-    addComponent(state, payload: any) {
-      const newComponent = {
-        id: uuidv4(),
-        name: "l-text",
-        props: {
-          ...payload.props,
-        },
-      };
-      state.components.push(newComponent);
+    addComponent(state, component: ComponentData) {
+      state.components.push(component);
     },
     setActive(state, currentID: string) {
       state.currentElement = currentID;
@@ -107,8 +93,8 @@ const editor: Module<EditorProps, GlobalDataProps> = {
     },
   },
   actions: {
-    addComponent({ commit }, payload: any) {
-      commit("addComponent", payload);
+    addComponent({ commit }, component: ComponentData) {
+      commit("addComponent", component);
     },
     setActive({ commit }, currentID: string) {
       commit("setActive", currentID);

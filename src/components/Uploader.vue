@@ -136,7 +136,6 @@ export default defineComponent({
           url: lastFile.url,
         };
       }
-      console.log("lastFileData:", lastFileData);
       return false;
     });
 
@@ -198,9 +197,9 @@ export default defineComponent({
             list: fileList.value,
           });
           // 如果响应中包含 url，更新文件 url
-          // if (resp.data.url) {
-          //   fileObj.url = resp.data.url;
-          // }
+          if (resp.data.url) {
+            fileObj.url = resp.data.url;
+          }
           return resp;
         })
         .catch((err) => {

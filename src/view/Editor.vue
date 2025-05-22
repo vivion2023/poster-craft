@@ -3,12 +3,7 @@
     <LayoutSider width="300px">
       <div class="siderbar-container">
         <div class="siderbar-title">组件列表：</div>
-        <ComponentList
-          :list="defaultComponents"
-          @on-item-click="handleItemClick"
-        />
-        <div class="siderbar-title">上传图片：</div>
-        <StyledUploader />
+        <ComponentList :list="defaultComponents" @on-item-click="addItem" />
       </div>
     </LayoutSider>
     <LayoutContent class="preview-container">
@@ -58,7 +53,6 @@ import { defaultTextTemplates } from "@/defaultTemplates";
 import ComponentList from "@/components/ComponentList.vue";
 import EditWrapper from "@/components/EditWrapper.vue";
 import PropsTable from "@/components/PropsTable";
-import StyledUploader from "@/components/StyledUploader.vue";
 const store = useStore<GlobalDataProps>();
 const components = computed(() => store.state.editor.components);
 const defaultComponents = computed(() => defaultTextTemplates);
@@ -75,8 +69,8 @@ const componentMap: {
   "l-image": LImage,
 };
 
-const handleItemClick = (props: any) => {
-  store.commit("addComponent", props);
+const addItem = (component: any) => {
+  store.commit("addComponent", component);
 };
 
 const setActive = (id: string) => {

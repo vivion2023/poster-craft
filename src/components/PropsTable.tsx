@@ -68,9 +68,9 @@ const PropsTable = defineComponent({
               eventName,
               events: {
                 ["on" + capitalizeFirstLetter(eventName)]: (e: any) => {
-                  console.log("e", e);
-                  console.log("key", key);
-                  console.log("item", item);
+                  // console.log("e", e);
+                  // console.log("key", key);
+                  // console.log("item", item);
                   emit("change", {
                     key,
                     value: item.afterTransform ? item.afterTransform(e) : e,

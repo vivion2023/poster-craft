@@ -1,9 +1,14 @@
 <template>
   <Uploader
     class="styled-uploader"
-    action="https://run.mocky.io/v3/e988be00-32a8-4cb1-a6cf-7b11299ba003"
-    :show-upload-list="true"
+    action="https://run.mocky.io/v3/2b8ae831-4f51-43e0-8a4d-7160a85c18b6"
+    :show-upload-list="false"
     :beforeUpload="commonUploadCheck"
+    @success="
+      (data) => {
+        handleUploadSuccess(data.resp, data.file);
+      }
+    "
   >
     <div class="uploader-container">
       <FileImageOutlined />
@@ -35,9 +40,15 @@ export default {
     FileImageOutlined,
     LoadingOutlined,
   },
-  setup() {
+  emits: ["success"],
+  setup(props, { emit }) {
+    const handleUploadSuccess = (resp: any, file: File) => {
+      console.log("StyledUploader", resp, file);
+      emit("success", { resp, file });
+    };
     return {
       commonUploadCheck,
+      handleUploadSuccess,
     };
   },
 };

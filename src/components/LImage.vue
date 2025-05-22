@@ -18,7 +18,12 @@ const props = withDefaults(defineProps<ImageComponentProps>(), {
 });
 
 const styleProps = computed(() => pick(props, imageStylePropsNames));
-console.log(props.src);
+</script>
+
+<script lang="ts">
+export default {
+  name: "LImage",
+};
 </script>
 
 <style scoped lang="scss">
