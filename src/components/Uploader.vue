@@ -31,7 +31,7 @@
       :style="{ display: 'none' }"
       @change="handleFileChange"
     />
-    <ul class="upload-list">
+    <ul class="upload-list" v-if="showUploadList">
       <li
         :class="`uploaded-file upload-${file.status}`"
         v-for="file in fileList"
@@ -108,8 +108,14 @@ export default defineComponent({
       type: String as PropType<FileListType>,
       default: "picture",
     },
+    showUploadList: {
+      // 是否显示上传列表
+      type: Boolean,
+      default: true,
+    },
   },
-  setup(props) {
+  emits: ["success", "error"],
+  setup(props, { emit }) {
     const fileInput = ref<HTMLInputElement | null>(null);
     // 上传后返回的文件列表
     const fileList = ref<UploadFile[]>([]);
@@ -186,6 +192,11 @@ export default defineComponent({
         .then((resp) => {
           fileObj.status = "success";
           fileObj.resp = resp.data;
+          emit("success", {
+            resp: resp.data,
+            file: fileObj,
+            list: fileList.value,
+          });
           // 如果响应中包含 url，更新文件 url
           // if (resp.data.url) {
           //   fileObj.url = resp.data.url;
@@ -194,6 +205,11 @@ export default defineComponent({
         })
         .catch((err) => {
           fileObj.status = "error";
+          emit("error", {
+            error: err,
+            file: fileObj,
+            list: fileList.value,
+          });
           throw err;
         })
         .finally(() => {
