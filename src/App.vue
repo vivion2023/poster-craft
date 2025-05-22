@@ -4,15 +4,6 @@
       action="https://run.mocky.io/v3/e988be00-32a8-4cb1-a6cf-7b11299ba003"
       drag
     >
-      <div class="upload-container">
-        <h4>上传图片</h4>
-      </div>
-      <template #loading>
-        <div class="upload-container">
-          <h4>上传中</h4>
-        </div>
-      </template>
-      <template #uploaded> </template>
     </Uploader>
     <router-view />
   </div>

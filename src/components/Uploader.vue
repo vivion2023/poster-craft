@@ -1,6 +1,5 @@
 <template>
   <div class="file-upload">
-    <!-- 上传区域 -->
     <div
       class="upload-area"
       :class="{ 'is-drag-over': drag && isDragOver }"
@@ -16,12 +15,12 @@
         v-else-if="lastFileData && lastFileData.loaded"
         :uploadedData="lastFileData.data"
       >
-        <div v-if="lastFileData.data.url" class="uploaded-image">
-          <img :src="lastFileData.data.url" class="preview-image" />
+        <div v-if="lastFileData.url" class="uploaded-image">
+          <img :src="lastFileData.url" class="upload-list-thumbnail" />
         </div>
         <button>点击上传</button>
       </slot>
-      <!-- 上传失败 -->
+      <!-- 默认 -->
       <slot v-else name="default">
         <button>点击上传</button>
       </slot>
@@ -32,7 +31,7 @@
       :style="{ display: 'none' }"
       @change="handleFileChange"
     />
-    <ul>
+    <ul class="upload-list">
       <li
         :class="`uploaded-file upload-${file.status}`"
         v-for="file in fileList"
@@ -65,6 +64,7 @@ import {
   LoadingOutlined,
   FileOutlined,
   DeleteOutlined,
+  CodeSandboxCircleFilled,
 } from "@ant-design/icons-vue";
 import axios from "axios";
 import { last } from "lodash";
@@ -127,8 +127,10 @@ export default defineComponent({
         return {
           loaded: lastFile.status === "success",
           data: lastFile.resp,
+          url: lastFile.url,
         };
       }
+      console.log("lastFileData:", lastFileData);
       return false;
     });
 
@@ -139,41 +141,69 @@ export default defineComponent({
       }
     };
 
-    // 上传文件
-    const postFile = (uploadedFile: File) => {
-      const formData = new FormData();
-      formData.append(uploadedFile.name, uploadedFile);
-      // 创建文件对象
+    // 文件预处理
+    const addFileToList = (uploadedFile: File) => {
       const fileObj = reactive<UploadFile>({
         uid: uuidv4(),
         size: uploadedFile.size,
         name: uploadedFile.name,
-        status: "loading",
+        status: "ready",
         raw: uploadedFile,
       });
-      // 将文件对象添加到文件列表中
+
+      if (props.listType === "picture") {
+        try {
+          fileObj.url = URL.createObjectURL(uploadedFile);
+        } catch (err) {
+          console.error("Upload file error", err);
+        }
+      }
+
       fileList.value.push(fileObj);
-      // 上传文件
-      axios
+
+      return fileObj;
+    };
+
+    // 上传文件
+    const postFile = (fileObj: UploadFile) => {
+      const formData = new FormData();
+      formData.append(fileObj.name, fileObj.raw);
+
+      fileObj.status = "loading";
+
+      return axios
         .post(props.action, formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
         })
         .then((resp) => {
-          console.log(resp.data);
           fileObj.status = "success";
           fileObj.resp = resp.data;
+          // 如果响应中包含 url，更新文件 url
+          // if (resp.data.url) {
+          //   fileObj.url = resp.data.url;
+          // }
+          return resp;
         })
         .catch((err) => {
-          console.log(err);
           fileObj.status = "error";
+          throw err;
         })
         .finally(() => {
           if (fileInput.value) {
             fileInput.value.value = "";
           }
         });
+    };
+
+    const handleUpload = async (uploadedFile: File) => {
+      try {
+        const fileObj = addFileToList(uploadedFile);
+        await postFile(fileObj);
+      } catch (err) {
+        console.log("Upload error", err);
+      }
     };
 
     // 上传文件
@@ -188,7 +218,7 @@ export default defineComponent({
               .then((processedFile) => {
                 // 如果返回的是文件对象，则上传文件
                 if (processedFile && processedFile instanceof File) {
-                  postFile(processedFile);
+                  handleUpload(processedFile);
                 } else {
                   throw new Error(
                     "beforeUpload Promise should return File object"
@@ -199,10 +229,10 @@ export default defineComponent({
                 console.log(err);
               });
           } else if (result === true) {
-            postFile(uploadedFile);
+            handleUpload(uploadedFile);
           }
         } else {
-          postFile(uploadedFile);
+          handleUpload(uploadedFile);
         }
       }
     };
@@ -287,6 +317,7 @@ export default defineComponent({
   height: 180px;
   // 垂直居中
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 
@@ -303,12 +334,6 @@ export default defineComponent({
     background: rgba(#1890ff, 0.2);
   }
 
-  .preview-image {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;
-  }
-
   button {
     border: none;
     cursor: pointer;
@@ -319,68 +344,78 @@ export default defineComponent({
   margin: 0;
   padding: 0;
   list-style-type: none;
-}
-.upload-list li {
-  transition: all 0.5s cubic-bezier(0.55, 0, 0.1, 1);
-  font-size: 14px;
-  line-height: 1.8;
-  margin-top: 5px;
-  box-sizing: border-box;
-  border-radius: 4px;
-  min-width: 200px;
-  position: relative;
-  &:first-child {
-    margin-top: 10px;
-  }
-  .upload-list-thumbnail {
-    vertical-align: middle;
-    display: inline-block;
-    width: 70px;
-    height: 70px;
+
+  li {
+    transition: all 0.5s cubic-bezier(0.55, 0, 0.1, 1);
+    font-size: 14px;
+    line-height: 1.8;
+    margin-top: 5px;
+    box-sizing: border-box;
+    border-radius: 4px;
+    min-width: 200px;
     position: relative;
-    z-index: 1;
-    background-color: #fff;
-    object-fit: cover;
-  }
-  .file-icon {
-    svg {
-      margin-right: 5px;
-      color: rgba(0, 0, 0, 0.45);
+
+    &:first-child {
+      margin-top: 10px;
     }
-  }
-  .filename {
-    margin-left: 5px;
-    margin-right: 40px;
-  }
-  &.upload-error {
-    color: #f5222d;
-    svg {
+
+    .file-icon {
+      svg {
+        margin-right: 5px;
+        color: rgba(0, 0, 0, 0.45);
+      }
+    }
+    .filename {
+      margin-left: 5px;
+      margin-right: 40px;
+    }
+    &.upload-error {
       color: #f5222d;
+      svg {
+        color: #f5222d;
+      }
     }
-  }
-  .file-status {
-    display: block;
-    position: absolute;
-    right: 5px;
-    top: 0;
-    line-height: inherit;
-  }
-  .delete-icon {
-    display: none;
-    position: absolute;
-    right: 7px;
-    top: 0;
-    line-height: inherit;
-    cursor: pointer;
-  }
-  &:hover {
-    background-color: #efefef;
+
+    img {
+      margin-right: 8px; // 添加间距
+    }
+
     .file-status {
-      display: none;
+      display: block;
+      position: absolute;
+      right: 5px;
+      top: 0;
+      line-height: inherit;
     }
     .delete-icon {
-      display: block;
+      display: none;
+      position: absolute;
+      right: 7px;
+      top: 0;
+      line-height: inherit;
+      cursor: pointer;
+    }
+    &:hover {
+      background-color: #efefef;
+      .file-status {
+        display: none;
+      }
+      .delete-icon {
+        display: block;
+      }
     }
   }
+}
+
+.upload-list-thumbnail {
+  vertical-align: middle;
+  display: inline-block;
+  width: 70px; // 调整大小
+  height: 70px; // 调整大小
+  position: relative;
+  z-index: 1;
+  background-color: #fff;
+  object-fit: cover; // 确保图片比例正确
+  border-radius: 4px; // 可选：添加圆角
 }
 </style>
