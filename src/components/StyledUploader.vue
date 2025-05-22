@@ -16,12 +16,12 @@
         <h4>上传中</h4>
       </div>
     </template>
-    <template #uploaded>
+    <!-- <template #uploaded>
       <div class="uploader-container">
         <FileImageOutlined />
         <h4>上传图片</h4>
       </div>
-    </template>
+    </template> -->
   </Uploader>
 </template>
 

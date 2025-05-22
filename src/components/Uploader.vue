@@ -16,9 +16,10 @@
         :uploadedData="lastFileData.data"
       >
         <div v-if="lastFileData.url" class="uploaded-image">
-          <img :src="lastFileData.url" class="upload-list-thumbnail" />
+          <img :src="lastFileData.url" class="uploaded-preview" />
+          <button class="upload-btn">点击上传</button>
         </div>
-        <button>点击上传</button>
+        <button v-else>点击上传</button>
       </slot>
       <!-- 默认 -->
       <slot v-else name="default">
@@ -409,9 +410,40 @@ export default defineComponent({
     cursor: pointer;
     overflow: hidden;
     margin-bottom: 15px;
+    padding: 20px;
+    border: 1px dashed #d9d9d9;
+    border-radius: 8px;
+    text-align: center;
     &.is-drag-over {
       border: 2px dashed #1890ff;
       background: rgba(#1890ff, 0.2);
+    }
+
+    .uploaded-image {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+
+      .uploaded-preview {
+        width: 120px;
+        height: 120px;
+        object-fit: cover;
+        border-radius: 4px;
+        margin-bottom: 12px;
+      }
+
+      .upload-btn {
+        background: none;
+        border: none;
+        color: #1890ff;
+        cursor: pointer;
+        font-size: 14px;
+
+        &:hover {
+          color: #40a9ff;
+        }
+      }
     }
   }
 }
