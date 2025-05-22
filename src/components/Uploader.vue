@@ -62,6 +62,13 @@
         </button>
       </li>
     </ul>
+    <!-- 手动上传按钮 -->
+    <div
+      v-if="!autoUploadProp && fileList.some((f) => f.status === 'ready')"
+      class="manual-upload-wrapper"
+    >
+      <button class="manual-upload-btn" @click="submitUpload">开始上传</button>
+    </div>
   </div>
 </template>
 
@@ -121,6 +128,11 @@ export default defineComponent({
       // 是否显示上传列表
       type: Boolean,
       default: true,
+    },
+    autoUpload: {
+      // 是否自动上传
+      type: Boolean,
+      default: false,
     },
   },
   emits: ["success", "error"],
@@ -236,13 +248,30 @@ export default defineComponent({
         });
     };
 
-    const handleUpload = async (uploadedFile: File) => {
+    // 处理单个文件的上传（已在列表中的）
+    const startUpload = async (fileObj: UploadFile) => {
       try {
-        const fileObj = addFileToList(uploadedFile);
         await postFile(fileObj);
       } catch (err) {
         console.log("Upload error", err);
       }
+    };
+
+    // 选择文件时的统一处理
+    const handleUpload = async (uploadedFile: File) => {
+      const fileObj = addFileToList(uploadedFile);
+      if (props.autoUpload) {
+        startUpload(fileObj);
+      }
+    };
+
+    // 手动触发列表中所有 ready 文件上传
+    const submitUpload = () => {
+      fileList.value
+        .filter((f) => f.status === "ready")
+        .forEach((f) => {
+          startUpload(f);
+        });
     };
 
     // 上传文件
@@ -331,6 +360,8 @@ export default defineComponent({
       lastFileData,
       isDragOver,
       events,
+      submitUpload,
+      autoUploadProp: props.autoUpload,
     };
   },
 });
@@ -454,6 +485,22 @@ export default defineComponent({
     background-color: #1890ff;
     border-radius: 2px;
     transition: width 0.3s ease;
+  }
+}
+
+.manual-upload-wrapper {
+  margin-top: 8px;
+  text-align: right;
+  .manual-upload-btn {
+    padding: 4px 12px;
+    background-color: #1890ff;
+    border: none;
+    color: #fff;
+    border-radius: 4px;
+    cursor: pointer;
+    &:hover {
+      background-color: #40a9ff;
+    }
   }
 }
 </style>
