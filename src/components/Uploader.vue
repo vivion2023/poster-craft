@@ -36,7 +36,10 @@
       multiple
       accept="image/*"
     />
-    <div class="upload-list-container" v-if="showUploadList">
+    <div
+      class="upload-list-container"
+      v-if="showUploadList && fileList.length > 0"
+    >
       <ul class="upload-list">
         <li
           :class="`uploaded-file upload-${file.status} ${
@@ -462,7 +465,6 @@ export default defineComponent({
   .upload-area {
     cursor: pointer;
     overflow: hidden;
-    margin-bottom: 15px;
     padding: 20px;
     border: 1px dashed #d9d9d9;
     border-radius: 8px;
