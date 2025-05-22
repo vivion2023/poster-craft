@@ -53,6 +53,7 @@ import { ComponentData, GlobalDataProps } from "@/store";
 import { useStore } from "vuex";
 import { computed, DefineComponent } from "vue";
 import LText from "@/components/LText.vue";
+import LImage from "@/components/LImage.vue";
 import { defaultTextTemplates } from "@/defaultTemplates";
 import ComponentList from "@/components/ComponentList.vue";
 import EditWrapper from "@/components/EditWrapper.vue";
@@ -71,6 +72,7 @@ const componentMap: {
   [key: string]: DefineComponent<any, any, any>;
 } = {
   "l-text": LText,
+  "l-image": LImage,
 };
 
 const handleItemClick = (props: any) => {

@@ -2,7 +2,7 @@
   <Uploader
     class="styled-uploader"
     action="https://run.mocky.io/v3/e988be00-32a8-4cb1-a6cf-7b11299ba003"
-    :show-upload-list="false"
+    :show-upload-list="true"
     :beforeUpload="commonUploadCheck"
   >
     <div class="uploader-container">
@@ -27,12 +27,13 @@
 <script lang="ts">
 import Uploader from "./Uploader.vue";
 import { commonUploadCheck } from "../help";
-import { FileImageOutlined } from "@ant-design/icons-vue";
+import { FileImageOutlined, LoadingOutlined } from "@ant-design/icons-vue";
 export default {
   name: "StyledUploader",
   components: {
     Uploader,
     FileImageOutlined,
+    LoadingOutlined,
   },
   setup() {
     return {
