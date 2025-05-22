@@ -320,6 +320,12 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 // 上传状态的颜色样式
 .upload-loading {
   color: gray;
@@ -335,36 +341,15 @@ export default defineComponent({
 }
 // 上传区域
 .file-upload .upload-area {
-  width: 360px;
-  height: 180px;
-  // 垂直居中
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  border: 1px dashed #ccc;
-  background-color: #efefef;
-  border-radius: 4px;
   cursor: pointer;
   overflow: hidden;
-  &:hover {
-    border: 2px dashed #1890ff;
-  }
   &.is-drag-over {
     border: 2px dashed #1890ff;
     background: rgba(#1890ff, 0.2);
   }
-
-  button {
-    border: none;
-    cursor: pointer;
-  }
 }
 
 .upload-list {
-  margin: 0;
-  padding: 0;
   list-style-type: none;
 
   li {

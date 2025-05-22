@@ -2,11 +2,13 @@
   <div class="editor">
     <LayoutSider width="300px">
       <div class="siderbar-container">
-        组件列表
+        <div class="siderbar-title">组件列表：</div>
         <ComponentList
           :list="defaultComponents"
           @on-item-click="handleItemClick"
         />
+        <div class="siderbar-title">上传图片：</div>
+        <StyledUploader />
       </div>
     </LayoutSider>
     <LayoutContent class="preview-container">
@@ -55,6 +57,7 @@ import { defaultTextTemplates } from "@/defaultTemplates";
 import ComponentList from "@/components/ComponentList.vue";
 import EditWrapper from "@/components/EditWrapper.vue";
 import PropsTable from "@/components/PropsTable";
+import StyledUploader from "@/components/StyledUploader.vue";
 const store = useStore<GlobalDataProps>();
 const components = computed(() => store.state.editor.components);
 const defaultComponents = computed(() => defaultTextTemplates);
@@ -95,6 +98,15 @@ const handleDelete = (id: string) => {
     padding: 20px;
     background-color: #fff;
     height: 100vh;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    .siderbar-title {
+      color: #000;
+      font-size: 24px;
+      font-weight: bold;
+    }
   }
   .preview-container {
     background-color: rgb(210, 210, 210);

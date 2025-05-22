@@ -1,10 +1,5 @@
 <template>
   <div class="app-container">
-    <Uploader
-      action="https://run.mocky.io/v3/e988be00-32a8-4cb1-a6cf-7b11299ba003"
-      drag
-    >
-    </Uploader>
     <router-view />
   </div>
 </template>
@@ -14,9 +9,6 @@ import Uploader from "./components/Uploader.vue";
 import { ref } from "vue";
 export default {
   name: "App",
-  components: {
-    Uploader,
-  },
   setup() {
     const uploader = ref();
     const callUpload = () => {
