@@ -152,11 +152,17 @@ export default defineComponent({
       });
 
       if (props.listType === "picture") {
-        try {
-          fileObj.url = URL.createObjectURL(uploadedFile);
-        } catch (err) {
-          console.error("Upload file error", err);
-        }
+        // 创建图片的url
+        // try {
+        //   fileObj.url = URL.createObjectURL(uploadedFile);
+        // } catch (err) {
+        //   console.error("Upload file error", err);
+        // }
+        const fileReader = new FileReader();
+        fileReader.readAsDataURL(uploadedFile);
+        fileReader.addEventListener("load", () => {
+          fileObj.url = fileReader.result as string;
+        });
       }
 
       fileList.value.push(fileObj);
