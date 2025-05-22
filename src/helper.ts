@@ -37,3 +37,17 @@ export function commonUploadCheck(file: File) {
   }
   return passed;
 }
+
+export const getImageDimensions = (url: string | File) => {
+  return new Promise<{ width: number; height: number }>((resolve, reject) => {
+    const img = new Image();
+    img.src = url instanceof File ? URL.createObjectURL(url) : url;
+    img.addEventListener("load", () => {
+      const { naturalWidth: width, naturalHeight: height } = img;
+      resolve({ width, height });
+    });
+    img.addEventListener("error", () => {
+      reject(new Error("There was some problem with the image."));
+    });
+  });
+};

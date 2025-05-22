@@ -29,10 +29,5 @@ export default {
 <style scoped lang="scss">
 .l-image-component {
   position: relative !important;
-
-  img {
-    width: 50px;
-    height: 50px;
-  }
 }
 </style>

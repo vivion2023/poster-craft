@@ -18,6 +18,9 @@ import LText from "@/components/LText.vue";
 import StyledUploader from "@/components/StyledUploader.vue";
 import { UploadResp } from "@/extraType";
 import { v4 as uuidv4 } from "uuid";
+import { imageDefaultProps } from "@/defaultProps";
+import { message } from "ant-design-vue";
+import { getImageDimensions } from "@/helper";
 const props = defineProps<{
   list: any[];
 }>();
@@ -35,15 +38,22 @@ const onItemClick = (data: any) => {
   emit("on-item-click", newComponent);
 };
 
-const onImageUploaded = (resp: UploadResp) => {
-  console.log("onImageUploaded", resp);
+const onImageUploaded = async (resp: UploadResp) => {
+  message.success("上传成功");
   const newComponent = {
     id: uuidv4(),
     name: "l-image",
     props: {
-      src: resp.resp.data.url,
+      ...imageDefaultProps,
     },
   };
+  newComponent.props.src = resp.resp.data.url;
+  const { width, height } = await getImageDimensions(resp.resp.data.url);
+
+  const maxWidth = 200;
+  newComponent.props.width = width > maxWidth ? `${maxWidth}px` : `${width}px`;
+  console.log("newComponent.props.width", newComponent.props.width);
+
   emit("on-item-click", newComponent);
 };
 </script>
