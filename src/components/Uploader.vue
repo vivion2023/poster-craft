@@ -165,6 +165,8 @@ export default defineComponent({
     // 触发上传
     const triggerUpload = () => {
       if (fileInput.value) {
+        // 先重置value，确保选择相同文件时也能触发change事件
+        fileInput.value.value = "";
         fileInput.value.click();
       }
     };
