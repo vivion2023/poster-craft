@@ -383,6 +383,10 @@ export default defineComponent({
 }
 
 // 上传状态的颜色样式
+.upload-ready {
+  color: #333;
+}
+
 .upload-loading {
   color: gray;
 }
