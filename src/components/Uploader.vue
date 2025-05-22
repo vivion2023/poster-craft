@@ -39,9 +39,12 @@
     <div class="upload-list-container" v-if="showUploadList">
       <ul class="upload-list">
         <li
-          :class="`uploaded-file upload-${file.status}`"
+          :class="`uploaded-file upload-${file.status} ${
+            file.status === 'ready' ? 'clickable' : ''
+          }`"
           v-for="file in fileList"
           :key="file.uid"
+          @click="handleFileItemClick(file)"
         >
           <img
             v-if="file.url && listType === 'picture'"
@@ -65,7 +68,7 @@
           <a-tooltip :title="file.name" placement="top">
             <span class="filename">{{ file.name }}</span>
           </a-tooltip>
-          <button class="delete-icon" @click="removeFile(file.uid)">
+          <button class="delete-icon" @click.stop="removeFile(file.uid)">
             <DeleteOutlined />
           </button>
         </li>
@@ -157,6 +160,8 @@ export default defineComponent({
     });
     // 是否正在拖拽
     const isDragOver = ref(false);
+    // 当前选择替换的文件UID
+    const currentReplaceFileUid = ref<string | null>(null);
 
     // 上传成功后显示的图片
     const lastFileData = computed(() => {
@@ -177,6 +182,15 @@ export default defineComponent({
         // 先重置value，确保选择相同文件时也能触发change事件
         fileInput.value.value = "";
         fileInput.value.click();
+      }
+    };
+
+    // 处理文件项点击
+    const handleFileItemClick = (file: UploadFile) => {
+      // 只有 ready 状态的文件可以重新选择
+      if (file.status === "ready") {
+        currentReplaceFileUid.value = file.uid;
+        triggerUpload();
       }
     };
 
@@ -272,6 +286,42 @@ export default defineComponent({
 
     // 选择文件时的统一处理
     const handleUpload = async (uploadedFile: File) => {
+      // 如果当前有需要替换的文件
+      if (currentReplaceFileUid.value) {
+        const index = fileList.value.findIndex(
+          (f) => f.uid === currentReplaceFileUid.value
+        );
+        if (index !== -1) {
+          // 替换文件
+          const newFileObj: UploadFile = {
+            uid: currentReplaceFileUid.value,
+            size: uploadedFile.size,
+            name: uploadedFile.name,
+            status: "ready",
+            raw: uploadedFile,
+            percentage: 0,
+          };
+
+          if (props.listType === "picture") {
+            try {
+              // 释放旧的URL资源
+              if (fileList.value[index].url) {
+                URL.revokeObjectURL(fileList.value[index].url as string);
+              }
+              newFileObj.url = URL.createObjectURL(uploadedFile);
+            } catch (err) {
+              console.error("Upload file error", err);
+            }
+          }
+
+          // 替换文件对象
+          fileList.value[index] = reactive(newFileObj);
+          currentReplaceFileUid.value = null;
+          return;
+        }
+      }
+
+      // 常规添加文件流程
       const fileObj = addFileToList(uploadedFile);
       if (props.autoUpload) {
         startUpload(fileObj);
@@ -377,6 +427,7 @@ export default defineComponent({
       events,
       submitUpload,
       autoUploadProp: props.autoUpload,
+      handleFileItemClick,
     };
   },
 });
@@ -482,6 +533,13 @@ export default defineComponent({
 
       .delete-icon {
         display: block;
+      }
+    }
+
+    &.clickable {
+      cursor: pointer;
+      &:hover {
+        background-color: #e6f7ff;
       }
     }
 
