@@ -1,24 +1,32 @@
 <template>
-  <component :is="props.tag" :style="styleProps" class="l-text-component">
+  <component
+    :is="props.tag"
+    :style="styleProps"
+    class="l-text-component"
+    @click="handleClick"
+  >
     {{ props.text }}
   </component>
 </template>
 
 <script setup lang="ts">
-import { computed, defineProps, withDefaults } from "vue";
-import { pick } from "lodash-es";
+import { defineProps, withDefaults } from "vue";
 import {
   textDefaultProps,
   type TextComponentProps,
   textStylePropNames,
 } from "../defaultProps";
+import useComponentCommon from "../hooks/useComponentCommon";
 
 const props = withDefaults(defineProps<TextComponentProps>(), {
   ...textDefaultProps,
 });
 
-// 只获取样式相关的属性，并保证正确的优先级
-const styleProps = computed(() => pick(props, textStylePropNames));
+// 使用 useComponentCommon hook
+const { styleProps, handleClick } = useComponentCommon(
+  props,
+  textStylePropNames
+);
 </script>
 
 <script lang="ts">

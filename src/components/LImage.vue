@@ -1,23 +1,27 @@
 <template>
-  <div class="l-image-component">
+  <div class="l-image-component" @click="handleClick">
     <img :src="props.src" :style="styleProps" />
   </div>
 </template>
 
 <script setup lang="ts">
-import { defineComponent, computed, withDefaults, defineProps } from "vue";
+import { withDefaults, defineProps } from "vue";
 import {
   imageDefaultProps,
   type ImageComponentProps,
   imageStylePropsNames,
 } from "../defaultProps";
-import { pick } from "lodash-es";
+import useComponentCommon from "../hooks/useComponentCommon";
 
 const props = withDefaults(defineProps<ImageComponentProps>(), {
   ...imageDefaultProps,
 });
 
-const styleProps = computed(() => pick(props, imageStylePropsNames));
+// 使用 useComponentCommon hook
+const { styleProps, handleClick } = useComponentCommon(
+  props,
+  imageStylePropsNames
+);
 </script>
 
 <script lang="ts">
