@@ -70,7 +70,11 @@ const editor: Module<EditorProps, GlobalDataProps> = {
   },
   mutations: {
     addComponent(state, component: ComponentData) {
-      state.components.push(component);
+      const newComponent = {
+        ...component,
+        id: uuidv4(),
+      };
+      state.components.push(newComponent);
     },
     setActive(state, currentID: string) {
       state.currentElement = currentID;
