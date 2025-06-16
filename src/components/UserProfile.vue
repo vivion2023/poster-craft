@@ -43,13 +43,7 @@ const logout = () => {
 </script>
 
 <style scoped lang="scss">
-.user-profile {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  .user-name {
-    color: #fff;
-    margin-right: 10px;
-  }
+.a-button {
+  padding: 0 14px;
 }
 </style>

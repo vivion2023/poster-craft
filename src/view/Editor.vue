@@ -5,9 +5,11 @@
         <Logo></Logo>
       </div>
       <div class="editor-header-right">
-        <a-button type="primary">预览和设置</a-button>
-        <a-button type="primary">保存</a-button>
-        <a-button type="primary">发布</a-button>
+        <a-button class="editor-header-button" type="primary">
+          预览和设置
+        </a-button>
+        <a-button class="editor-header-button" type="primary">保存</a-button>
+        <a-button class="editor-header-button" type="primary">发布</a-button>
         <UserProfile />
       </div>
     </LayoutHeader>
@@ -144,7 +146,6 @@ const handleDelete = (id: string) => {
 <style scoped lang="scss">
 * {
   margin: 0;
-  padding: 0;
 }
 
 .editor {
@@ -165,6 +166,10 @@ const handleDelete = (id: string) => {
       display: flex;
       align-items: center;
       gap: 10px;
+    }
+
+    .editor-header-button {
+      padding: 0 14px;
     }
   }
 
@@ -238,13 +243,17 @@ const handleDelete = (id: string) => {
       }
 
       .preview-list {
-        background-color: white;
-        width: 80%;
-        height: 70%;
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        justify-content: flex-start;
+        padding: 0;
+        margin: 0;
+        min-width: 375px;
+        min-height: 200px;
+        border: 1px solid #efefef;
+        background: #fff;
+        overflow-x: hidden;
+        overflow-y: auto;
+        position: fixed;
+        margin-top: 50px;
+        max-height: 80vh;
       }
 
       .delete-btn {
