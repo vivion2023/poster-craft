@@ -48,6 +48,7 @@ const onImageUploaded = async (resp: UploadResp) => {
     name: "l-image",
     props: {
       ...imageDefaultProps,
+      position: "relative",
     },
   };
   newComponent.props.src = resp.resp.data.url;
