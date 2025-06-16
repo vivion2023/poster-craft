@@ -4,6 +4,7 @@ import router from "./router";
 import store from "./store/index";
 import Antd from "ant-design-vue";
 import "ant-design-vue/dist/reset.css";
+import "cropperjs/dist/cropper.css";
 import * as Icons from "@ant-design/icons-vue";
 
 const app = createApp(App);
