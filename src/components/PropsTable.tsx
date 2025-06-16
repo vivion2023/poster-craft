@@ -1,11 +1,12 @@
 import { defineComponent, computed, PropType, VNode } from "vue";
 import { Input, InputNumber, Slider, Radio, Select } from "ant-design-vue";
 import { reduce } from "lodash-es";
-import type { TextComponentProps } from "../defaultProps";
+import type { TextComponentProps, ImageComponentProps } from "../defaultProps";
 import { mapPropsToForm } from "../propsMap";
 import "./PropsTable.css";
 import ColorPicker from "@/components/ColorPicker.vue";
 import IconSwitch from "@/components/IconSwitch.vue";
+import ImageProcesser from "@/components/ImageProcesser.vue";
 const mapToComponent = {
   "a-textarea": Input.TextArea,
   "a-input-number": InputNumber,
@@ -16,6 +17,7 @@ const mapToComponent = {
   "a-select-option": Select.Option,
   ColorPicker,
   IconSwitch,
+  ImageProcesser,
 } as any;
 
 interface FormProps {
@@ -45,7 +47,7 @@ const PropsTable = defineComponent({
   name: "PropsTable",
   props: {
     props: {
-      type: Object as PropType<TextComponentProps>,
+      type: Object as PropType<TextComponentProps | ImageComponentProps>,
       required: true,
     },
   },
@@ -55,7 +57,9 @@ const PropsTable = defineComponent({
       return reduce(
         props.props,
         (result: any, value: any, key: any) => {
-          const newKey = key as keyof TextComponentProps;
+          const newKey = key as
+            | keyof TextComponentProps
+            | keyof ImageComponentProps;
           const item = mapPropsToForm[newKey];
           if (item) {
             const valueProp = "value";
@@ -105,6 +109,7 @@ const PropsTable = defineComponent({
               <div class="prop-component">
                 <ComponentName {...props}>
                   {value.options &&
+                    subComponent &&
                     value.options.map((option: any) => (
                       <subComponent key={option.value} value={option.value}>
                         {option.text}

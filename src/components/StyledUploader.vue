@@ -2,7 +2,8 @@
   <Uploader
     class="styled-uploader"
     action="http://localhost:7001/api/utils/upload-local-img"
-    :show-upload-list="true"
+    :show-upload-list="showUploadList"
+    :auto-upload="autoUpload"
     :beforeUpload="commonUploadCheck"
     @success="onSuccess"
     :drag="true"
@@ -37,9 +38,19 @@ export default {
     FileImageOutlined,
     LoadingOutlined,
   },
+  props: {
+    showUploadList: {
+      type: Boolean,
+      default: true,
+    },
+    autoUpload: {
+      type: Boolean,
+      default: true,
+    },
+  },
   emits: ["success"],
   setup(
-    _props: Record<string, never>,
+    _props,
     {
       emit,
     }: {

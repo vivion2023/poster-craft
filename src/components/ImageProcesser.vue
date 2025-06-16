@@ -18,7 +18,11 @@
       :class="{ extraHeight: showDelete }"
     ></div>
     <div class="image-process">
-      <styled-uploader @success="handleFileUploaded" />
+      <StyledUploader
+        :show-upload-list="false"
+        :auto-upload="true"
+        @success="handleFileUploaded"
+      />
       <a-button @click="showModal = true">
         <template v-slot:icon><ScissorOutlined /></template>裁剪图片
       </a-button>
@@ -149,11 +153,7 @@ const handleDelete = () => {
 };
 </script>
 
-<style scoped lang="less">
-.image-processer {
-  display: flex;
-  justify-content: space-between;
-}
+<style scoped>
 .image-preview {
   width: 150px;
   height: 84px;
@@ -165,7 +165,6 @@ const handleDelete = () => {
 }
 .image-process {
   padding: 5px 0;
-  margin-left: 10px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
