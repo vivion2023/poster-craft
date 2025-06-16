@@ -44,7 +44,15 @@
       </LayoutSider>
 
       <LayoutContent class="preview-container">
-        <p>画布区域</p>
+        <div class="preview-header">
+          <div class="preview-header-left"></div>
+          <p class="preview-title">画布区域</p>
+          <div class="button-group">
+            <div class="button-item"><QuestionOutlined /></div>
+            <div class="button-item"><UndoOutlined /></div>
+            <div class="button-item"><RedoOutlined /></div>
+          </div>
+        </div>
         <div class="preview-list">
           <edit-wrapper
             v-for="component in components"
@@ -59,7 +67,6 @@
             >
               {{ component.props.text }}
             </component>
-            <a class="delete-btn" @click="handleDelete(component.id)"> 删除 </a>
           </edit-wrapper>
         </div>
       </LayoutContent>
@@ -135,6 +142,11 @@ const handleDelete = (id: string) => {
 </script>
 
 <style scoped lang="scss">
+* {
+  margin: 0;
+  padding: 0;
+}
+
 .editor {
   display: flex;
   flex-direction: column;
@@ -179,21 +191,60 @@ const handleDelete = (id: string) => {
     }
 
     .preview-container {
-      background-color: rgb(210, 210, 210);
+      background-color: rgb(238, 240, 244);
       flex: 1;
       display: flex;
       flex-direction: column;
-      justify-content: center;
+      justify-content: flex-start;
       align-items: center;
+
+      .preview-header {
+        padding: 0 42px;
+        display: flex;
+        width: 100%;
+        min-height: 50px;
+        align-items: center;
+        justify-content: space-between;
+
+        .preview-header-left {
+          width: 90px;
+        }
+        .preview-title {
+          flex: 1;
+          text-align: center;
+          font-size: 16px;
+          font-weight: bold;
+          color: rgb(121, 123, 127);
+        }
+        .button-group {
+          display: flex;
+          justify-content: flex-end;
+          align-items: center;
+          gap: 10px;
+          width: 90px;
+
+          .button-item {
+            width: 26px;
+            height: 26px;
+            padding: 6px;
+            display: flex;
+            cursor: pointer;
+            border-radius: 50%;
+            background-color: white;
+            justify-content: center;
+            align-items: center;
+          }
+        }
+      }
 
       .preview-list {
         background-color: white;
-        width: 50%;
-        height: 50%;
-
-        .preview-item {
-          position: relative;
-        }
+        width: 80%;
+        height: 70%;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: flex-start;
       }
 
       .delete-btn {

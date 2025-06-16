@@ -38,5 +38,7 @@ export default {
 <style scoped lang="scss">
 .l-text-component {
   position: relative !important;
+  margin: 0;
+  padding: 0;
 }
 </style>

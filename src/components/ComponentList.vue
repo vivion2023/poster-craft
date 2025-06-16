@@ -57,8 +57,13 @@ const onImageUploaded = async (resp: UploadResp) => {
 };
 </script>
 
-<script lang="ts">
-export default {
-  name: "ComponentList",
-};
-</script>
+<style scoped>
+.component-item {
+  width: 100px;
+  margin: 0 auto;
+  margin-bottom: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+</style>
