@@ -13,11 +13,36 @@
     </LayoutHeader>
 
     <LayoutContent class="editor-content">
-      <LayoutSider width="300px">
-        <div class="siderbar-container">
-          <div class="siderbar-title">组件列表：</div>
-          <ComponentList :list="defaultComponents" @on-item-click="addItem" />
-        </div>
+      <LayoutSider width="300px" class="siderbar-container">
+        <a-tabs v-model:activeKey="activeKey">
+          <a-tab-pane key="1">
+            <template #tab>
+              <span>
+                <FontSizeOutlined />
+                文本
+              </span>
+            </template>
+            <ComponentList :list="defaultComponents" @on-item-click="addItem" />
+          </a-tab-pane>
+          <a-tab-pane key="2">
+            <template #tab>
+              <span>
+                <PictureOutlined />
+                图片
+              </span>
+            </template>
+            <ComponentList :list="defaultComponents" @on-item-click="addItem" />
+          </a-tab-pane>
+          <a-tab-pane key="3">
+            <template #tab>
+              <span>
+                <AppleOutlined />
+                形状
+              </span>
+            </template>
+            <ComponentList :list="defaultComponents" @on-item-click="addItem" />
+          </a-tab-pane>
+        </a-tabs>
       </LayoutSider>
       <LayoutContent class="preview-container">
         <p>画布区域</p>
@@ -59,10 +84,9 @@
 </template>
 
 <script setup lang="ts">
-import { LayoutSider, LayoutContent } from "ant-design-vue";
 import { ComponentData, GlobalDataProps } from "@/store";
 import { useStore } from "vuex";
-import { computed, DefineComponent } from "vue";
+import { computed, DefineComponent, ref } from "vue";
 import { LText, LImage, LShape } from "lego-components";
 import { defaultTextTemplates } from "@/defaultTemplates";
 import Logo from "@/components/Logo.vue";
@@ -77,7 +101,7 @@ const currentElement = computed<ComponentData | null>(
   () => store.getters.currentElement
 );
 const currentElementId = computed(() => currentElement.value?.id);
-
+const activeKey = ref("1");
 // 字符串到实际组件的映射
 const componentMap: {
   [key: string]: DefineComponent<any, any, any>;
@@ -129,7 +153,7 @@ const handleDelete = (id: string) => {
   .editor-content {
     display: flex;
     flex-direction: row;
-    height: calc(100vh - 64px - 30px);
+    height: 100%;
 
     .siderbar-container {
       padding: 20px;
@@ -138,10 +162,8 @@ const handleDelete = (id: string) => {
       flex-direction: column;
       gap: 10px;
 
-      .siderbar-title {
-        color: #000;
-        font-size: 24px;
-        font-weight: bold;
+      .anticon {
+        margin-right: 4px;
       }
     }
 
