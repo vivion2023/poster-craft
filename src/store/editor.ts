@@ -32,6 +32,7 @@ export const testComponents: ComponentData[] = [
       textAlign: "left",
       color: "#000000",
       fontWeight: "normal",
+      position: "relative",
     },
   },
   {
@@ -44,6 +45,7 @@ export const testComponents: ComponentData[] = [
       color: "red",
       fontFamily: "无",
       fontWeight: "normal",
+      position: "relative",
     },
   },
   {
@@ -52,6 +54,7 @@ export const testComponents: ComponentData[] = [
     props: {
       tag: "h2",
       text: "hello3",
+      position: "relative",
     },
   },
 ];
