@@ -31,7 +31,6 @@
                 图片
               </span>
             </template>
-            <ComponentList :list="defaultComponents" @on-item-click="addItem" />
           </a-tab-pane>
           <a-tab-pane key="3">
             <template #tab>
@@ -40,10 +39,10 @@
                 形状
               </span>
             </template>
-            <ComponentList :list="defaultComponents" @on-item-click="addItem" />
           </a-tab-pane>
         </a-tabs>
       </LayoutSider>
+
       <LayoutContent class="preview-container">
         <p>画布区域</p>
         <div class="preview-list">
@@ -64,6 +63,7 @@
           </edit-wrapper>
         </div>
       </LayoutContent>
+
       <LayoutSider width="300px">
         <div class="property-container">
           <a-tabs v-model:activeKey="propertyActiveKey">
@@ -81,18 +81,6 @@
             <a-tab-pane key="3" tab="页面设置">页面设置</a-tab-pane>
           </a-tabs>
         </div>
-
-        <!-- <div class="property-container">
-          组件属性
-          <PropsTable
-            v-if="currentElement && currentElement.props"
-            :props="currentElement.props"
-            @change="handleChange"
-          />
-          <div class="property-item">
-            {{ currentElement ? currentElement.props : "" }}
-          </div>
-        </div> -->
       </LayoutSider>
     </LayoutContent>
 
