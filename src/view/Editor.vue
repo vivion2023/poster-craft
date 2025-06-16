@@ -13,8 +13,8 @@
     </LayoutHeader>
 
     <LayoutContent class="editor-content">
-      <LayoutSider width="300px" class="siderbar-container">
-        <a-tabs v-model:activeKey="activeKey">
+      <LayoutSider class="siderbar-container">
+        <a-tabs v-model:activeKey="siderbarActiveKey">
           <a-tab-pane key="1">
             <template #tab>
               <span>
@@ -36,7 +36,7 @@
           <a-tab-pane key="3">
             <template #tab>
               <span>
-                <AppleOutlined />
+                <AppstoreOutlined />
                 形状
               </span>
             </template>
@@ -66,6 +66,23 @@
       </LayoutContent>
       <LayoutSider width="300px">
         <div class="property-container">
+          <a-tabs v-model:activeKey="propertyActiveKey">
+            <a-tab-pane key="1" tab="属性设置">
+              <PropsTable
+                v-if="currentElement && currentElement.props"
+                :props="currentElement.props"
+                @change="handleChange"
+              />
+              <div class="property-item">
+                {{ currentElement ? currentElement.props : "" }}
+              </div>
+            </a-tab-pane>
+            <a-tab-pane key="2" tab="图层设置">图层设置</a-tab-pane>
+            <a-tab-pane key="3" tab="页面设置">页面设置</a-tab-pane>
+          </a-tabs>
+        </div>
+
+        <!-- <div class="property-container">
           组件属性
           <PropsTable
             v-if="currentElement && currentElement.props"
@@ -75,7 +92,7 @@
           <div class="property-item">
             {{ currentElement ? currentElement.props : "" }}
           </div>
-        </div>
+        </div> -->
       </LayoutSider>
     </LayoutContent>
 
@@ -101,7 +118,8 @@ const currentElement = computed<ComponentData | null>(
   () => store.getters.currentElement
 );
 const currentElementId = computed(() => currentElement.value?.id);
-const activeKey = ref("1");
+const siderbarActiveKey = ref("1");
+const propertyActiveKey = ref("1");
 // 字符串到实际组件的映射
 const componentMap: {
   [key: string]: DefineComponent<any, any, any>;
@@ -154,6 +172,11 @@ const handleDelete = (id: string) => {
     display: flex;
     flex-direction: row;
     height: 100%;
+
+    .siderbar-container,
+    .property-container {
+      width: 300px;
+    }
 
     .siderbar-container {
       padding: 20px;
