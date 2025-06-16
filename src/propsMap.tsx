@@ -1,5 +1,5 @@
 import { VNode } from "vue";
-import { TextComponentProps } from "./defaultProps";
+import { TextComponentProps, ImageComponentProps } from "./defaultProps";
 
 export interface PropToForm {
   component: string; // 组件名称
@@ -19,7 +19,7 @@ export interface PropToForm {
 }
 
 export type PropToFormType = {
-  [key in keyof TextComponentProps]: PropToForm;
+  [key in keyof TextComponentProps | keyof ImageComponentProps]?: PropToForm;
 };
 
 const fontFamilyArr = [
@@ -92,5 +92,9 @@ export const mapPropsToForm: PropToFormType = {
     extraProps: {
       tooltip: "加粗",
     },
+  },
+  src: {
+    text: "图片",
+    component: "ImageProcesser",
   },
 };

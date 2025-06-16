@@ -45,12 +45,12 @@ export default {
     }: {
       emit: (
         event: "success",
-        payload: { resp: { url: string; thumbnailUrl: string }; file: File }
+        payload: { resp: { url: string; thumbnailUrl?: string }; file: File }
       ) => void;
     }
   ) {
     const handleUploadSuccess = (
-      resp: { url: string; thumbnailUrl: string },
+      resp: { url: string; thumbnailUrl?: string },
       file: File
     ) => {
       emit("success", { resp, file });
