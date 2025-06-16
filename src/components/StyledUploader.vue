@@ -1,7 +1,7 @@
 <template>
   <Uploader
     class="styled-uploader"
-    action="https://run.mocky.io/v3/2b8ae831-4f51-43e0-8a4d-7160a85c18b6"
+    action="http://localhost:7001/api/utils/upload-local-img"
     :show-upload-list="true"
     :beforeUpload="commonUploadCheck"
     @success="onSuccess"
@@ -42,13 +42,24 @@ export default {
     _props: Record<string, never>,
     {
       emit,
-    }: { emit: (event: "success", payload: { resp: any; file: File }) => void }
+    }: {
+      emit: (
+        event: "success",
+        payload: { resp: { url: string; thumbnailUrl: string }; file: File }
+      ) => void;
+    }
   ) {
-    const handleUploadSuccess = (resp: any, file: File) => {
+    const handleUploadSuccess = (
+      resp: { url: string; thumbnailUrl: string },
+      file: File
+    ) => {
       emit("success", { resp, file });
     };
 
-    const onSuccess = (data: { resp: any; file: File }) => {
+    const onSuccess = (data: {
+      resp: { url: string; thumbnailUrl: string };
+      file: File;
+    }) => {
       handleUploadSuccess(data.resp, data.file);
     };
 

@@ -51,8 +51,10 @@ const onImageUploaded = async (resp: UploadResp) => {
       position: "relative",
     },
   };
-  newComponent.props.src = resp.resp.data.url;
-  const { width, height } = await getImageDimensions(resp.resp.data.url);
+  newComponent.props.src = resp.resp.data.thumbnailUrl;
+  const { width, height } = await getImageDimensions(
+    resp.resp.data.thumbnailUrl
+  );
 
   const maxWidth = 200;
   newComponent.props.width = width > maxWidth ? `${maxWidth}px` : `${width}px`;
