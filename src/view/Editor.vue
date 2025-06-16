@@ -2,9 +2,12 @@
   <Layout class="editor">
     <LayoutHeader class="editor-header">
       <div class="editor-header-left">
-        <LogoBox></LogoBox>
+        <Logo></Logo>
       </div>
       <div class="editor-header-right">
+        <a-button type="primary">预览和设置</a-button>
+        <a-button type="primary">保存</a-button>
+        <a-button type="primary">发布</a-button>
         <UserProfile />
       </div>
     </LayoutHeader>
@@ -62,6 +65,8 @@ import { useStore } from "vuex";
 import { computed, DefineComponent } from "vue";
 import { LText, LImage, LShape } from "lego-components";
 import { defaultTextTemplates } from "@/defaultTemplates";
+import Logo from "@/components/Logo.vue";
+import UserProfile from "@/components/UserProfile.vue";
 import ComponentList from "@/components/ComponentList.vue";
 import EditWrapper from "@/components/EditWrapper.vue";
 import PropsTable from "@/components/PropsTable";
@@ -112,6 +117,13 @@ const handleDelete = (id: string) => {
     background-color: #0c141cf6;
     justify-content: space-between;
     align-items: center;
+    padding: 0 24px;
+
+    .editor-header-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
   }
 
   .editor-content {

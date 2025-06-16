@@ -19,7 +19,7 @@
 </template>
 
 <script setup lang="ts">
-import { Button, message } from "ant-design-vue";
+import { message } from "ant-design-vue";
 import { useRouter } from "vue-router";
 import { computed } from "vue";
 import { useStore } from "vuex";
