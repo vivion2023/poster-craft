@@ -1,8 +1,8 @@
 import { defineComponent, computed, PropType, VNode } from "vue";
 import { Input, InputNumber, Slider, Radio, Select } from "ant-design-vue";
-import { keyBy, reduce } from "lodash";
+import { reduce } from "lodash-es";
 import type { TextComponentProps } from "../defaultProps";
-import { mapPropsToForm, PropToFormType } from "../propsMap";
+import { mapPropsToForm } from "../propsMap";
 import "./PropsTable.css";
 import ColorPicker from "@/components/ColorPicker.vue";
 import IconSwitch from "@/components/IconSwitch.vue";
@@ -54,7 +54,7 @@ const PropsTable = defineComponent({
     const finalProps = computed(() => {
       return reduce(
         props.props,
-        (result, value, key) => {
+        (result: any, value: any, key: any) => {
           const newKey = key as keyof TextComponentProps;
           const item = mapPropsToForm[newKey];
           if (item) {
@@ -105,7 +105,7 @@ const PropsTable = defineComponent({
               <div class="prop-component">
                 <ComponentName {...props}>
                   {value.options &&
-                    value.options.map((option) => (
+                    value.options.map((option: any) => (
                       <subComponent key={option.value} value={option.value}>
                         {option.text}
                       </subComponent>

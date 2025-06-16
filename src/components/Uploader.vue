@@ -93,11 +93,10 @@ import {
   LoadingOutlined,
   FileOutlined,
   DeleteOutlined,
-  CodeSandboxCircleFilled,
 } from "@ant-design/icons-vue";
 import { Tooltip } from "ant-design-vue";
 import axios, { type AxiosProgressEvent } from "axios";
-import { last } from "lodash";
+import { last } from "lodash-es";
 import { v4 as uuidv4 } from "uuid";
 type UploadStatus = "ready" | "loading" | "success" | "error";
 // 上传进度百分比

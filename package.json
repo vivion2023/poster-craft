@@ -26,6 +26,8 @@
     "vuex": "^4.0.2"
   },
   "devDependencies": {
+    "@babel/core": "^7.27.4",
+    "@babel/preset-env": "^7.27.2",
     "@types/jest": "^27.0.1",
     "@types/lodash-es": "^4.17.12",
     "@typescript-eslint/eslint-plugin": "^5.4.0",
@@ -45,6 +47,7 @@
     "@vue/test-utils": "^2.0.0-0",
     "@vue/vue3-jest": "^27.0.0-alpha.1",
     "babel-jest": "^27.0.6",
+    "babel-loader": "^10.0.0",
     "babel-preset-vue-app": "^2.0.0",
     "eslint": "^8.0.0",
     "eslint-config-prettier": "^8.3.0",
