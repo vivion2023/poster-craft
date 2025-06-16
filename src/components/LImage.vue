@@ -32,6 +32,7 @@ export default {
 
 <style scoped lang="scss">
 .l-image-component {
+  margin: 100%;
   position: relative !important;
 }
 </style>
