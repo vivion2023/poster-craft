@@ -45,7 +45,7 @@ export default {
     },
     autoUpload: {
       type: Boolean,
-      default: true,
+      default: false,
     },
   },
   emits: ["success"],
