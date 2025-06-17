@@ -81,6 +81,7 @@
                 v-if="currentElement && currentElement.props"
                 :props="currentElement.props"
                 @change="handleChange"
+                :active="currentElementId === currentElement?.id"
               />
               <div class="property-item">
                 {{ currentElement ? currentElement.props : "" }}
@@ -123,7 +124,7 @@ const store = useStore<GlobalDataProps>();
 const components = computed(() => store.state.editor.components);
 const defaultComponents = computed(() => defaultTextTemplates);
 const currentElement = computed<ComponentData | null>(
-  () => store.getters.getCurrentElement
+  () => store.getters.currentElement
 );
 const currentElementId = computed(() => currentElement.value?.id);
 const siderbarActiveKey = ref("1");

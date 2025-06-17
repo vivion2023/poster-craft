@@ -50,6 +50,10 @@ const PropsTable = defineComponent({
       type: Object as PropType<TextComponentProps | ImageComponentProps>,
       required: true,
     },
+    active: {
+      type: Boolean,
+      required: true,
+    },
   },
   emits: ["change"],
   setup(props, { emit }) {
