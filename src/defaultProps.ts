@@ -67,7 +67,12 @@ export interface TextComponentProps extends CommonComponentProps {
 export interface ImageComponentProps extends CommonComponentProps {
   src?: string;
 }
-export type AllComponentProps = TextComponentProps & ImageComponentProps;
+export interface ShapeComponentProps extends CommonComponentProps {
+  backgroundColor: string;
+}
+export type AllComponentProps = TextComponentProps &
+  ImageComponentProps &
+  ShapeComponentProps;
 export const textDefaultProps: TextComponentProps = {
   // basic props - font styles
   text: "正文内容",
@@ -85,6 +90,10 @@ export const textDefaultProps: TextComponentProps = {
 };
 export const imageDefaultProps: ImageComponentProps = {
   src: "test.url",
+  ...commonDefaultProps,
+};
+export const shapeDefaultProps: ShapeComponentProps = {
+  backgroundColor: "#fff",
   ...commonDefaultProps,
 };
 export const textStylePropNames = without(
