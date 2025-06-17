@@ -9,9 +9,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, defineProps, defineEmits } from "vue";
-import { useStore } from "vuex";
-const store = useStore();
+import { defineProps, defineEmits } from "vue";
 
 const props = defineProps<{
   id: string;
@@ -23,6 +21,7 @@ const emit = defineEmits<{
 }>();
 
 const handleSetActive = () => {
+  console.log(props.id);
   emit("setActive", props.id);
 };
 </script>
