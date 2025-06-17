@@ -31,12 +31,12 @@ export default defineComponent({
   emits: ["change"],
   setup(props, { emit }) {
     const onImageUploaded = (data: {
-      resp: { errno: number; data: { urls: string[] } };
+      resp: { errno: number; data?: { url: string; thumbnail: string } };
       file: File;
     }) => {
       const { resp } = data;
       message.success("上传成功");
-      emit("change", resp.data.urls[0]);
+      emit("change", resp.data?.thumbnail);
     };
     const handleUploadUrl = (url: string) => {
       emit("change", url);
