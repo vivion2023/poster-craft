@@ -1,13 +1,46 @@
 import { Module } from "vuex";
 import { GlobalDataProps } from "./index";
 import { v4 as uuidv4 } from "uuid";
-import { textDefaultProps, imageDefaultProps } from "@/defaultProps";
+import {
+  textDefaultProps,
+  imageDefaultProps,
+  AllComponentProps,
+} from "@/defaultProps";
 export interface EditorProps {
   // 当前编辑的元素
   currentElement: string;
   // 供中间编辑器渲染的数组
   components: ComponentData[];
   // 一些项目信息，之后补充
+}
+export interface PageProps {
+  backgroundColor: string;
+  backgroundImage: string;
+  backgroundRepeat: string;
+  backgroundSize: string;
+  height: string;
+}
+export type AllFormProps = PageProps & AllComponentProps;
+export interface PageData {
+  id?: number;
+  props?: PageProps;
+  title?: string;
+  desc?: string;
+  coverImg?: string;
+  uuid?: string;
+  setting?: { [key: string]: any };
+  isTemplate?: boolean;
+  isHot?: boolean;
+  isNew?: boolean;
+  author?: string;
+  copiedCount?: number;
+  status?: number;
+  user?: {
+    gender: string;
+    nickName: string;
+    picture: string;
+    userName: string;
+  };
 }
 
 export interface ComponentData {

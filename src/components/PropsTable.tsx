@@ -1,12 +1,9 @@
-import { defineComponent, computed, PropType, VNode } from "vue";
-import { Input, InputNumber, Slider, Radio, Select } from "ant-design-vue";
+import { computed, defineComponent, PropType, VNode } from "vue";
 import { reduce } from "lodash-es";
-import type { TextComponentProps, ImageComponentProps } from "../defaultProps";
-import { mapPropsToForm } from "../propsMap";
-import "./PropsTable.css";
+import { PropsToForms, mapPropsToForms } from "@/propsMap";
+import { TextComponentProps } from "@/defaultProps";
 import ColorPicker from "@/components/ColorPicker.vue";
-import IconSwitch from "@/components/IconSwitch.vue";
-import ImageProcesser from "@/components/ImageProcesser.vue";
+import { Input, InputNumber, Slider, Radio, Select } from "ant-design-vue";
 const mapToComponent = {
   "a-textarea": Input.TextArea,
   "a-input-number": InputNumber,
@@ -15,73 +12,57 @@ const mapToComponent = {
   "a-radio-button": Radio.Button,
   "a-select": Select,
   "a-select-option": Select.Option,
-  ColorPicker,
-  IconSwitch,
-  ImageProcesser,
+  "color-picker": ColorPicker,
 } as any;
 
 interface FormProps {
   component: string;
   subComponent?: string;
   value: string;
-  extraProps?: {
-    [key: string]: any;
-  };
+  extraProps?: { [key: string]: any };
   text?: string;
-  options?: {
-    text: string | VNode;
-    value: any;
-  }[];
-  valueProp?: any;
-  eventName?: string;
-  events: {
-    [key: string]: (e: any) => void;
-  };
+  options?: { text: string | VNode; value: any }[];
+  valueProp: string;
+  eventName: string;
+  events: { [key: string]: (e: any) => void };
+}
+function capitalizeFirstLetter(string: string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-function capitalizeFirstLetter(str: string) {
-  return str.charAt(0).toUpperCase() + str.slice(1);
-}
-
-const PropsTable = defineComponent({
-  name: "PropsTable",
+export default defineComponent({
+  name: "props-table",
   props: {
     props: {
-      type: Object as PropType<TextComponentProps | ImageComponentProps>,
-      required: true,
-    },
-    active: {
-      type: Boolean,
+      type: Object as PropType<TextComponentProps>,
       required: true,
     },
   },
   emits: ["change"],
-  setup(props, { emit }) {
+  setup(props, context) {
     const finalProps = computed(() => {
       return reduce(
         props.props,
-        (result: any, value: any, key: any) => {
-          const newKey = key as
-            | keyof TextComponentProps
-            | keyof ImageComponentProps;
-          const item = mapPropsToForm[newKey];
+        (result, value, key) => {
+          const newKey = key as keyof TextComponentProps;
+          const item = mapPropsToForms[newKey];
           if (item) {
-            const valueProp = "value";
-            const eventName = "change";
-            const initialTransform = item.initialTransform;
+            const {
+              valueProp = "value",
+              eventName = "change",
+              initalTransform,
+              afterTransform,
+            } = item;
             const newItem: FormProps = {
               ...item,
-              value: initialTransform ? initialTransform(value) : value,
+              value: initalTransform ? initalTransform(value) : value,
               valueProp,
               eventName,
               events: {
                 ["on" + capitalizeFirstLetter(eventName)]: (e: any) => {
-                  // console.log("e", e);
-                  // console.log("key", key);
-                  // console.log("item", item);
-                  emit("change", {
+                  context.emit("change", {
                     key,
-                    value: item.afterTransform ? item.afterTransform(e) : e,
+                    value: afterTransform ? afterTransform(e) : e,
                   });
                 },
               },
@@ -93,13 +74,12 @@ const PropsTable = defineComponent({
         {} as { [key: string]: FormProps }
       );
     });
-
     return () => (
       <div class="props-table">
         {Object.keys(finalProps.value).map((key) => {
           const value = finalProps.value[key];
           const ComponentName = mapToComponent[value.component];
-          const subComponent = value.subComponent
+          const SubComponent = value.subComponent
             ? mapToComponent[value.subComponent]
             : null;
           const props = {
@@ -108,17 +88,18 @@ const PropsTable = defineComponent({
             ...value.events,
           };
           return (
-            <div class="prop-item" key={key}>
-              {value.text && <span class="label">{value.text}：</span>}
+            <div key={key} class="prop-item">
+              {value.text && <span class="label">{value.text}</span>}
               <div class="prop-component">
                 <ComponentName {...props}>
                   {value.options &&
-                    subComponent &&
-                    value.options.map((option: any) => (
-                      <subComponent key={option.value} value={option.value}>
-                        {option.text}
-                      </subComponent>
-                    ))}
+                    value.options.map((option) => {
+                      return (
+                        <SubComponent value={option.value}>
+                          {option.text}
+                        </SubComponent>
+                      );
+                    })}
                 </ComponentName>
               </div>
             </div>
@@ -128,5 +109,3 @@ const PropsTable = defineComponent({
     );
   },
 });
-
-export default PropsTable;
