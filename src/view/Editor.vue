@@ -161,10 +161,6 @@ const setActive = (id: string) => {
 const handleChange = (value: { key: string; value: any }) => {
   store.commit("updateComponent", value);
 };
-
-const handleDelete = (id: string) => {
-  store.commit("deleteComponent", id);
-};
 </script>
 
 <style scoped lang="scss">
@@ -289,6 +285,8 @@ const handleDelete = (id: string) => {
       }
     }
     .property-container {
+      max-height: 86vh;
+      overflow-y: auto;
       background-color: #fff;
       padding: 20px;
     }
