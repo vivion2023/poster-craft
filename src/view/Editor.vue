@@ -86,7 +86,15 @@
                 {{ currentElement ? currentElement.props : "" }}
               </div>
             </a-tab-pane>
-            <a-tab-pane key="layer" tab="图层设置">图层设置</a-tab-pane>
+            <a-tab-pane key="layer" tab="图层设置">
+              <layer-list
+                :list="components"
+                :selectedId="currentElement && currentElement.id"
+                @change="handleChange"
+                @select="setActive"
+              >
+              </layer-list>
+            </a-tab-pane>
             <a-tab-pane key="page" tab="页面设置">页面设置</a-tab-pane>
           </a-tabs>
         </div>
@@ -108,6 +116,7 @@ import UserProfile from "@/components/UserProfile.vue";
 import ComponentList from "@/components/ComponentList.vue";
 import EditWrapper from "@/components/EditWrapper.vue";
 import PropsTable from "@/components/PropsTable";
+import LayerList from "@/components/LayerList.vue";
 export type TabType = "component" | "layer" | "page";
 
 const store = useStore<GlobalDataProps>();

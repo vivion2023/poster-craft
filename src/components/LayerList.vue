@@ -56,8 +56,8 @@
     </template>
   </draggable>
 </template>
-<script lang="ts">
-import { defineComponent, PropType } from "vue";
+<script setup lang="ts">
+import { defineProps, defineEmits } from "vue";
 import draggable from "vuedraggable";
 import {
   EyeOutlined,
@@ -68,46 +68,47 @@ import {
 } from "@ant-design/icons-vue";
 import { ComponentData } from "../store/editor";
 import InlineEdit from "../components/InlineEdit.vue";
-export default defineComponent({
-  props: {
-    list: {
-      type: Array as PropType<ComponentData[]>,
-      required: true,
-    },
-    selectedId: {
-      type: String,
-      required: true,
-    },
-  },
-  emits: ["select", "change", "drop"],
-  components: {
-    EyeOutlined,
-    EyeInvisibleOutlined,
-    LockOutlined,
-    UnlockOutlined,
-    InlineEdit,
-    draggable,
-    DragOutlined,
-  },
-  setup(props, context) {
-    const handleClick = (id: string) => {
-      context.emit("select", id);
-    };
-    const handleChange = (id: string, key: string, value: boolean) => {
-      const data = {
-        id,
-        key,
-        value,
-        isRoot: true,
-      };
-      context.emit("change", data);
-    };
-    return {
-      handleChange,
-      handleClick,
-    };
-  },
-});
+
+// 定义 props 接口
+interface Props {
+  list: ComponentData[];
+  selectedId: string;
+}
+
+// 定义 emits 接口
+interface Emits {
+  (e: "select", id: string): void;
+  (
+    e: "change",
+    data: { id: string; key: string; value: boolean; isRoot: boolean }
+  ): void;
+  (e: "drop"): void;
+}
+
+// 使用 defineProps 和 defineEmits
+defineProps<Props>();
+const emit = defineEmits<Emits>();
+
+// 事件处理函数
+const handleClick = (id: string) => {
+  emit("select", id);
+};
+
+const handleChange = (id: string, key: string, value: boolean) => {
+  const data = {
+    id,
+    key,
+    value,
+    isRoot: true,
+  };
+  emit("change", data);
+};
+</script>
+
+<script lang="ts">
+export default {
+  name: "LayerList",
+};
 </script>
 
 <style scoped>
