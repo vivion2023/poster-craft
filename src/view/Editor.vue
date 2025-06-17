@@ -198,9 +198,11 @@ const handleChange = (value: { key: string; value: any }) => {
     flex-direction: row;
     height: 100%;
 
-    .siderbar-container,
-    .property-container {
+    .siderbar-container {
       width: 300px;
+    }
+    .property-container {
+      width: 350px;
     }
 
     .siderbar-container {
@@ -273,7 +275,7 @@ const handleChange = (value: { key: string; value: any }) => {
         overflow-y: auto;
         position: fixed;
         margin-top: 50px;
-        max-height: 80vh;
+        max-height: 86vh;
       }
 
       .delete-btn {

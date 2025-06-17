@@ -135,7 +135,7 @@ export default defineComponent({
     display: flex;
     margin-bottom: 10px;
     .label {
-      width: 100px;
+      width: 70px;
     }
     .prop-component {
       flex: 1;
