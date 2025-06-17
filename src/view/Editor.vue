@@ -287,7 +287,7 @@ const handleChange = (value: { key: string; value: any }) => {
       }
     }
     .property-container {
-      max-height: 86vh;
+      max-height: 84vh;
       overflow-y: auto;
       background-color: #fff;
       padding: 20px;
