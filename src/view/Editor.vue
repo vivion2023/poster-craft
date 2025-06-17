@@ -78,11 +78,18 @@
           <a-tabs v-model:activeKey="propertyActiveKey">
             <a-tab-pane key="component" tab="属性设置">
               <PropsTable
-                v-if="currentElement && currentElement.props"
+                v-if="currentElement && !currentElement.isLocked"
                 :props="currentElement.props"
                 @change="handleChange"
                 :active="currentElementId === currentElement?.id"
               />
+              <div v-else>
+                <a-empty>
+                  <template #description>
+                    <p>该元素被锁定，无法编辑</p>
+                  </template>
+                </a-empty>
+              </div>
               <div class="property-item">
                 {{ currentElement ? currentElement.props : "" }}
               </div>
