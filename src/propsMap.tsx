@@ -97,4 +97,15 @@ export const mapPropsToForm: PropToFormType = {
     text: "图片",
     component: "ImageProcesser",
   },
+  opacity: {
+    text: "透明度",
+    component: "a-slider",
+    initialTransform: (value: string) => parseFloat(value),
+    afterTransform: (e: number) => e.toString(),
+    extraProps: {
+      min: 0,
+      max: 1,
+      step: 0.01,
+    },
+  },
 };
