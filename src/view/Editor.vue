@@ -89,7 +89,7 @@
             <a-tab-pane key="layer" tab="图层设置">
               <layer-list
                 :list="components"
-                :selectedId="currentElement && currentElement.id"
+                :selectedId="currentElementId || ''"
                 @change="handleChange"
                 @select="setActive"
               >
@@ -123,7 +123,7 @@ const store = useStore<GlobalDataProps>();
 const components = computed(() => store.state.editor.components);
 const defaultComponents = computed(() => defaultTextTemplates);
 const currentElement = computed<ComponentData | null>(
-  () => store.getters.currentElement
+  () => store.getters.getCurrentElement
 );
 const currentElementId = computed(() => currentElement.value?.id);
 const siderbarActiveKey = ref("1");

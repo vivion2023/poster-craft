@@ -88,12 +88,17 @@ const editor: Module<EditorProps, GlobalDataProps> = {
     setActive(state, currentID: string) {
       state.currentElement = currentID;
     },
-    updateComponent(state, { key, value }) {
-      const currentComponent = state.components.find(
-        (component) => component.id === state.currentElement
+    updateComponent(state, { key, value, id, isRoot }) {
+      const updatedComponent = state.components.find(
+        (component) => component.id === (id || state.currentElement)
       );
-      if (currentComponent) {
-        currentComponent.props[key] = value;
+      if (updatedComponent) {
+        if (isRoot) {
+          // https://github.com/microsoft/TypeScript/issues/31663
+          (updatedComponent as any)[key as string] = value;
+        } else {
+          updatedComponent.props[key as string] = value;
+        }
       }
     },
     deleteComponent(state, id: string) {
