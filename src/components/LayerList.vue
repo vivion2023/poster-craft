@@ -41,6 +41,7 @@
         <inline-edit
           class="edit-area"
           :value="element.layerName"
+          :maxLength="10"
           @change="
             (value: string) => {
               handleChange(element.id, 'layerName', value);
