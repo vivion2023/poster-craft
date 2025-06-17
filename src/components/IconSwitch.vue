@@ -1,82 +1,52 @@
 <template>
-  <div class="icon-switch" @click.prevent="handleChange">
-    <a-tooltip v-if="tooltip" placement="top">
-      <template #title>
-        <span>{{ tooltip }}</span>
+  <div class="icon-template" @click.prevent="handleClick">
+    <a-tooltip>
+      <template v-slot:title>
+        {{ tip }}
       </template>
-      <div class="icon-container" :class="active ? 'isBold' : ''">
-        <BoldOutlined />
-      </div>
+      <a-button :type="checked ? 'primary' : 'default'" shape="circle">
+        <template v-slot:icon><component :is="iconName" /></template>
+      </a-button>
     </a-tooltip>
-    <div v-else class="icon-container" :class="active ? 'isBold' : ''">
-      <BoldOutlined />
-    </div>
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref } from "vue";
-import { Tooltip } from "ant-design-vue";
-import { BoldOutlined } from "@ant-design/icons-vue";
-
+<script>
+import { defineComponent } from "vue";
+import {
+  BoldOutlined,
+  ItalicOutlined,
+  UnderlineOutlined,
+} from "@ant-design/icons-vue";
 export default defineComponent({
-  name: "IconSwitch",
   components: {
-    ATooltip: Tooltip,
     BoldOutlined,
+    ItalicOutlined,
+    UnderlineOutlined,
   },
   props: {
-    tooltip: {
+    iconName: {
       type: String,
-      default: "",
+      required: true,
     },
-    fontWeight: {
+    checked: {
+      type: Boolean,
+      default: false,
+    },
+    tip: {
       type: String,
-      default: "normal",
     },
   },
   emits: ["change"],
-  setup(props, { emit }) {
-    const active = ref(props.fontWeight === "bold");
-    const handleChange = () => {
-      active.value = !active.value;
-      emit("change", active.value ? "bold" : "normal");
+  setup(props, context) {
+    const handleClick = () => {
+      context.emit("change", !props.checked);
     };
-
     return {
-      handleChange,
-      active,
+      handleClick,
     };
   },
 });
 </script>
 
-<style scoped>
-.icon-switch {
-  display: inline-block;
-  cursor: pointer;
-  user-select: none;
-}
-
-.icon-container {
-  padding: 6px;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.3s;
-  background-color: #e7e7e7;
-  color: rgb(52, 52, 52);
-}
-
-.icon-container.isBold {
-  background-color: #1890ff;
-  color: #fff;
-}
-
-.icon-container :deep(svg) {
-  font-size: 16px;
-}
-</style>
+<style></style>
