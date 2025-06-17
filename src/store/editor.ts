@@ -1,6 +1,7 @@
 import { Module } from "vuex";
 import { GlobalDataProps } from "./index";
 import { v4 as uuidv4 } from "uuid";
+import { textDefaultProps, imageDefaultProps } from "@/defaultProps";
 export interface EditorProps {
   // 当前编辑的元素
   currentElement: string;
@@ -32,6 +33,7 @@ export const testComponents: ComponentData[] = [
     name: "l-text",
     layerName: "图层1",
     props: {
+      ...textDefaultProps,
       tag: "div",
       text: "hello",
       fontSize: "20px",
@@ -47,6 +49,7 @@ export const testComponents: ComponentData[] = [
     name: "l-text",
     layerName: "图层2",
     props: {
+      ...textDefaultProps,
       tag: "div",
       text: "hello2",
       fontSize: "10px",
@@ -61,8 +64,20 @@ export const testComponents: ComponentData[] = [
     name: "l-text",
     layerName: "图层3",
     props: {
+      ...textDefaultProps,
       tag: "h2",
       text: "hello3",
+      position: "relative",
+    },
+  },
+  {
+    id: uuidv4(),
+    name: "l-image",
+    layerName: "图层4",
+    props: {
+      ...imageDefaultProps,
+      tag: "img",
+      src: "http://localhost:7001/uploads/xlIvg6-thumbnail.jpg",
       position: "relative",
     },
   },
