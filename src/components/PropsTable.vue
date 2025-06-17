@@ -38,6 +38,8 @@ import { Input, InputNumber, Slider, Radio, Select } from "ant-design-vue";
 import ColorPicker from "./ColorPicker.vue";
 import IconSwitch from "./IconSwitch.vue";
 import ImageProcesser from "./ImageProcesser.vue";
+import ShadowPicker from "./ShadowPicker.vue";
+import BackgroundProcesser from "./BackgroundProcesser.vue";
 
 const emit = defineEmits<{
   (e: "change", value: { key: string; value: any }): void;
@@ -55,8 +57,8 @@ const componentMap = {
   "color-picker": ColorPicker,
   "icon-switch": IconSwitch,
   "image-processer": ImageProcesser,
-  // "shadow-picker": ShadowPicker,
-  // "background-processer": BackgroundProcesser,
+  "shadow-picker": ShadowPicker,
+  "background-processer": BackgroundProcesser,
 } as any;
 
 interface FormProps {
