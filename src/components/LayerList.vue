@@ -113,6 +113,8 @@ export default {
 
 <style scoped>
 .ant-list-item {
+  display: flex;
+  align-items: center;
   padding: 10px 15px;
   transition: all 0.5s ease-out;
   cursor: pointer;

@@ -30,6 +30,7 @@ export const testComponents: ComponentData[] = [
   {
     id: uuidv4(),
     name: "l-text",
+    layerName: "图层1",
     props: {
       tag: "div",
       text: "hello",
@@ -44,6 +45,7 @@ export const testComponents: ComponentData[] = [
   {
     id: uuidv4(),
     name: "l-text",
+    layerName: "图层2",
     props: {
       tag: "div",
       text: "hello2",
@@ -57,6 +59,7 @@ export const testComponents: ComponentData[] = [
   {
     id: uuidv4(),
     name: "l-text",
+    layerName: "图层3",
     props: {
       tag: "h2",
       text: "hello3",
