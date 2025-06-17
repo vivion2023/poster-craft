@@ -77,9 +77,9 @@
         <div class="property-container">
           <a-tabs v-model:activeKey="propertyActiveKey">
             <a-tab-pane key="component" tab="属性设置">
-              <PropsTable
+              <EditGroup
                 v-if="currentElement && !currentElement.isLocked"
-                :props="currentElement.props"
+                :props="currentElement.props as AllComponentProps"
                 @change="handleChange"
                 :active="currentElementId === currentElement?.id"
               />
@@ -125,6 +125,8 @@ import ComponentList from "@/components/ComponentList.vue";
 import EditWrapper from "@/components/EditWrapper.vue";
 import PropsTable from "@/components/PropsTable";
 import LayerList from "@/components/LayerList.vue";
+import EditGroup from "@/components/EditGroup.vue";
+import { AllComponentProps } from "@/defaultProps";
 export type TabType = "component" | "layer" | "page";
 
 const store = useStore<GlobalDataProps>();
