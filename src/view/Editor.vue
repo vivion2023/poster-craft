@@ -123,7 +123,7 @@ import Logo from "@/components/Logo.vue";
 import UserProfile from "@/components/UserProfile.vue";
 import ComponentList from "@/components/ComponentList.vue";
 import EditWrapper from "@/components/EditWrapper.vue";
-import PropsTable from "@/components/PropsTable";
+
 import LayerList from "@/components/LayerList.vue";
 import EditGroup from "@/components/EditGroup.vue";
 import { AllComponentProps } from "@/defaultProps";
