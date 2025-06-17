@@ -45,6 +45,7 @@ import {
 } from "vue";
 import { message } from "ant-design-vue";
 import Cropper from "cropperjs";
+import "cropperjs/dist/cropper.css";
 import { DeleteOutlined, ScissorOutlined } from "@ant-design/icons-vue";
 import StyledUploader from "./StyledUploader.vue";
 import axios from "axios";
@@ -92,6 +93,17 @@ watch(showModal, async (newValue) => {
     console.log(cropperImg.value);
     if (cropperImg.value) {
       cropper = new Cropper(cropperImg.value, {
+        aspectRatio: props.ratio || NaN, // 使用传入的比例或自由裁剪
+        viewMode: 1, // 限制裁剪框不超出画布
+        dragMode: "move", // 拖拽模式
+        autoCropArea: 0.8, // 自动裁剪区域大小
+        restore: false, // 不恢复裁剪
+        guides: true, // 显示网格线
+        center: true, // 显示中心指示器
+        highlight: true, // 显示裁剪框上方的高亮区域
+        cropBoxMovable: true, // 裁剪框可移动
+        cropBoxResizable: true, // 裁剪框可调整大小
+        toggleDragModeOnDblclick: false, // 双击不切换拖拽模式
         crop(event: any) {
           const { x, y, width, height } = event.detail;
           cropData = {
@@ -110,16 +122,12 @@ watch(showModal, async (newValue) => {
   }
 });
 const handleOk = () => {
-  if (cropData) {
-    const { x, y, width, height } = cropData;
-    const cropperURL =
-      baseImageUrl.value +
-      `?x-oss-process=image/crop,x_${x},y_${y},w_${width},h_${height}`;
-    // 不使用 阿里云 OSS，拿到截图图片再次上传的处理方法
+  if (cropData && cropper) {
+    // 使用 cropper.getCroppedCanvas() 获取裁剪后的图片并上传
     cropper.getCroppedCanvas().toBlob((blob) => {
       if (blob) {
         const formData = new FormData();
-        formData.append("croppedImage", blob, "test.png");
+        formData.append("croppedImage", blob, "cropped-image.png");
         axios
           .post("http://localhost:7001/api/utils/upload-local-img", formData, {
             headers: {
@@ -129,12 +137,16 @@ const handleOk = () => {
           .then((resp: any) => {
             emit("change", resp.data.data.url);
             showModal.value = false;
+          })
+          .catch((error) => {
+            console.error("上传裁剪图片失败:", error);
+            message.error("上传失败，请重试");
           });
       }
     });
-    emit("change", cropperURL);
+  } else {
+    showModal.value = false;
   }
-  showModal.value = false;
 };
 // 处理文件上传成功
 const handleFileUploaded = (data: {
@@ -169,9 +181,15 @@ const handleDelete = () => {
   flex-direction: column;
   justify-content: space-between;
 }
+.image-cropper {
+  max-height: 400px;
+  overflow: hidden;
+}
+
 .image-cropper img {
   display: block;
   /* This rule is very important, please don't ignore this */
   max-width: 100%;
+  height: auto;
 }
 </style>
