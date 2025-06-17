@@ -1,6 +1,35 @@
 <template>
   <div class="props-table">
-    <div class="prop-item" v-for="(value, key) in finalProps" :key="key">
+    <!-- 文本样式控件组合在一行，包含加粗、斜体和下划线 -->
+    <div class="text-style-group" v-if="hasTextStyleProps">
+      <span class="label">文本样式：</span>
+      <div class="style-controls">
+        <template v-for="(value, index) in textStyleProps" :key="index">
+          <component
+            :is="value.component"
+            :[value.valueProp]="value.value"
+            v-bind="value.extraProps"
+            v-on="value.events"
+          >
+            <template v-if="value.options">
+              <component
+                :is="value.subComponent"
+                v-for="(option, key) in value.options"
+                :key="key"
+                :value="option.value"
+              >
+                <slot :option="option">
+                  {{ option.text }}
+                </slot>
+              </component>
+            </template>
+          </component>
+        </template>
+      </div>
+    </div>
+
+    <!-- 其他属性控件 -->
+    <div class="prop-item" v-for="(value, index) in otherProps" :key="index">
       <span class="label" v-if="value.text">{{ value.text }}：</span>
       <div class="prop-component">
         <component
@@ -120,6 +149,33 @@ const finalProps = computed(() => {
     {} as { [key: string]: FormProps }
   );
 });
+
+// 文本样式属性（加粗、斜体、下划线）
+const textStyleKeys = ["fontWeight", "fontStyle", "textDecoration"];
+
+const textStyleProps = computed(() => {
+  const result: { [key: string]: FormProps } = {};
+  textStyleKeys.forEach((key) => {
+    if (finalProps.value[key]) {
+      result[key] = finalProps.value[key];
+    }
+  });
+  return result;
+});
+
+const hasTextStyleProps = computed(() => {
+  return Object.keys(textStyleProps.value).length > 0;
+});
+
+const otherProps = computed(() => {
+  const result: { [key: string]: FormProps } = {};
+  Object.keys(finalProps.value).forEach((key) => {
+    if (!textStyleKeys.includes(key)) {
+      result[key] = finalProps.value[key];
+    }
+  });
+  return result;
+});
 </script>
 
 <script lang="ts">
@@ -131,6 +187,22 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .props-table {
+  .text-style-group {
+    display: flex;
+    margin-bottom: 10px;
+    align-items: center;
+
+    .label {
+      width: 70px;
+    }
+
+    .style-controls {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+  }
+
   .prop-item {
     display: flex;
     margin-bottom: 10px;
