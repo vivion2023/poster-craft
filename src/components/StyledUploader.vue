@@ -50,7 +50,10 @@ export default {
   },
   emits: ["success"],
   setup(
-    _props,
+    _props: {
+      showUploadList: boolean;
+      autoUpload: boolean;
+    },
     {
       emit,
     }: {
