@@ -57,7 +57,7 @@
         </div>
         <div class="preview-list">
           <edit-wrapper
-            v-for="component in components"
+            v-for="component in viewableComponents"
             :key="component.id"
             :id="component.id"
             @set-active="setActive"
@@ -129,6 +129,9 @@ export type TabType = "component" | "layer" | "page";
 
 const store = useStore<GlobalDataProps>();
 const components = computed(() => store.state.editor.components);
+const viewableComponents = computed(() =>
+  components.value.filter((component) => !component.isHidden)
+);
 const defaultComponents = computed(() => defaultTextTemplates);
 const currentElement = computed<ComponentData | null>(
   () => store.getters.currentElement
