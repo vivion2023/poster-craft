@@ -18,6 +18,12 @@ export interface ComponentData {
   id: string;
   // 业务组件库名称
   name: string;
+  // 图层是否隐藏
+  isHidden?: boolean;
+  // 图层是否锁定
+  isLocked?: boolean;
+  // 图层名称
+  layerName?: string;
 }
 
 export const testComponents: ComponentData[] = [
