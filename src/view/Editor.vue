@@ -76,7 +76,7 @@
       <LayoutSider width="300px">
         <div class="property-container">
           <a-tabs v-model:activeKey="propertyActiveKey">
-            <a-tab-pane key="1" tab="属性设置">
+            <a-tab-pane key="component" tab="属性设置">
               <PropsTable
                 v-if="currentElement && currentElement.props"
                 :props="currentElement.props"
@@ -86,8 +86,8 @@
                 {{ currentElement ? currentElement.props : "" }}
               </div>
             </a-tab-pane>
-            <a-tab-pane key="2" tab="图层设置">图层设置</a-tab-pane>
-            <a-tab-pane key="3" tab="页面设置">页面设置</a-tab-pane>
+            <a-tab-pane key="layer" tab="图层设置">图层设置</a-tab-pane>
+            <a-tab-pane key="page" tab="页面设置">页面设置</a-tab-pane>
           </a-tabs>
         </div>
       </LayoutSider>
@@ -108,6 +108,8 @@ import UserProfile from "@/components/UserProfile.vue";
 import ComponentList from "@/components/ComponentList.vue";
 import EditWrapper from "@/components/EditWrapper.vue";
 import PropsTable from "@/components/PropsTable";
+export type TabType = "component" | "layer" | "page";
+
 const store = useStore<GlobalDataProps>();
 const components = computed(() => store.state.editor.components);
 const defaultComponents = computed(() => defaultTextTemplates);
@@ -116,7 +118,7 @@ const currentElement = computed<ComponentData | null>(
 );
 const currentElementId = computed(() => currentElement.value?.id);
 const siderbarActiveKey = ref("1");
-const propertyActiveKey = ref("1");
+const propertyActiveKey = ref<TabType>("component");
 // 字符串到实际组件的映射
 const componentMap: {
   [key: string]: DefineComponent<any, any, any>;
