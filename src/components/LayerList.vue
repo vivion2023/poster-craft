@@ -145,6 +145,8 @@ export default {
   margin-left: auto;
 }
 .ant-list-item .edit-area {
-  width: 100%;
+  flex: 1;
+  min-width: 0;
+  max-width: 120px;
 }
 </style>

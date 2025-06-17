@@ -96,6 +96,14 @@ useKeyPress("Escape", () => {
 <style>
 .inline-edit {
   cursor: pointer;
+  width: 100%;
+  position: relative;
+}
+
+.inline-edit .ant-input {
+  width: 100% !important;
+  min-width: 0;
+  box-sizing: border-box;
 }
 
 .truncated-text {
@@ -103,6 +111,7 @@ useKeyPress("Escape", () => {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  width: 100%;
 }
 
 .ant-input.input-error {
