@@ -106,12 +106,12 @@ useKeyPress("Escape", () => {
 }
 
 .ant-input.input-error {
-  border: 1px solid #f5222d;
+  border: 1px solid #ff323ccf;
 }
 .ant-input.input-error:focus {
-  border-color: #f5222d;
+  border-color: #ff323ccf;
 }
 .ant-input.input-error::placeholder {
-  color: #f5222d;
+  color: #ff323ccf;
 }
 </style>
