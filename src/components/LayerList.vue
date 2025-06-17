@@ -42,7 +42,7 @@
           class="edit-area"
           :value="element.layerName"
           @change="
-            (value: boolean) => {
+            (value: string) => {
               handleChange(element.id, 'layerName', value);
             }
           "
@@ -80,7 +80,7 @@ interface Emits {
   (e: "select", id: string): void;
   (
     e: "change",
-    data: { id: string; key: string; value: boolean; isRoot: boolean }
+    data: { id: string; key: string; value: boolean | string; isRoot: boolean }
   ): void;
   (e: "drop"): void;
 }
@@ -94,7 +94,7 @@ const handleClick = (id: string) => {
   emit("select", id);
 };
 
-const handleChange = (id: string, key: string, value: boolean) => {
+const handleChange = (id: string, key: string, value: boolean | string) => {
   const data = {
     id,
     key,
