@@ -12,6 +12,7 @@ export interface EditorProps {
   // 供中间编辑器渲染的数组
   components: ComponentData[];
   // 一些项目信息，之后补充
+  page: PageData;
 }
 export interface PageProps {
   backgroundColor: string;
@@ -21,6 +22,7 @@ export interface PageProps {
   height: string;
 }
 export type AllFormProps = PageProps & AllComponentProps;
+
 export interface PageData {
   id?: number;
   props?: PageProps;
@@ -116,10 +118,23 @@ export const testComponents: ComponentData[] = [
   },
 ];
 
+const pageDefaultProps = {
+  backgroundColor: "#ffffff",
+  backgroundImage:
+    "https://static.imooc-lego.com/upload-files/screenshot-677311.png",
+  backgroundRepeat: "no-repeat",
+  backgroundSize: "cover",
+  height: "560px",
+};
+
 const editor: Module<EditorProps, GlobalDataProps> = {
   state: {
     components: testComponents,
     currentElement: "",
+    page: {
+      props: pageDefaultProps,
+      title: "test title",
+    },
   },
   getters: {
     currentElement: (state) => {
