@@ -31,14 +31,36 @@
 import { defineProps, computed, defineEmits, VNode } from "vue";
 import { reduce } from "lodash";
 import type { TextComponentProps } from "../defaultProps";
-import { mapPropsToForm, PropToFormType } from "../propsMap";
+import { mapPropsToForms } from "../propsMap";
+
+import { Input, InputNumber, Slider, Radio, Select } from "ant-design-vue";
+// 导入自定义组件
+import ColorPicker from "./ColorPicker.vue";
+import IconSwitch from "./IconSwitch.vue";
+import ImageProcesser from "./ImageProcesser.vue";
 
 const emit = defineEmits<{
   (e: "change", value: { key: string; value: any }): void;
 }>();
 
+// 创建组件映射对象
+const componentMap = {
+  "a-textarea": Input.TextArea,
+  "a-input-number": InputNumber,
+  "a-slider": Slider,
+  "a-radio-group": Radio.Group,
+  "a-radio-button": Radio.Button,
+  "a-select": Select,
+  "a-select-option": Select.Option,
+  "color-picker": ColorPicker,
+  "icon-switch": IconSwitch,
+  "image-processer": ImageProcesser,
+  // "shadow-picker": ShadowPicker,
+  // "background-processer": BackgroundProcesser,
+} as any;
+
 interface FormProps {
-  component: string; // 组件名称
+  component: string | any; // 组件名称或组件对象
   subComponent?: string; // 子组件名称
   value: string; // 组件的值
   extraProps?: {
@@ -65,13 +87,18 @@ const finalProps = computed(() => {
     props.props,
     (result, value, key) => {
       const newKey = key as keyof TextComponentProps;
-      const item = mapPropsToForm[newKey];
+      const item = mapPropsToForms[newKey];
       if (item) {
-        const valueProp = "value";
-        const eventName = "change";
-        const initialTransform = item.initialTransform;
+        const valueProp = item.valueProp || "value";
+        const eventName = item.eventName || "change";
+        const initialTransform = item.initalTransform;
+
+        // 获取实际的组件：如果是自定义组件则从 componentMap 获取，否则使用字符串名称
+        const actualComponent = componentMap[item.component] || item.component;
+
         const newItem: FormProps = {
           ...item,
+          component: actualComponent,
           value: initialTransform ? initialTransform(value) : value,
           valueProp,
           eventName,
