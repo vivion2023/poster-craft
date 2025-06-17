@@ -21,7 +21,6 @@ const emit = defineEmits<{
 }>();
 
 const handleSetActive = () => {
-  console.log(props.id);
   emit("setActive", props.id);
 };
 </script>
