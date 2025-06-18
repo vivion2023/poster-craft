@@ -17,41 +17,26 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue";
+<script setup lang="ts">
+import { defineProps, defineEmits } from "vue";
 import { message } from "ant-design-vue";
 import ImageProcesser from "./ImageProcesser.vue";
 import StyledUploader from "./StyledUploader.vue";
-export default defineComponent({
-  props: {
-    value: {
-      type: String,
-      required: true,
-    },
-  },
-  components: {
-    ImageProcesser,
-    StyledUploader,
-  },
-  emits: ["change"],
-  setup(props, { emit }) {
-    const onImageUploaded = (data: {
-      resp: { errno: number; data?: { url: string; thumbnail: string } };
-      file: File;
-    }) => {
-      const { resp } = data;
-      message.success("上传成功");
-      emit("change", resp.data?.thumbnail);
-    };
-    const handleUploadUrl = (url: string) => {
-      emit("change", url);
-    };
-    return {
-      onImageUploaded,
-      handleUploadUrl,
-    };
+
+const props = defineProps({
+  value: {
+    type: String,
+    required: true,
   },
 });
+const emits = defineEmits(["change"]);
+const onImageUploaded = (resp: { resp: { data: { url: string } } }) => {
+  message.success("上传成功");
+  emits("change", resp.resp.data.url);
+};
+const handleUploadUrl = (url: string) => {
+  emits("change", url);
+};
 </script>
 
-<style></style>
+<style scoped></style>

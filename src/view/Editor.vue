@@ -214,7 +214,7 @@ const pageChange = (e: any) => {
       width: 300px;
     }
     .property-container {
-      width: 350px;
+      width: 354px;
     }
 
     .siderbar-container {

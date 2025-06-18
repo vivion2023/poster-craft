@@ -12,23 +12,25 @@
         <img :src="baseImageUrl" id="processed-image" ref="cropperImg" />
       </div>
     </a-modal>
-    <div
-      class="image-preview"
-      :style="{ backgroundImage: backgrondUrl }"
-      :class="{ extraHeight: showDelete }"
-    ></div>
-    <div class="image-process">
-      <StyledUploader
-        :show-upload-list="false"
-        :auto-upload="true"
-        @success="handleFileUploaded"
-      />
-      <a-button @click="showModal = true">
-        <template v-slot:icon><ScissorOutlined /></template>裁剪图片
-      </a-button>
-      <a-button v-if="showDelete" type="danger" @click="handleDelete">
-        <template v-slot:icon><DeleteOutlined /></template>删除图片
-      </a-button>
+    <div class="image-container">
+      <div
+        class="image-preview"
+        :style="{ backgroundImage: backgrondUrl }"
+        :class="{ extraHeight: showDelete }"
+      ></div>
+      <div class="image-process">
+        <StyledUploader
+          :show-upload-list="false"
+          :auto-upload="true"
+          @success="handleFileUploaded"
+        />
+        <a-button @click="showModal = true">
+          <template v-slot:icon><ScissorOutlined /></template>裁剪图片
+        </a-button>
+        <a-button v-if="showDelete" type="danger" @click="handleDelete">
+          <template v-slot:icon><DeleteOutlined /></template>删除图片
+        </a-button>
+      </div>
     </div>
   </div>
 </template>
@@ -49,6 +51,7 @@ import "cropperjs/dist/cropper.css";
 import { DeleteOutlined, ScissorOutlined } from "@ant-design/icons-vue";
 import StyledUploader from "./StyledUploader.vue";
 import axios from "axios";
+import { UploadData } from "@/store/respTypes";
 
 // 定义 props 接口
 interface Props {
@@ -80,8 +83,12 @@ const emit = defineEmits<Emits>();
 
 // 响应式数据
 const showModal = ref(false);
-const backgrondUrl = computed(() => `url(${props.value})`);
-const baseImageUrl = computed(() => props.value.split("?")[0]);
+const backgrondUrl = computed(() =>
+  props.value ? `url(${props.value})` : "none"
+);
+const baseImageUrl = computed(() =>
+  props.value ? props.value.split("?")[0] : ""
+);
 const cropperImg = ref<null | HTMLImageElement>(null);
 
 // 裁剪相关变量
@@ -150,12 +157,12 @@ const handleOk = () => {
 };
 // 处理文件上传成功
 const handleFileUploaded = (data: {
-  resp: { error: string; data?: { url: string }; message?: string };
+  resp: { data: { url: string } };
   file: File;
 }) => {
   const { resp } = data;
   message.success("上传成功");
-  emit("change", resp.data?.url || "");
+  emit("change", resp.data.url);
   emit("uploaded", data);
 };
 
@@ -166,21 +173,33 @@ const handleDelete = () => {
 </script>
 
 <style scoped>
+.image-container {
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+}
+
 .image-preview {
   width: 150px;
   height: 84px;
   border: 1px dashed #e6ebed;
   background: no-repeat 50% / contain;
+  flex-shrink: 0;
 }
+
 .image-preview.extraHeight {
   height: 110px;
 }
+
 .image-process {
   padding: 5px 0;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  gap: 8px;
+  flex-grow: 1;
 }
+
 .image-cropper {
   max-height: 400px;
   overflow: hidden;
