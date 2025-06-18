@@ -55,21 +55,23 @@
             <div class="button-item"><RedoOutlined /></div>
           </div>
         </div>
-        <div class="preview-list" :style="page.props">
-          <edit-wrapper
-            v-for="component in viewableComponents"
-            :key="component.id"
-            :id="component.id"
-            @set-active="setActive"
-            :active="component.id === currentElementId"
-          >
-            <component
-              :is="componentMap[component.name]"
-              v-bind="component.props"
+        <div class="preview-content">
+          <div class="preview-list" :style="page.props">
+            <edit-wrapper
+              v-for="component in viewableComponents"
+              :key="component.id"
+              :id="component.id"
+              @set-active="setActive"
+              :active="component.id === currentElementId"
             >
-              {{ component.props.text }}
-            </component>
-          </edit-wrapper>
+              <component
+                :is="componentMap[component.name]"
+                v-bind="component.props"
+              >
+                {{ component.props.text }}
+              </component>
+            </edit-wrapper>
+          </div>
         </div>
       </LayoutContent>
 
@@ -277,19 +279,29 @@ const pageChange = (e: any) => {
         }
       }
 
-      .preview-list {
-        padding: 10px;
-        min-width: 375px;
-        min-height: 200px;
-        border: 1px solid #efefef;
-        background: #fff;
+      .preview-content {
+        flex: 1;
         overflow-x: auto;
         overflow-y: auto;
-        position: relative;
-        flex: 1;
         max-height: calc(100vh - 144px); /* 减去header和footer的高度 */
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        border-radius: 4px;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        box-sizing: border-box;
+
+        .preview-list {
+          padding: 0;
+          min-width: 375px;
+          min-height: 500px;
+          border: 1px solid #efefef;
+          position: relative;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+          border-radius: 4px;
+          /* 海报的实际尺寸和样式将由page.props控制 */
+          /* 默认宽度，如果page.props没有设置width */
+          width: 375px;
+        }
       }
 
       .delete-btn {
