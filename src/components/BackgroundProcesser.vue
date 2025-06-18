@@ -1,6 +1,11 @@
 <template>
   <div class="background-processer">
-    <styled-uploader v-if="!value" @success="onImageUploaded">
+    <styled-uploader
+      :show-upload-list="false"
+      :auto-upload="true"
+      v-if="!value"
+      @success="onImageUploaded"
+    >
     </styled-uploader>
     <image-processer
       v-else

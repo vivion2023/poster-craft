@@ -36,6 +36,7 @@ import { computed, defineComponent, PropType, VNode } from "vue";
 import { reduce } from "lodash-es";
 import { mapPropsToForms } from "../propsMap";
 import { AllComponentProps } from "@/defaultProps";
+import { PageProps } from "@/store/editor";
 import RenderVnode from "./RenderVnode";
 import ColorPicker from "./ColorPicker.vue";
 import ImageProcesser from "./ImageProcesser.vue";
@@ -58,7 +59,7 @@ export default defineComponent({
   name: "props-table",
   props: {
     props: {
-      type: Object as PropType<AllComponentProps>,
+      type: Object as PropType<AllComponentProps | PageProps>,
       required: true,
     },
   },

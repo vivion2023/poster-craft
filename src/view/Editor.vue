@@ -103,7 +103,12 @@
               >
               </layer-list>
             </a-tab-pane>
-            <a-tab-pane key="page" tab="页面设置">页面设置</a-tab-pane>
+            <a-tab-pane key="page" tab="页面设置">
+              <props-table
+                :props="page.props"
+                @change="pageChange"
+              ></props-table>
+            </a-tab-pane>
           </a-tabs>
         </div>
       </LayoutSider>
@@ -119,6 +124,7 @@ import { useStore } from "vuex";
 import { computed, DefineComponent, ref } from "vue";
 import { LText, LImage, LShape } from "lego-components";
 import { defaultTextTemplates } from "@/defaultTemplates";
+import PropsTable from "@/components/PropsTable.vue";
 import Logo from "@/components/Logo.vue";
 import UserProfile from "@/components/UserProfile.vue";
 import ComponentList from "@/components/ComponentList.vue";
@@ -134,6 +140,7 @@ const components = computed(() => store.state.editor.components);
 const viewableComponents = computed(() =>
   components.value.filter((component) => !component.isHidden)
 );
+const page = computed(() => store.state.editor.page);
 const defaultComponents = computed(() => defaultTextTemplates);
 const currentElement = computed<ComponentData | null>(
   () => store.getters.currentElement
@@ -160,6 +167,11 @@ const setActive = (id: string) => {
 
 const handleChange = (value: { key: string; value: any }) => {
   store.commit("updateComponent", value);
+};
+
+const pageChange = (e: any) => {
+  console.log("page", e);
+  store.commit("updatePage", e);
 };
 </script>
 

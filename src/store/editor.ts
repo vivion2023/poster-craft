@@ -167,6 +167,21 @@ const editor: Module<EditorProps, GlobalDataProps> = {
         }
       }
     },
+    updatePage: (state, { key, value, isRoot, isSetting }) => {
+      if (isRoot) {
+        state.page[key as keyof PageData] = value;
+      } else if (isSetting) {
+        debugger;
+        state.page.setting = {
+          ...state.page.setting,
+          [key]: value,
+        };
+      } else {
+        if (state.page.props) {
+          state.page.props[key as keyof PageProps] = value;
+        }
+      }
+    },
     deleteComponent(state, id: string) {
       const index = state.components.findIndex(
         (component) => component.id === id
