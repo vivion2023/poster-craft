@@ -85,6 +85,9 @@ export default defineComponent({
           top: 0,
         };
       }
+      // clientX,clientY 是mouse相对于浏览器窗口的坐标
+      // offsetLeft,offsetTop 是canvas-area相对于浏览器窗口的偏移量
+      // scrollTop 是canvas-area相对于浏览器窗口的滚动距离
       const left = e.clientX - gap.x - container.offsetLeft;
       const top = e.clientY - gap.y - container.offsetTop + container.scrollTop;
       return {

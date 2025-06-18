@@ -55,9 +55,10 @@
             <div class="button-item"><RedoOutlined /></div>
           </div>
         </div>
-        <div class="preview-content" id="canvas-area">
-          <div class="preview-list" :style="page.props">
+        <div class="preview-content">
+          <div class="preview-list" id="canvas-area" :style="page.props">
             <edit-wrapper
+              class="preview-list-item"
               v-for="component in viewableComponents"
               :key="component.id"
               :id="component.id"
@@ -301,6 +302,10 @@ const pageChange = (e: any) => {
           /* 海报的实际尺寸和样式将由page.props控制 */
           /* 默认宽度，如果page.props没有设置width */
           width: 375px;
+        }
+
+        .preview-list-item {
+          position: absolute;
         }
       }
 
