@@ -4,7 +4,6 @@ export interface UploadResp {
     message: string;
     data: {
       url: string;
-      thumbnailUrl: string;
     };
   };
 }

@@ -71,7 +71,7 @@ export default {
     };
 
     const onSuccess = (data: {
-      resp: { url: string; thumbnailUrl: string };
+      resp: { url: string; thumbnailUrl?: string };
       file: File;
     }) => {
       handleUploadSuccess(data.resp, data.file);

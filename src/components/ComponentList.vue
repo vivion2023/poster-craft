@@ -53,10 +53,9 @@ const onImageUploaded = async (resp: UploadResp) => {
       position: "relative",
     },
   };
-  newComponent.props.src = resp.resp.data.thumbnailUrl;
-  const { width, height } = await getImageDimensions(
-    resp.resp.data.thumbnailUrl
-  );
+  // 只上传一张图片，获取到返回的url，并设置为图片的src
+  newComponent.props.src = resp.resp.data.url;
+  const { width, height } = await getImageDimensions(resp.resp.data.url);
 
   const maxWidth = 200;
   newComponent.props.width = width > maxWidth ? `${maxWidth}px` : `${width}px`;
