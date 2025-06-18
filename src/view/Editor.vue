@@ -236,6 +236,7 @@ const pageChange = (e: any) => {
       flex-direction: column;
       justify-content: flex-start;
       align-items: center;
+      overflow: hidden; /* 防止容器本身产生滚动条 */
 
       .preview-header {
         padding: 0 42px;
@@ -277,17 +278,18 @@ const pageChange = (e: any) => {
       }
 
       .preview-list {
-        padding: 0;
-        margin: 0;
+        padding: 10px;
         min-width: 375px;
         min-height: 200px;
         border: 1px solid #efefef;
         background: #fff;
-        overflow-x: hidden;
+        overflow-x: auto;
         overflow-y: auto;
-        position: fixed;
-        margin-top: 50px;
-        max-height: 86vh;
+        position: relative;
+        flex: 1;
+        max-height: calc(100vh - 144px); /* 减去header和footer的高度 */
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 4px;
       }
 
       .delete-btn {
