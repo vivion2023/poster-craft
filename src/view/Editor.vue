@@ -55,7 +55,7 @@
             <div class="button-item"><RedoOutlined /></div>
           </div>
         </div>
-        <div class="preview-list">
+        <div class="preview-list" :style="page.props">
           <edit-wrapper
             v-for="component in viewableComponents"
             :key="component.id"
