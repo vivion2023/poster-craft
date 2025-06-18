@@ -58,12 +58,14 @@
         <div class="preview-content">
           <div class="preview-list" id="canvas-area" :style="page.props">
             <edit-wrapper
+              @setActive="setActive"
+              @update-position="updatePosition"
               class="preview-list-item"
-              v-for="component in viewableComponents"
+              v-for="component in components"
               :key="component.id"
               :id="component.id"
-              @set-active="setActive"
-              :active="component.id === currentElementId"
+              :hidden="component.isHidden"
+              :active="component.id === (currentElement && currentElement.id)"
             >
               <component
                 :is="componentMap[component.name]"
@@ -136,13 +138,11 @@ import EditWrapper from "@/components/EditWrapper.vue";
 import LayerList from "@/components/LayerList.vue";
 import EditGroup from "@/components/EditGroup.vue";
 import { AllComponentProps } from "@/defaultProps";
+import { pickBy } from "lodash-es";
 export type TabType = "component" | "layer" | "page";
 
 const store = useStore<GlobalDataProps>();
 const components = computed(() => store.state.editor.components);
-const viewableComponents = computed(() =>
-  components.value.filter((component) => !component.isHidden)
-);
 const page = computed(() => store.state.editor.page);
 const defaultComponents = computed(() => defaultTextTemplates);
 const currentElement = computed<ComponentData | null>(
@@ -170,6 +170,14 @@ const setActive = (id: string) => {
 
 const handleChange = (value: { key: string; value: any }) => {
   store.commit("updateComponent", value);
+};
+
+const updatePosition = (data: { left: number; top: number; id: string }) => {
+  const { id } = data;
+  const updatedData = pickBy<number>(data, (v, k) => k !== "id");
+  const keysArr = Object.keys(updatedData);
+  const valuesArr = Object.values(updatedData).map((v) => v + "px");
+  store.commit("updateComponent", { key: keysArr, value: valuesArr, id });
 };
 
 const pageChange = (e: any) => {

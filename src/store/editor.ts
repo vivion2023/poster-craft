@@ -14,6 +14,14 @@ export interface EditorProps {
   // 一些项目信息，之后补充
   page: PageData;
 }
+
+export interface UpdateComponentData {
+  key: keyof AllComponentProps | Array<keyof AllComponentProps>;
+  value: string | string[];
+  id: string;
+  isRoot?: boolean;
+}
+
 export interface PageProps {
   backgroundColor: string;
   backgroundImage: string;
@@ -158,16 +166,30 @@ const editor: Module<EditorProps, GlobalDataProps> = {
     setActive(state, currentID: string) {
       state.currentElement = currentID;
     },
-    updateComponent(state, { key, value, id, isRoot }) {
+    updateComponent(state, { key, value, id, isRoot }: UpdateComponentData) {
       const updatedComponent = state.components.find(
         (component) => component.id === (id || state.currentElement)
       );
       if (updatedComponent) {
         if (isRoot) {
           // https://github.com/microsoft/TypeScript/issues/31663
-          (updatedComponent as any)[key as string] = value;
+          if (Array.isArray(key)) {
+            key.forEach((k, index) => {
+              const val = Array.isArray(value) ? value[index] : value;
+              (updatedComponent as any)[k as string] = val;
+            });
+          } else {
+            (updatedComponent as any)[key as string] = value;
+          }
         } else {
-          updatedComponent.props[key as string] = value;
+          if (Array.isArray(key)) {
+            key.forEach((k, index) => {
+              const val = Array.isArray(value) ? value[index] : value;
+              updatedComponent.props[k as string] = val;
+            });
+          } else {
+            updatedComponent.props[key as string] = value;
+          }
         }
       }
     },
