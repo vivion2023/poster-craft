@@ -158,7 +158,7 @@ export const testComponents: ComponentData[] = [
 const pageDefaultProps = {
   backgroundColor: "#ffffff",
   backgroundImage:
-    "https://static.imooc-lego.com/upload-files/screenshot-677311.png",
+    "url('https://static.imooc-lego.com/upload-files/screenshot-677311.png')",
   backgroundRepeat: "no-repeat",
   backgroundSize: "cover",
   height: "560px",
