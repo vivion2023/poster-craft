@@ -85,11 +85,21 @@ export default defineComponent({
           top: 0,
         };
       }
+      // 获取滚动容器 (preview-content)
+      const scrollContainer = container.parentElement as HTMLElement;
+      if (!scrollContainer) {
+        return {
+          left: 0,
+          top: 0,
+        };
+      }
+
       // clientX,clientY 是mouse相对于浏览器窗口的坐标
       // offsetLeft,offsetTop 是canvas-area相对于浏览器窗口的偏移量
-      // scrollTop 是canvas-area相对于浏览器窗口的滚动距离
+      // scrollTop 是滚动容器相对于浏览器窗口的滚动距离
       const left = e.clientX - gap.x - container.offsetLeft;
-      const top = e.clientY - gap.y - container.offsetTop + container.scrollTop;
+      const top =
+        e.clientY - gap.y - container.offsetTop + scrollContainer.scrollTop;
       return {
         left,
         top,
@@ -106,11 +116,18 @@ export default defineComponent({
       if (!container) {
         return null;
       }
+      // 获取滚动容器 (preview-content)
+      const scrollContainer = container.parentElement as HTMLElement;
+      if (!scrollContainer) {
+        return null;
+      }
+
       const rightWidth = clientX - left;
       const leftWidth = right - clientX;
       const bottomHeight = clientY - top;
       const topHeight = bottom - clientY;
-      const topOffset = clientY - container.offsetTop + container.scrollTop;
+      const topOffset =
+        clientY - container.offsetTop + scrollContainer.scrollTop;
       const leftOffset = clientX - container.offsetLeft;
       switch (direction) {
         case "top-left":
@@ -178,7 +195,6 @@ export default defineComponent({
         const { left, top } = currentElement.getBoundingClientRect();
         gap.x = e.clientX - left;
         gap.y = e.clientY - top;
-        console.log(gap);
       }
       const handleMove = (e: MouseEvent) => {
         const { left, top } = caculateMovePosition(e);
