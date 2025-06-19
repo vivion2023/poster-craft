@@ -64,6 +64,7 @@
               v-for="component in components"
               :key="component.id"
               :id="component.id"
+              :props="component.props"
               :hidden="component.isHidden"
               :active="component.id === (currentElement && currentElement.id)"
             >
@@ -87,7 +88,8 @@
                 :props="currentElement.props as AllComponentProps"
                 @change="handleChange"
                 :active="currentElementId === currentElement?.id"
-              />
+              >
+              </EditGroup>
               <div v-else>
                 <a-empty>
                   <template #description>
