@@ -112,9 +112,10 @@
             </a-tab-pane>
             <a-tab-pane key="page" tab="页面设置">
               <props-table
-                :props="page.props"
+                :props="page.props as PageProps"
                 @change="pageChange"
-              ></props-table>
+              >
+              </props-table>
             </a-tab-pane>
           </a-tabs>
         </div>
@@ -127,6 +128,7 @@
 
 <script setup lang="ts">
 import { ComponentData, GlobalDataProps } from "@/store";
+import { PageProps } from "@/store/editor";
 import { useStore } from "vuex";
 import { computed, DefineComponent, ref } from "vue";
 import { LText, LImage, LShape } from "lego-components";

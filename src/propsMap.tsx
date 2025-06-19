@@ -221,6 +221,6 @@ export const mapPropsToForms: PropsToForms = {
         return "";
       }
     },
-    afterTransform: (e: string) => (e ? `url('${e}')` : ""),
+    afterTransform: (e: string) => (e ? `url('${e}')` : "none"),
   },
 };
