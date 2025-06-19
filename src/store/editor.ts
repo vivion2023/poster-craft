@@ -1,13 +1,14 @@
 import { Module } from "vuex";
 import { GlobalDataProps } from "./index";
 import { v4 as uuidv4 } from "uuid";
+import { message } from "ant-design-vue";
+import { cloneDeep } from "lodash-es";
 import {
   textDefaultProps,
   imageDefaultProps,
   AllComponentProps,
 } from "@/defaultProps";
-import { message } from "ant-design-vue";
-import { cloneDeep } from "lodash-es";
+export type MoveDirection = "Up" | "Down" | "Left" | "Right";
 export interface EditorProps {
   // 当前编辑的元素
   currentElement: string;
@@ -227,6 +228,44 @@ const editor: Module<EditorProps, GlobalDataProps> = {
         clone.layerName = clone.layerName + "副本";
         state.components.push(clone);
         message.success("已黏贴当前图层", 1);
+      }
+    },
+    moveComponent(
+      state,
+      data: { direction: MoveDirection; amount: number; id: string }
+    ) {
+      const currentComponent = state.components.find(
+        (component) => component.id === data.id
+      );
+      if (currentComponent) {
+        const oldTop = parseInt(currentComponent.props.top || "0");
+        const oldLeft = parseInt(currentComponent.props.left || "0");
+        const { direction, amount } = data;
+        switch (direction) {
+          case "Up": {
+            const newValue = oldTop - amount + "px";
+            currentComponent.props.top = newValue;
+            break;
+          }
+          case "Down": {
+            const newValue = oldTop + amount + "px";
+            currentComponent.props.top = newValue;
+            break;
+          }
+          case "Left": {
+            const newValue = oldLeft - amount + "px";
+            currentComponent.props.left = newValue;
+            break;
+          }
+          case "Right": {
+            const newValue = oldLeft + amount + "px";
+            currentComponent.props.left = newValue;
+            break;
+          }
+
+          default:
+            break;
+        }
       }
     },
     deleteComponent: (state, id) => {
