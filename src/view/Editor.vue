@@ -180,8 +180,8 @@ const handleChange = (value: { key: string; value: any }) => {
 const updatePosition = (data: { left: number; top: number; id: string }) => {
   const { id } = data;
   const updatedData = pickBy<number>(data, (v, k) => k !== "id");
-  const keysArr = Object.keys(updatedData);
-  const valuesArr = Object.values(updatedData).map((v) => v + "px");
+  const keysArr = Object.keys(updatedData); // 获取所有更新的key
+  const valuesArr = Object.values(updatedData).map((v) => v + "px"); // 获取所有更新的value
   store.commit("updateComponent", { key: keysArr, value: valuesArr, id });
 };
 
