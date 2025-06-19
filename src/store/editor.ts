@@ -6,6 +6,8 @@ import {
   imageDefaultProps,
   AllComponentProps,
 } from "@/defaultProps";
+import { message } from "ant-design-vue";
+import { cloneDeep } from "lodash-es";
 export interface EditorProps {
   // 当前编辑的元素
   currentElement: string;
@@ -13,6 +15,8 @@ export interface EditorProps {
   components: ComponentData[];
   // 一些项目信息，之后补充
   page: PageData;
+  // 当前被复制的组件
+  copiedComponent?: ComponentData;
 }
 
 export interface UpdateComponentData {
@@ -197,7 +201,6 @@ const editor: Module<EditorProps, GlobalDataProps> = {
       if (isRoot) {
         state.page[key as keyof PageData] = value;
       } else if (isSetting) {
-        debugger;
         state.page.setting = {
           ...state.page.setting,
           [key]: value,
@@ -208,12 +211,33 @@ const editor: Module<EditorProps, GlobalDataProps> = {
         }
       }
     },
-    deleteComponent(state, id: string) {
-      const index = state.components.findIndex(
+    copyComponent(state, id) {
+      const currentComponent = state.components.find(
         (component) => component.id === id
       );
-      if (index !== -1) {
-        state.components.splice(index, 1);
+      if (currentComponent) {
+        state.copiedComponent = currentComponent;
+        message.success("已拷贝当前图层", 1);
+      }
+    },
+    pasteCopiedComponent: (state) => {
+      if (state.copiedComponent) {
+        const clone = cloneDeep(state.copiedComponent);
+        clone.id = uuidv4();
+        clone.layerName = clone.layerName + "副本";
+        state.components.push(clone);
+        message.success("已黏贴当前图层", 1);
+      }
+    },
+    deleteComponent: (state, id) => {
+      const currentComponent = state.components.find(
+        (component) => component.id === id
+      );
+      if (currentComponent) {
+        state.components = state.components.filter(
+          (component) => component.id !== id
+        );
+        message.success("删除当前图层成功", 1);
       }
     },
   },

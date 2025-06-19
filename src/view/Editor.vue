@@ -130,6 +130,7 @@
 import { ComponentData, GlobalDataProps } from "@/store";
 import { PageProps } from "@/store/editor";
 import { useStore } from "vuex";
+import initHotKeys from "@/plugins/hotKeys";
 import { computed, DefineComponent, ref } from "vue";
 import { LText, LImage, LShape } from "lego-components";
 import { defaultTextTemplates } from "@/defaultTemplates";
@@ -144,7 +145,7 @@ import EditGroup from "@/components/EditGroup.vue";
 import { AllComponentProps } from "@/defaultProps";
 import { pickBy } from "lodash-es";
 export type TabType = "component" | "layer" | "page";
-
+initHotKeys();
 const store = useStore<GlobalDataProps>();
 const components = computed(() => store.state.editor.components);
 const page = computed(() => store.state.editor.page);
