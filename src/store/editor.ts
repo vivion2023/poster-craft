@@ -213,6 +213,28 @@ const editor: Module<EditorProps, GlobalDataProps> = {
         (component) => component.id === state.currentElement
       );
     },
+
+    checkUndoDisable: (state) => {
+      // 1 no history item
+      // 2 move to the first item
+      if (state.histories.length === 0 || state.historyIndex === 0) {
+        return true;
+      }
+      return false;
+    },
+    checkRedoDisable: (state) => {
+      // 1 no history item
+      // 2 move to the last item
+      // 3 never undo before
+      if (
+        state.histories.length === 0 ||
+        state.historyIndex === state.histories.length ||
+        state.historyIndex === -1
+      ) {
+        return true;
+      }
+      return false;
+    },
   },
   mutations: {
     setActive(state, currentID: string) {

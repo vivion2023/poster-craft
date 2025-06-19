@@ -49,11 +49,12 @@
         <div class="preview-header">
           <div class="preview-header-left"></div>
           <p class="preview-title">画布区域</p>
-          <div class="button-group">
+          <HistoryArea />
+          <!-- <div class="button-group">
             <div class="button-item"><QuestionOutlined /></div>
             <div class="button-item"><UndoOutlined /></div>
             <div class="button-item"><RedoOutlined /></div>
-          </div>
+          </div> -->
         </div>
         <div class="preview-content">
           <div class="preview-list" id="canvas-area" :style="page.props">
@@ -139,7 +140,7 @@ import Logo from "@/components/Logo.vue";
 import UserProfile from "@/components/UserProfile.vue";
 import ComponentList from "@/components/ComponentList.vue";
 import EditWrapper from "@/components/EditWrapper.vue";
-
+import HistoryArea from "@/view/editor/HistoryArea.vue";
 import LayerList from "@/components/LayerList.vue";
 import EditGroup from "@/components/EditGroup.vue";
 import { AllComponentProps } from "@/defaultProps";
@@ -272,6 +273,12 @@ const pageChange = (e: any) => {
           font-weight: bold;
           color: rgb(121, 123, 127);
         }
+
+        .history-area {
+          width: 90px;
+          position: relative;
+        }
+
         .button-group {
           display: flex;
           justify-content: flex-end;
