@@ -35,7 +35,6 @@ const onItemClick = (data: any) => {
     name: "l-text",
     props: {
       ...data.props,
-      position: "absolute", // 设置为相对定位(方便开发)
     },
   };
   emit("on-item-click", newComponent);

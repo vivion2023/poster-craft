@@ -133,7 +133,7 @@ import { useStore } from "vuex";
 import initHotKeys from "@/plugins/hotKeys";
 import { computed, DefineComponent, ref } from "vue";
 import { LText, LImage, LShape } from "lego-components";
-import { defaultTextTemplates } from "@/defaultTemplates";
+import defaultTextTemplates from "@/defaultTemplates";
 import PropsTable from "@/components/PropsTable.vue";
 import Logo from "@/components/Logo.vue";
 import UserProfile from "@/components/UserProfile.vue";

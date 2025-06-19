@@ -1,4 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
+import { textDefaultProps } from "./defaultProps";
 export const defaultTextTemplates = [
   {
     id: uuidv4(),
@@ -45,3 +46,11 @@ export const defaultTextTemplates = [
     },
   },
 ];
+export default defaultTextTemplates.map((template) => ({
+  ...template,
+  props: {
+    ...textDefaultProps,
+    ...template.props,
+    position: "absolute",
+  },
+}));
