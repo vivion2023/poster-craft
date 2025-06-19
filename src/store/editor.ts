@@ -144,6 +144,10 @@ const pageDefaultProps = {
   height: "560px",
 };
 
+// 根据 id 查找组件（供 mutation 内部复用）
+const findComponentById = (state: EditorProps, id: string) =>
+  state.components.find((component) => component.id === id);
+
 const editor: Module<EditorProps, GlobalDataProps> = {
   state: {
     components: testComponents,
@@ -213,9 +217,7 @@ const editor: Module<EditorProps, GlobalDataProps> = {
       }
     },
     copyComponent(state, id) {
-      const currentComponent = state.components.find(
-        (component) => component.id === id
-      );
+      const currentComponent = findComponentById(state, id);
       if (currentComponent) {
         state.copiedComponent = currentComponent;
         message.success("已拷贝当前图层", 1);
@@ -234,9 +236,7 @@ const editor: Module<EditorProps, GlobalDataProps> = {
       state,
       data: { direction: MoveDirection; amount: number; id: string }
     ) {
-      const currentComponent = state.components.find(
-        (component) => component.id === data.id
-      );
+      const currentComponent = findComponentById(state, data.id);
       if (currentComponent) {
         const oldTop = parseInt(currentComponent.props.top || "0");
         const oldLeft = parseInt(currentComponent.props.left || "0");
@@ -269,9 +269,7 @@ const editor: Module<EditorProps, GlobalDataProps> = {
       }
     },
     deleteComponent: (state, id) => {
-      const currentComponent = state.components.find(
-        (component) => component.id === id
-      );
+      const currentComponent = findComponentById(state, id);
       if (currentComponent) {
         state.components = state.components.filter(
           (component) => component.id !== id
