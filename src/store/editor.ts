@@ -187,40 +187,59 @@ const editor: Module<EditorProps, GlobalDataProps> = {
     },
   },
   mutations: {
+    setActive(state, currentID: string) {
+      state.currentElement = currentID;
+    },
     addComponent(state, component: ComponentData) {
       const newComponent = {
         ...component,
         id: uuidv4(),
         layerName: "图层" + (state.components.length + 1),
       };
+      state.histories.push({
+        id: uuidv4(),
+        componentId: newComponent.id,
+        type: "add",
+        data: cloneDeep(newComponent),
+      });
+      state.historyIndex++;
       state.components.push(newComponent);
     },
-    setActive(state, currentID: string) {
-      state.currentElement = currentID;
-    },
-    updateComponent(state, { key, value, id, isRoot }: UpdateComponentData) {
+    updateComponent: (
+      state,
+      { key, value, id, isRoot }: UpdateComponentData
+    ) => {
       const updatedComponent = state.components.find(
         (component) => component.id === (id || state.currentElement)
       );
       if (updatedComponent) {
         if (isRoot) {
           // https://github.com/microsoft/TypeScript/issues/31663
-          if (Array.isArray(key)) {
-            key.forEach((k, index) => {
-              const val = Array.isArray(value) ? value[index] : value;
-              (updatedComponent as any)[k as string] = val;
-            });
-          } else {
-            (updatedComponent as any)[key as string] = value;
-          }
+          (updatedComponent as any)[key as keyof AllComponentProps] = value;
         } else {
-          if (Array.isArray(key)) {
-            key.forEach((k, index) => {
-              const val = Array.isArray(value) ? value[index] : value;
-              updatedComponent.props[k as string] = val;
+          const oldValue = Array.isArray(key)
+            ? key.map((key) => updatedComponent.props[key])
+            : updatedComponent.props[key];
+          if (Array.isArray(key) && Array.isArray(value)) {
+            key.forEach((keyName, index) => {
+              updatedComponent.props[keyName] = value[index];
             });
-          } else {
-            updatedComponent.props[key as string] = value;
+          } else if (typeof key === "string" && typeof value === "string") {
+            updatedComponent.props[key as keyof AllComponentProps] = value;
+          }
+          state.histories.push({
+            id: uuidv4(),
+            componentId: updatedComponent.id,
+            type: "modify",
+            data: { key, value, oldValue },
+          });
+          state.historyIndex++;
+          if (Array.isArray(key) && Array.isArray(value)) {
+            key.forEach((keyName, index) => {
+              updatedComponent.props[keyName] = value[index];
+            });
+          } else if (typeof key === "string" && typeof value === "string") {
+            updatedComponent.props[key] = value;
           }
         }
       }
@@ -253,6 +272,12 @@ const editor: Module<EditorProps, GlobalDataProps> = {
         clone.layerName = clone.layerName + "副本";
         state.components.push(clone);
         message.success("已黏贴当前图层", 1);
+        state.histories.push({
+          id: uuidv4(),
+          componentId: clone.id,
+          type: "add",
+          data: cloneDeep(clone),
+        });
       }
     },
     moveComponent(
@@ -292,11 +317,24 @@ const editor: Module<EditorProps, GlobalDataProps> = {
       }
     },
     deleteComponent: (state, id) => {
-      const currentComponent = findComponentById(state, id);
+      const currentComponent = state.components.find(
+        (component) => component.id === id
+      );
       if (currentComponent) {
+        const currentIndex = state.components.findIndex(
+          (component) => component.id === id
+        ); // 获取当前组件的索引
         state.components = state.components.filter(
           (component) => component.id !== id
         );
+        // 添加历史记录
+        state.histories.push({
+          id: uuidv4(),
+          componentId: currentComponent.id,
+          type: "delete",
+          data: currentComponent,
+          index: currentIndex,
+        });
         message.success("删除当前图层成功", 1);
       }
     },
