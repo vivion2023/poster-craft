@@ -169,6 +169,7 @@ const editor: Module<EditorProps, GlobalDataProps> = {
       const newComponent = {
         ...component,
         id: uuidv4(),
+        layerName: "图层" + (state.components.length + 1),
       };
       state.components.push(newComponent);
     },

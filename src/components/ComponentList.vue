@@ -33,10 +33,9 @@ const onItemClick = (data: any) => {
   const newComponent = {
     id: data.id,
     name: "l-text",
-    layerName: "文本",
     props: {
       ...data.props,
-      position: "relative", // 设置为相对定位(方便开发)
+      position: "absolute", // 设置为相对定位(方便开发)
     },
   };
   emit("on-item-click", newComponent);
@@ -47,10 +46,9 @@ const onImageUploaded = async (resp: UploadResp) => {
   const newComponent = {
     id: uuidv4(),
     name: "l-image",
-    layerName: "图片",
     props: {
       ...imageDefaultProps,
-      position: "relative",
+      position: "absolute",
     },
   };
   // 只上传一张图片，获取到返回的url，并设置为图片的src
