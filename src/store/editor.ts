@@ -8,6 +8,7 @@ import {
   imageDefaultProps,
   AllComponentProps,
 } from "@/defaultProps";
+// 移动方向
 export type MoveDirection = "Up" | "Down" | "Left" | "Right";
 export interface EditorProps {
   // 当前编辑的元素
@@ -18,8 +19,22 @@ export interface EditorProps {
   page: PageData;
   // 当前被复制的组件
   copiedComponent?: ComponentData;
+  // 当前操作的历史记录
+  histories: HistoryProps[];
+  // 当前历史记录的操作位置
+  historyIndex: number;
 }
 
+// 历史记录
+export interface HistoryProps {
+  id: string;
+  componentId: string;
+  type: "add" | "delete" | "modify";
+  data: any;
+  index?: number;
+}
+
+// 更新组件数据
 export interface UpdateComponentData {
   key: keyof AllComponentProps | Array<keyof AllComponentProps>;
   value: string | string[];
@@ -27,6 +42,7 @@ export interface UpdateComponentData {
   isRoot?: boolean;
 }
 
+// 页面属性
 export interface PageProps {
   backgroundColor: string;
   backgroundImage: string;
@@ -34,8 +50,11 @@ export interface PageProps {
   backgroundSize: string;
   height: string;
 }
+
+// 所有属性
 export type AllFormProps = PageProps & AllComponentProps;
 
+// 页面数据
 export interface PageData {
   id?: number;
   props?: PageProps;
@@ -58,6 +77,7 @@ export interface PageData {
   };
 }
 
+// 组件数据
 export interface ComponentData {
   // 元素的属性
   props: {
@@ -156,6 +176,8 @@ const editor: Module<EditorProps, GlobalDataProps> = {
       props: pageDefaultProps,
       title: "test title",
     },
+    histories: [],
+    historyIndex: -1,
   },
   getters: {
     currentElement: (state) => {
