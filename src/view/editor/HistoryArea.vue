@@ -22,11 +22,11 @@
         </a-button>
       </a-tooltip>
     </div>
-    <li v-for="(item, index) in histories" :key="item.id">
+    <!-- <li v-for="(item, index) in histories" :key="item.id">
       <span :class="{ bold: index === historyIndex }"
         >{{ item.type }} - {{ item.data.key }}</span
       >
-    </li>
+    </li> -->
   </div>
 </template>
 
@@ -37,8 +37,8 @@ import { RedoOutlined, UndoOutlined } from "@ant-design/icons-vue";
 import { GlobalDataProps } from "../../store/index";
 
 const store = useStore<GlobalDataProps>();
-const histories = computed(() => store.state.editor.histories);
-const historyIndex = computed(() => store.state.editor.historyIndex);
+// const histories = computed(() => store.state.editor.histories);
+// const historyIndex = computed(() => store.state.editor.historyIndex);
 const undoIsDisabled = computed<boolean>(() => store.getters.checkUndoDisable);
 const redoIsDisabled = computed<boolean>(() => store.getters.checkRedoDisable);
 
@@ -50,14 +50,16 @@ const redoHistory = () => {
 };
 </script>
 
-<style>
+<style scoped>
 .history-area {
   position: absolute;
   right: 0;
   z-index: 500;
-}
-.operation-list {
-  display: flex;
+
+  .operation-list {
+    display: flex;
+    gap: 10px;
+  }
 }
 .history-area .bold {
   font-weight: bold;

@@ -50,11 +50,6 @@
           <div class="preview-header-left"></div>
           <p class="preview-title">画布区域</p>
           <HistoryArea />
-          <!-- <div class="button-group">
-            <div class="button-item"><QuestionOutlined /></div>
-            <div class="button-item"><UndoOutlined /></div>
-            <div class="button-item"><RedoOutlined /></div>
-          </div> -->
         </div>
         <div class="preview-content">
           <div class="preview-list" id="canvas-area" :style="page.props">
@@ -277,26 +272,6 @@ const pageChange = (e: any) => {
         .history-area {
           width: 90px;
           position: relative;
-        }
-
-        .button-group {
-          display: flex;
-          justify-content: flex-end;
-          align-items: center;
-          gap: 10px;
-          width: 90px;
-
-          .button-item {
-            width: 26px;
-            height: 26px;
-            padding: 6px;
-            display: flex;
-            cursor: pointer;
-            border-radius: 50%;
-            background-color: white;
-            justify-content: center;
-            align-items: center;
-          }
         }
       }
 
