@@ -138,7 +138,7 @@ onUnmounted(() => {
   cursor: pointer;
   transition: all 0.2s ease;
   line-height: 1.4;
-  min-height: 36px;
+  min-height: 20px;
   list-style: none;
 }
 

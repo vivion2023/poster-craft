@@ -11,7 +11,7 @@ import { useStore } from "vuex";
 import createContextMenu, { ActionItem } from "@/components/createContextMenu";
 const initContextMenu = () => {
   const store = useStore();
-  const testActions: ActionItem[] = [
+  const actions: ActionItem[] = [
     {
       shortcut: "Ctrl+C",
       text: "复制图层",
@@ -20,17 +20,24 @@ const initContextMenu = () => {
       },
     },
     {
-      shortcut: "Ctrl+V",
-      text: "粘贴图层",
-      action: (cid) => {
-        store.commit("pasteComponent", cid);
-      },
-    },
-    {
       shortcut: "Backspace / Delete",
       text: "删除图层",
       action: (cid) => {
         store.commit("deleteComponent", cid);
+      },
+    },
+    {
+      shortcut: "Ctrl+Z",
+      text: "撤销",
+      action: () => {
+        store.commit("undo");
+      },
+    },
+    {
+      shortcut: "Ctrl+Y",
+      text: "重做",
+      action: () => {
+        store.commit("redo");
       },
     },
   ];
@@ -48,7 +55,7 @@ const initContextMenu = () => {
   let destory: any;
   // let destory2: any;
   onMounted(() => {
-    destory = createContextMenu(testActions);
+    destory = createContextMenu(actions, "edit-wrapper");
     // destory2 = createContextMenu(testActions2, "settings-panel");
   });
   onUnmounted(() => {
