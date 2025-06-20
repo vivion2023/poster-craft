@@ -59,7 +59,7 @@
         <div class="preview-content">
           <div class="preview-list" id="canvas-area" :style="page.props">
             <edit-wrapper
-              @setActive="setActive"
+              @set-active="setActive"
               @update-position="updatePosition"
               class="preview-list-item"
               v-for="component in components"
@@ -152,7 +152,7 @@ const components = computed(() => store.state.editor.components);
 const page = computed(() => store.state.editor.page);
 const defaultComponents = computed(() => defaultTextTemplates);
 const currentElement = computed<ComponentData | null>(
-  () => store.getters.currentElement
+  () => store.getters.getCurrentElement
 );
 const currentElementId = computed(() => currentElement.value?.id);
 const siderbarActiveKey = ref("1");

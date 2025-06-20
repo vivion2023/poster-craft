@@ -1,4 +1,4 @@
-import { Module } from "vuex";
+import { Module, Mutation } from "vuex";
 import { GlobalDataProps } from "./index";
 import { v4 as uuidv4 } from "uuid";
 import { message } from "ant-design-vue";
@@ -24,6 +24,12 @@ export interface EditorProps {
   histories: HistoryProps[];
   // 当前历史记录的操作位置
   historyIndex: number;
+  // 开始更新时的缓存值
+  cachedOldValues: any;
+  // 保存最多历史条目记录数
+  maxHistoryNumber: number;
+  // 数据是否有修改
+  isDirty: boolean;
 }
 
 // 历史记录
@@ -165,9 +171,67 @@ const pageDefaultProps = {
   height: "560px",
 };
 
+/**
+ * @description 防抖函数
+ * @param callback
+ * @param timeout
+ * @returns
+ */
+const debounceChange = (callback: (...args: any) => void, timeout = 1000) => {
+  let timer = 0;
+  return (...args: any) => {
+    console.log(timer);
+    clearTimeout(timer);
+    timer = window.setTimeout(() => {
+      timer = 0;
+      callback(...args);
+    }, timeout);
+  };
+};
+
 // 根据 id 查找组件（供 mutation 内部复用）
 const findComponentById = (state: EditorProps, id: string) =>
   state.components.find((component) => component.id === id);
+
+/**
+ * @description 历史记录相关函数
+ */
+
+// 添加历史记录
+const pushHistory = (state: EditorProps, historyRecord: HistoryProps) => {
+  // check historyIndex is already moved
+  if (state.historyIndex !== -1) {
+    // if moved, delete all the records greater than the index
+    state.histories = state.histories.slice(0, state.historyIndex);
+    // move historyIndex to unmoved
+    state.historyIndex = -1;
+  }
+  // check length
+  if (state.histories.length < state.maxHistoryNumber) {
+    state.histories.push(historyRecord);
+  } else {
+    // larger than max number
+    // shift the first
+    // push to last
+    state.histories.shift();
+    state.histories.push(historyRecord);
+  }
+};
+
+// 修改历史记录（防抖处理）
+const pushModifyHistory = (
+  state: EditorProps,
+  { key, value, id }: UpdateComponentData
+) => {
+  pushHistory(state, {
+    id: uuidv4(),
+    componentId: id || state.currentElement,
+    type: "modify",
+    data: { oldValue: state.cachedOldValues, newValue: value, key },
+  });
+  state.cachedOldValues = null;
+};
+const pushHistoryDebounce = debounceChange(pushModifyHistory);
 
 // 修改历史记录
 const modifyHistory = (
@@ -196,6 +260,18 @@ const modifyHistory = (
   }
 };
 
+/**
+ * @description 设置脏状态
+ * @param callback
+ * @returns
+ */
+const setDirtyWrapper = (callback: Mutation<EditorProps>) => {
+  return (state: EditorProps, payload: any) => {
+    state.isDirty = true;
+    callback(state, payload);
+  };
+};
+
 const editor: Module<EditorProps, GlobalDataProps> = {
   state: {
     components: testComponents,
@@ -206,14 +282,24 @@ const editor: Module<EditorProps, GlobalDataProps> = {
     },
     histories: [],
     historyIndex: -1,
+    cachedOldValues: null,
+    maxHistoryNumber: 5,
+    isDirty: false,
   },
   getters: {
-    currentElement: (state) => {
+    getCurrentElement: (state) => {
       return state.components.find(
         (component) => component.id === state.currentElement
       );
     },
-
+    getElement: (state) => (id: string) => {
+      return state.components.find(
+        (component) => component.id === (id || state.currentElement)
+      );
+    },
+    getComponentsLength: (state) => {
+      return state.components.length;
+    },
     checkUndoDisable: (state) => {
       // 1 no history item
       // 2 move to the first item
@@ -240,64 +326,49 @@ const editor: Module<EditorProps, GlobalDataProps> = {
     setActive(state, currentID: string) {
       state.currentElement = currentID;
     },
-    addComponent(state, component: ComponentData) {
-      const newComponent = {
-        ...component,
+    addComponent: setDirtyWrapper((state, component: ComponentData) => {
+      component.layerName = "图层" + (state.components.length + 1);
+      state.components.push(component);
+      pushHistory(state, {
         id: uuidv4(),
-        layerName: "图层" + (state.components.length + 1),
-      };
-      state.histories.push({
-        id: uuidv4(),
-        componentId: newComponent.id,
+        componentId: component.id,
         type: "add",
-        data: cloneDeep(newComponent),
+        data: cloneDeep(component),
       });
-      state.historyIndex++;
-      state.components.push(newComponent);
-    },
-    updateComponent: (
-      state,
-      { key, value, id, isRoot }: UpdateComponentData
-    ) => {
-      const updatedComponent = state.components.find(
-        (component) => component.id === (id || state.currentElement)
-      );
-      if (updatedComponent) {
-        if (isRoot) {
-          // https://github.com/microsoft/TypeScript/issues/31663
-          (updatedComponent as any)[key as keyof AllComponentProps] = value;
-        } else {
-          const oldValue = Array.isArray(key)
-            ? key.map((key) => updatedComponent.props[key])
-            : updatedComponent.props[key];
-          if (Array.isArray(key) && Array.isArray(value)) {
-            key.forEach((keyName, index) => {
-              updatedComponent.props[keyName] = value[index];
-            });
-          } else if (typeof key === "string" && typeof value === "string") {
-            updatedComponent.props[key as keyof AllComponentProps] = value;
-          }
-          state.histories.push({
-            id: uuidv4(),
-            componentId: updatedComponent.id,
-            type: "modify",
-            data: { key, value, oldValue },
-          });
-          state.historyIndex++;
-          if (Array.isArray(key) && Array.isArray(value)) {
-            key.forEach((keyName, index) => {
-              updatedComponent.props[keyName] = value[index];
-            });
-          } else if (typeof key === "string" && typeof value === "string") {
-            updatedComponent.props[key] = value;
+    }),
+    updateComponent: setDirtyWrapper(
+      (state, { key, value, id, isRoot }: UpdateComponentData) => {
+        const updatedComponent = state.components.find(
+          (component) => component.id === (id || state.currentElement)
+        );
+        if (updatedComponent) {
+          if (isRoot) {
+            // https://github.com/microsoft/TypeScript/issues/31663
+            (updatedComponent as any)[key as string] = value;
+          } else {
+            const oldValue = Array.isArray(key)
+              ? key.map((key) => updatedComponent.props[key])
+              : updatedComponent.props[key];
+            if (!state.cachedOldValues) {
+              state.cachedOldValues = oldValue;
+            }
+            pushHistoryDebounce(state, { key, value, id });
+            if (Array.isArray(key) && Array.isArray(value)) {
+              key.forEach((keyName, index) => {
+                updatedComponent.props[keyName] = value[index];
+              });
+            } else if (typeof key === "string" && typeof value === "string") {
+              updatedComponent.props[key] = value;
+            }
           }
         }
       }
-    },
-    updatePage: (state, { key, value, isRoot, isSetting }) => {
+    ),
+    updatePage: setDirtyWrapper((state, { key, value, isRoot, isSetting }) => {
       if (isRoot) {
         state.page[key as keyof PageData] = value;
       } else if (isSetting) {
+        debugger;
         state.page.setting = {
           ...state.page.setting,
           [key]: value,
@@ -307,7 +378,7 @@ const editor: Module<EditorProps, GlobalDataProps> = {
           state.page.props[key as keyof PageProps] = value;
         }
       }
-    },
+    }),
     copyComponent(state, id) {
       const currentComponent = findComponentById(state, id);
       if (currentComponent) {
@@ -315,21 +386,21 @@ const editor: Module<EditorProps, GlobalDataProps> = {
         message.success("已拷贝当前图层", 1);
       }
     },
-    pasteCopiedComponent: (state) => {
+    pasteCopiedComponent: setDirtyWrapper((state) => {
       if (state.copiedComponent) {
         const clone = cloneDeep(state.copiedComponent);
         clone.id = uuidv4();
         clone.layerName = clone.layerName + "副本";
         state.components.push(clone);
         message.success("已黏贴当前图层", 1);
-        state.histories.push({
+        pushHistory(state, {
           id: uuidv4(),
           componentId: clone.id,
           type: "add",
           data: cloneDeep(clone),
         });
       }
-    },
+    }),
     moveComponent(
       state,
       data: { direction: MoveDirection; amount: number; id: string }
@@ -366,19 +437,18 @@ const editor: Module<EditorProps, GlobalDataProps> = {
         }
       }
     },
-    deleteComponent: (state, id) => {
+    deleteComponent: setDirtyWrapper((state, id) => {
       const currentComponent = state.components.find(
         (component) => component.id === id
       );
       if (currentComponent) {
         const currentIndex = state.components.findIndex(
           (component) => component.id === id
-        ); // 获取当前组件的索引
+        );
         state.components = state.components.filter(
           (component) => component.id !== id
         );
-        // 添加历史记录
-        state.histories.push({
+        pushHistory(state, {
           id: uuidv4(),
           componentId: currentComponent.id,
           type: "delete",
@@ -387,7 +457,7 @@ const editor: Module<EditorProps, GlobalDataProps> = {
         });
         message.success("删除当前图层成功", 1);
       }
-    },
+    }),
     undo(state) {
       // never undo before
       if (state.historyIndex === -1) {
