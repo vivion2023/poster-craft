@@ -93,4 +93,14 @@ export default function initHotKeys() {
       id: currentId.value,
     });
   });
+  useHotKey("ctrl+z, command+z", () => {
+    if (!store.getters.checkUndoDisable) {
+      store.commit("undo");
+    }
+  });
+  useHotKey("ctrl+shift+z, command+shift+z", () => {
+    if (!store.getters.checkRedoDisable) {
+      store.commit("redo");
+    }
+  });
 }
