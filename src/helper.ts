@@ -56,3 +56,20 @@ export const getImageDimensions = (url: string | File) => {
 export const insertAt = (arr: any[], index: number, newItem: any) => {
   return [...arr.slice(0, index), newItem, ...arr.slice(index)];
 };
+
+/*
+  @description 获取父元素
+  @param element 当前元素
+  @param className 父元素的类名
+  @returns 父元素
+*/
+export const getParentElement = (element: HTMLElement, className: string) => {
+  while (element) {
+    if (element.classList && element.classList.contains(className)) {
+      return element;
+    } else {
+      element = element.parentNode as HTMLElement;
+    }
+  }
+  return null;
+};

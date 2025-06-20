@@ -51,7 +51,8 @@
           <p class="preview-title">画布区域</p>
           <HistoryArea />
         </div>
-        <div class="preview-content">
+        <!-- 阻止右键菜单 -->
+        <div class="preview-content" @contextmenu.prevent>
           <div class="preview-list" id="canvas-area" :style="page.props">
             <edit-wrapper
               @set-active="setActive"
@@ -76,7 +77,7 @@
       </LayoutContent>
 
       <LayoutSider width="300px">
-        <div class="property-container">
+        <div class="property-container" id="settings-panel">
           <a-tabs v-model:activeKey="propertyActiveKey">
             <a-tab-pane key="component" tab="属性设置">
               <EditGroup
@@ -140,8 +141,10 @@ import LayerList from "@/components/LayerList.vue";
 import EditGroup from "@/components/EditGroup.vue";
 import { AllComponentProps } from "@/defaultProps";
 import { pickBy } from "lodash-es";
+import initContextMenu from "@/plugins/contextMenu";
 export type TabType = "component" | "layer" | "page";
 initHotKeys();
+initContextMenu();
 const store = useStore<GlobalDataProps>();
 const components = computed(() => store.state.editor.components);
 const page = computed(() => store.state.editor.page);
