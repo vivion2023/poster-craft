@@ -35,12 +35,12 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
-import { PageData } from "../store/editor";
+import { TemplateProps } from "../store/templates";
 export default defineComponent({
   name: "template-list",
   props: {
     list: {
-      type: Array as PropType<PageData[]>,
+      type: Array as PropType<TemplateProps[]>,
       required: true,
     },
   },

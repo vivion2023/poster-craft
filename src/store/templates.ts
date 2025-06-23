@@ -12,85 +12,215 @@ export type TemplateProps = Required<
   >
 >;
 
-export const testData: PageData[] = [
+export const testData: TemplateProps[] = [
   {
     id: 1,
+    title: "前端架构师海报",
+    desc: "前端架构师海报",
     coverImg:
       "https://static.imooc-lego.com/upload-files/screenshot-889755.png",
-    title: "前端架构师海报",
+    uuid: "123",
     author: "vivion",
     copiedCount: 1,
+    isTemplate: true,
+    isHot: true,
+    isNew: true,
+    status: 1,
+    user: {
+      gender: "male",
+      nickName: "vivion",
+      picture:
+        "https://static.imooc-lego.com/upload-files/screenshot-889755.png",
+      userName: "vivion",
+    },
   },
   {
     id: 2,
-    coverImg: "http://static-dev.imooc-lego.com/imooc-test/sZHlgv.png",
     title: "前端架构师海报",
+    desc: "前端架构师海报",
+    coverImg: "http://static-dev.imooc-lego.com/imooc-test/sZHlgv.png",
+    uuid: "123",
     author: "vivion",
     copiedCount: 1,
+    isTemplate: true,
+    isHot: true,
+    isNew: true,
+    status: 1,
+    user: {
+      gender: "male",
+      nickName: "vivion",
+      picture:
+        "https://static.imooc-lego.com/upload-files/screenshot-889755.png",
+      userName: "vivion",
+    },
   },
   {
     id: 3,
+    title: "前端架构师海报",
+    desc: "前端架构师海报",
     coverImg:
       "https://static.imooc-lego.com/upload-files/screenshot-323204.png",
-    title: "前端架构师海报",
+    uuid: "123",
     author: "vivion",
     copiedCount: 1,
+    isTemplate: true,
+    isHot: true,
+    isNew: true,
+    status: 1,
+    user: {
+      gender: "male",
+      nickName: "vivion",
+      picture:
+        "https://static.imooc-lego.com/upload-files/screenshot-889755.png",
+      userName: "vivion",
+    },
   },
   {
     id: 4,
     coverImg:
       "https://static.imooc-lego.com/upload-files/screenshot-677311.png",
     title: "前端架构师海报",
+    desc: "前端架构师海报",
+    uuid: "123",
     author: "vivion",
     copiedCount: 1,
+    isTemplate: true,
+    isHot: true,
+    isNew: true,
+    status: 1,
+    user: {
+      gender: "male",
+      nickName: "vivion",
+      picture:
+        "https://static.imooc-lego.com/upload-files/screenshot-677311.png",
+      userName: "vivion",
+    },
   },
   {
     id: 5,
     coverImg:
       "https://static.imooc-lego.com/upload-files/screenshot-726751.png",
     title: "前端架构师海报",
+    desc: "前端架构师海报",
+    uuid: "123",
     author: "vivion",
     copiedCount: 1,
+    isTemplate: true,
+    isHot: true,
+    isNew: true,
+    status: 1,
+    user: {
+      gender: "male",
+      nickName: "vivion",
+      picture:
+        "https://static.imooc-lego.com/upload-files/screenshot-726751.png",
+      userName: "vivion",
+    },
   },
   {
     id: 6,
     coverImg:
       "https://static.imooc-lego.com/upload-files/screenshot-682056.png",
     title: "前端架构师海报",
+    desc: "前端架构师海报",
+    uuid: "123",
     author: "vivion",
     copiedCount: 1,
+    isTemplate: true,
+    isHot: true,
+    isNew: true,
+    status: 1,
+    user: {
+      gender: "male",
+      nickName: "vivion",
+      picture:
+        "https://static.imooc-lego.com/upload-files/screenshot-682056.png",
+      userName: "vivion",
+    },
   },
   {
     id: 7,
     coverImg:
       "https://static.imooc-lego.com/upload-files/screenshot-133701.png",
     title: "前端架构师海报",
+    desc: "前端架构师海报",
+    uuid: "123",
     author: "vivion",
     copiedCount: 1,
+    isTemplate: true,
+    isHot: true,
+    isNew: true,
+    status: 1,
+    user: {
+      gender: "male",
+      nickName: "vivion",
+      picture:
+        "https://static.imooc-lego.com/upload-files/screenshot-133701.png",
+      userName: "vivion",
+    },
   },
   {
     id: 8,
     coverImg:
       "https://static.imooc-lego.com/upload-files/screenshot-649919.png",
     title: "前端架构师海报",
+    desc: "前端架构师海报",
+    uuid: "123",
     author: "vivion",
     copiedCount: 1,
+    isTemplate: true,
+    isHot: true,
+    isNew: true,
+    status: 1,
+    user: {
+      gender: "male",
+      nickName: "vivion",
+      picture:
+        "https://static.imooc-lego.com/upload-files/screenshot-649919.png",
+      userName: "vivion",
+    },
   },
   {
     id: 9,
     coverImg:
       "https://static.imooc-lego.com/upload-files/screenshot-649919.png",
     title: "前端架构师海报",
+    desc: "前端架构师海报",
+    uuid: "123",
     author: "vivion",
     copiedCount: 1,
+    isTemplate: true,
+    isHot: true,
+    isNew: true,
+    status: 1,
+    user: {
+      gender: "male",
+      nickName: "vivion",
+      picture:
+        "https://static.imooc-lego.com/upload-files/screenshot-649919.png",
+      userName: "vivion",
+    },
   },
   {
     id: 10,
     coverImg:
       "https://static.imooc-lego.com/upload-files/screenshot-649919.png",
     title: "前端架构师海报",
+    desc: "前端架构师海报",
+    uuid: "123",
     author: "vivion",
     copiedCount: 1,
+    isTemplate: true,
+    isHot: true,
+    isNew: true,
+    status: 1,
+    user: {
+      gender: "male",
+      nickName: "vivion",
+      picture:
+        "https://static.imooc-lego.com/upload-files/screenshot-649919.png",
+      userName: "vivion",
+    },
   },
 ];
 
