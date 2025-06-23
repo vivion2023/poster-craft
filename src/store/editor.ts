@@ -63,12 +63,12 @@ export type AllFormProps = PageProps & AllComponentProps;
 
 // 页面数据
 export interface PageData {
-  id?: number;
+  id?: number; // 模板id(自增)
   props?: PageProps;
   title?: string;
   desc?: string;
   coverImg?: string;
-  uuid?: string;
+  uuid?: string; // 模板uuid
   setting?: { [key: string]: any };
   isTemplate?: boolean;
   isHot?: boolean;
