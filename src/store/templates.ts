@@ -1,14 +1,18 @@
 import { Module } from "vuex";
 import { GlobalDataProps } from "./index";
-export interface TemplateProps {
-  id: number;
-  title: string;
-  coverImg: string;
-  author: string;
-  copiedCount: number;
-}
+import { RespListData } from "./respTypes";
+import axios from "axios";
+import { PageData } from "./editor";
+export type TemplateProps = Required<
+  // 把结果中的顶层属性都变成必填
+  Omit<
+    // 先删除指定的两个键
+    PageData, // 原始类型
+    "props" | "setting" // 需要排除的键
+  >
+>;
 
-export const testData: TemplateProps[] = [
+export const testData: PageData[] = [
   {
     id: 1,
     coverImg:
@@ -91,7 +95,7 @@ export const testData: TemplateProps[] = [
 ];
 
 export interface TemplatesProps {
-  data: TemplateProps[];
+  data: typeof testData;
 }
 
 const templates: Module<TemplatesProps, GlobalDataProps> = {
@@ -102,6 +106,20 @@ const templates: Module<TemplatesProps, GlobalDataProps> = {
   getters: {
     getTemplateById: (state) => (id: number) => {
       return state.data.find((item) => item.id === id);
+    },
+  },
+
+  mutations: {
+    fetchTemplates(state, rawData: RespListData<TemplateProps>) {
+      state.data = rawData.data.list;
+    },
+  },
+
+  actions: {
+    fetchTemplates({ commit }) {
+      return axios.get("/templates").then((resp) => {
+        commit("fetchTemplates", resp.data);
+      });
     },
   },
 };

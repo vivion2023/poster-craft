@@ -78,38 +78,20 @@
       <p>只需替换文字和图片，一键自动生成H5</p>
     </div>
 
-    <Row :gutter="[16, 24]">
-      <Col :span="6" v-for="item in hotItems" :key="item.id">
-        <router-link
-          class="hot-item"
-          :to="{ name: 'template', params: { id: item.id } }"
-          style="display: block"
-        >
-          <a-card hoverable style="width: 240px">
-            <template #cover>
-              <img alt="example" :src="item.coverImg" />
-            </template>
-            <a-card-meta :title="item.title">
-              <template #description
-                >{{ item.author }} {{ item.copiedCount }}</template
-              >
-            </a-card-meta>
-          </a-card>
-        </router-link>
-      </Col>
-    </Row>
+    <a-row :gutter="16">
+      <template-list :list="testData"></template-list>
+    </a-row>
+    <a-row type="flex" justify="center">
+      <a-button type="primary" size="large">加载更多</a-button>
+    </a-row>
   </div>
 </template>
 
 <script setup lang="ts">
 import { Typography, InputSearch, Row, Col } from "ant-design-vue";
-import { useStore } from "vuex";
-import { computed } from "vue";
-import { GlobalDataProps } from "@/store/index";
+import TemplateList from "@/components/TemplateList.vue";
+import { testData } from "@/store/templates";
 const { Title } = Typography;
-
-const store = useStore<GlobalDataProps>();
-const hotItems = computed(() => store.state.templates.data);
 </script>
 
 <style scoped lang="scss">
