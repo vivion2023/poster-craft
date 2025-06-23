@@ -1,4 +1,5 @@
 import { createApp } from "vue";
+import axios from "axios";
 import App from "./App.vue";
 import router from "./router";
 import store from "./store/index";
@@ -8,6 +9,10 @@ import "cropperjs/dist/cropper.css";
 import * as Icons from "@ant-design/icons-vue";
 
 const app = createApp(App);
+// 添加后端接口前缀
+const baseBackendURL = "http://localhost:7001";
+axios.defaults.baseURL = `${baseBackendURL}/api/`;
+
 app.use(Antd).use(store).use(router);
 
 // 全局注册所有图标
