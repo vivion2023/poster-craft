@@ -23,6 +23,7 @@
           name="loginForm"
           layout="vertical"
           autocomplete="off"
+          ref="loginForm"
           @finish="onFinish"
           @finishFailed="onFinishFailed"
           :rules="rules"
@@ -53,7 +54,7 @@
           </a-form-item>
           <a-form-item>
             <Space :size="16">
-              <Button type="primary" htmlType="submit">登录</Button>
+              <Button type="primary" @click="login">登录</Button>
               <Button htmlType="submit">获取验证码</Button>
             </Space>
           </a-form-item>
@@ -64,10 +65,12 @@
 </template>
 
 <script setup lang="ts">
-import { Typography, Space, Button } from "ant-design-vue";
-import { reactive } from "vue";
+import { Typography, Space, Button, message } from "ant-design-vue";
+import { reactive, ref } from "vue";
 import { useRouter } from "vue-router";
 import { UserOutlined, LockOutlined } from "@ant-design/icons-vue";
+import { Rule } from "ant-design-vue/es/form/interface";
+import type { FormInstance } from "ant-design-vue";
 
 const { Title, Paragraph } = Typography;
 
@@ -82,9 +85,43 @@ const form = reactive({
   verityCode: "",
 });
 
+const loginForm = ref<FormInstance>();
+
+const cellNumberValidator = (rule: Rule, value: string) => {
+  return new Promise((resolve, reject) => {
+    const passed = /^1[3-9]\d{9}$/.test(value.trim());
+    // trim用于去除字符串两端的空格
+    setTimeout(() => {
+      if (passed) {
+        resolve("");
+      } else {
+        reject("手机号格式不正确");
+      }
+    }, 500);
+  });
+};
 const rules = {
-  cellphone: [{ required: true, message: "手机号不能为空", trigger: "blur" }],
+  cellphone: [
+    { required: true, message: "手机号不能为空", trigger: "blur" },
+    { validator: cellNumberValidator, trigger: "blur" },
+  ],
   verityCode: [{ required: true, message: "验证码不能为空", trigger: "blur" }],
+};
+
+const login = () => {
+  if (!loginForm.value) {
+    message.error("请输入正确的信息");
+    return;
+  }
+
+  loginForm.value
+    .validate()
+    .then(() => {
+      message.success("登录成功");
+    })
+    .catch(() => {
+      message.error("请输入正确的信息");
+    });
 };
 
 const onFinish = (values: any) => {
