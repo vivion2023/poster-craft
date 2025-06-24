@@ -55,7 +55,7 @@
           <a-form-item>
             <Space :size="16">
               <Button type="primary" @click="login">登录</Button>
-              <Button htmlType="submit">获取验证码</Button>
+              <Button :disabled="codeButtonDisable">获取验证码</Button>
             </Space>
           </a-form-item>
         </a-form>
@@ -66,7 +66,7 @@
 
 <script setup lang="ts">
 import { Typography, Space, Button, message, Form } from "ant-design-vue";
-import { reactive, ref } from "vue";
+import { computed, reactive, ref } from "vue";
 import { useRouter } from "vue-router";
 import { UserOutlined, LockOutlined } from "@ant-design/icons-vue";
 import { Rule } from "ant-design-vue/es/form/interface";
@@ -81,6 +81,10 @@ const router = useRouter();
 const toHome = () => {
   router.push("/");
 };
+
+const codeButtonDisable = computed(() => {
+  return !/^1[3-9]\d{9}$/.test(form.cellphone.trim());
+});
 
 const form = reactive({
   cellphone: "",
