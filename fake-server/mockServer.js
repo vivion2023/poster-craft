@@ -10,6 +10,9 @@ const expiresIn = "1h"; //过期时间
 function createToken(payload) {
   return jwt.sign(payload, SECRET_KEY, { expiresIn });
 }
+function verifyToken(token) {
+  return jwt.verify(token, SECRET_KEY);
+}
 
 const rewriter = jsonServer.rewriter({
   "/api/*": "/$1",
@@ -23,6 +26,25 @@ server.post("/users/loginByPhoneNumber", (req, res) => {
   res.status(200).jsonp({
     token: accessToken,
   });
+});
+server.use((req, res, next) => {
+  const errorResp = {
+    errno: 12001,
+    message: "登录校验失败",
+  };
+
+  const authHeader = req.headers.authorization;
+  if (authHeader === undefined) {
+    res.jsonp(errorResp);
+    return;
+  }
+  try {
+    verifyToken(authHeader.split(" ")[1]);
+    next();
+  } catch {
+    res.jsonp(errorResp);
+    return;
+  }
 });
 router.render = (req, res) => {
   res.jsonp({
