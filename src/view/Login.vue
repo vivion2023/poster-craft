@@ -65,12 +65,14 @@
 </template>
 
 <script setup lang="ts">
-import { Typography, Space, Button, message } from "ant-design-vue";
+import { Typography, Space, Button, message, Form } from "ant-design-vue";
 import { reactive, ref } from "vue";
 import { useRouter } from "vue-router";
 import { UserOutlined, LockOutlined } from "@ant-design/icons-vue";
 import { Rule } from "ant-design-vue/es/form/interface";
 import type { FormInstance } from "ant-design-vue";
+
+const { useForm } = Form;
 
 const { Title, Paragraph } = Typography;
 
@@ -100,13 +102,15 @@ const cellNumberValidator = (rule: Rule, value: string) => {
     }, 500);
   });
 };
-const rules = {
+const rules = reactive({
   cellphone: [
     { required: true, message: "手机号不能为空", trigger: "blur" },
     { validator: cellNumberValidator, trigger: "blur" },
   ],
   verityCode: [{ required: true, message: "验证码不能为空", trigger: "blur" }],
-};
+});
+
+const { validate, resetFields } = useForm(form, rules);
 
 const login = () => {
   if (!loginForm.value) {
@@ -114,10 +118,10 @@ const login = () => {
     return;
   }
 
-  loginForm.value
-    .validate()
+  validate()
     .then(() => {
       message.success("登录成功");
+      resetFields();
     })
     .catch(() => {
       message.error("请输入正确的信息");
