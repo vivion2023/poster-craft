@@ -1,7 +1,7 @@
 <template>
   <div class="login-container">
     <a-row class="login-row" style="min-height: 100vh">
-      <a-col :span="12" class="login-left">
+      <a-col :span="11" class="login-left">
         <Space direction="vertical" :size="20">
           <div class="logo-box" @click="toHome">
             <Space :size="8">
@@ -17,53 +17,54 @@
           </div>
         </Space>
       </a-col>
-      <a-col :span="12" class="login-right">
-        <Form
-          :model="formState"
+      <a-col :span="13" class="login-right">
+        <a-form
+          :model="form"
           name="loginForm"
           layout="vertical"
           autocomplete="off"
           @finish="onFinish"
           @finishFailed="onFinishFailed"
+          :rules="rules"
         >
           <h1 class="title">欢迎回来</h1>
           <p class="desc">使用手机号码和验证码登录到慕课乐高</p>
-          <Form.Item name="username">
-            <Input
+          <a-form-item name="cellphone" label="手机号码" required>
+            <a-input
               shape="round"
               placeholder="请输入手机号码"
-              :rules="[{ required: true, message: '请输入手机号码' }]"
+              v-model:value="form.cellphone"
             >
               <template #prefix>
                 <UserOutlined class="site-form-item-icon" />
               </template>
-            </Input>
-          </Form.Item>
-          <Form.Item name="password">
-            <Input
+            </a-input>
+          </a-form-item>
+          <a-form-item name="verityCode" label="验证码" required>
+            <a-input
               shape="round"
               placeholder="请输入验证码"
-              :rules="[{ required: true, message: '请输入四位验证码' }]"
+              v-model:value="form.verityCode"
             >
               <template #prefix>
                 <LockOutlined class="site-form-item-icon" />
               </template>
-            </Input>
-          </Form.Item>
-          <Form.Item>
+            </a-input>
+          </a-form-item>
+          <a-form-item>
             <Space :size="16">
               <Button type="primary" htmlType="submit">登录</Button>
               <Button htmlType="submit">获取验证码</Button>
             </Space>
-          </Form.Item>
-        </Form>
+          </a-form-item>
+        </a-form>
       </a-col>
     </a-row>
   </div>
 </template>
 
 <script setup lang="ts">
-import { Typography, Space, Form, Input, Button } from "ant-design-vue";
+import { Typography, Space, Button } from "ant-design-vue";
 import { reactive } from "vue";
 import { useRouter } from "vue-router";
 import { UserOutlined, LockOutlined } from "@ant-design/icons-vue";
@@ -76,10 +77,15 @@ const toHome = () => {
   router.push("/");
 };
 
-const formState = reactive({
-  username: "",
-  password: "",
+const form = reactive({
+  cellphone: "",
+  verityCode: "",
 });
+
+const rules = {
+  cellphone: [{ required: true, message: "手机号不能为空", trigger: "blur" }],
+  verityCode: [{ required: true, message: "验证码不能为空", trigger: "blur" }],
+};
 
 const onFinish = (values: any) => {
   console.log(values);
