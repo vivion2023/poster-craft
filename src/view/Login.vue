@@ -55,7 +55,9 @@
           <a-form-item>
             <Space :size="16">
               <Button type="primary" @click="login">登录</Button>
-              <Button :disabled="codeButtonDisable">获取验证码</Button>
+              <Button :disabled="codeButtonDisable" @click="getCode"
+                >获取验证码</Button
+              >
             </Space>
           </a-form-item>
         </a-form>
@@ -71,6 +73,7 @@ import { useRouter } from "vue-router";
 import { UserOutlined, LockOutlined } from "@ant-design/icons-vue";
 import { Rule } from "ant-design-vue/es/form/interface";
 import type { FormInstance } from "ant-design-vue";
+import axios from "axios";
 
 const { useForm } = Form;
 
@@ -130,6 +133,12 @@ const login = () => {
     .catch(() => {
       message.error("请输入正确的信息");
     });
+};
+
+const getCode = () => {
+  axios.post("/users/getUserInfo", { phoneNumber: form.cellphone }).then(() => {
+    message.success("验证码已发送,请注意查收", 5);
+  });
 };
 
 const onFinish = (values: any) => {

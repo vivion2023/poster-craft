@@ -20,6 +20,7 @@ const rewriter = jsonServer.rewriter({
 server.use(bodyParser.json());
 server.use(rewriter);
 server.use(middlewares);
+// 用户登录
 server.post("/users/loginByPhoneNumber", (req, res) => {
   const { phoneNumber, veriCode } = req.body;
   const accessToken = createToken({ phoneNumber, veriCode });
@@ -27,6 +28,13 @@ server.post("/users/loginByPhoneNumber", (req, res) => {
     token: accessToken,
   });
 });
+
+// 获取验证码（不需要认证）
+server.post("/users/genVeriCode", (req, res) => {
+  const veriCode = Math.floor(Math.random() * 9000 + 1000);
+  return res.status(200).jsonp({ veriCode });
+});
+
 server.use((req, res, next) => {
   const errorResp = {
     errno: 12001,
@@ -46,6 +54,7 @@ server.use((req, res, next) => {
     return;
   }
 });
+
 router.render = (req, res) => {
   res.jsonp({
     list: res.locals.data,
