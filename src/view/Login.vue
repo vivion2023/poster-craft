@@ -55,9 +55,9 @@
           <a-form-item>
             <Space :size="16">
               <Button type="primary" @click="login">登录</Button>
-              <Button :disabled="codeButtonDisable" @click="getCode"
-                >获取验证码</Button
-              >
+              <Button :disabled="codeButtonDisable" @click="getCode">{{
+                counter === 60 ? "获取验证码" : `${counter}秒后重发`
+              }}</Button>
             </Space>
           </a-form-item>
         </a-form>
@@ -74,27 +74,35 @@ import { UserOutlined, LockOutlined } from "@ant-design/icons-vue";
 import { Rule } from "ant-design-vue/es/form/interface";
 import type { FormInstance } from "ant-design-vue";
 import axios from "axios";
-
-const { useForm } = Form;
-
 const { Title, Paragraph } = Typography;
-
 const router = useRouter();
+const { useForm } = Form;
 
 const toHome = () => {
   router.push("/");
 };
 
+const loginForm = ref<FormInstance>(); // 表单实例
 const codeButtonDisable = computed(() => {
-  return !/^1[3-9]\d{9}$/.test(form.cellphone.trim());
-});
+  return !/^1[3-9]\d{9}$/.test(form.cellphone.trim()) || counter.value < 60;
+}); // 验证码按钮是否禁用
+const counter = ref(60); // 验证码倒计时
 
 const form = reactive({
   cellphone: "",
   verityCode: "",
-});
+}); // 表单数据
 
-const loginForm = ref<FormInstance>();
+const startCount = () => {
+  counter.value--;
+  const timer = setInterval(() => {
+    counter.value--;
+    if (counter.value <= 0) {
+      clearInterval(timer);
+      counter.value = 60;
+    }
+  }, 1000);
+};
 
 const cellNumberValidator = (rule: Rule, value: string) => {
   return new Promise((resolve, reject) => {
@@ -136,8 +144,9 @@ const login = () => {
 };
 
 const getCode = () => {
-  axios.post("/users/getUserInfo", { phoneNumber: form.cellphone }).then(() => {
+  axios.post("/users/genVeriCode", { phoneNumber: form.cellphone }).then(() => {
     message.success("验证码已发送,请注意查收", 5);
+    startCount();
   });
 };
 

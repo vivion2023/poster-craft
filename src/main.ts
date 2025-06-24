@@ -10,7 +10,7 @@ import * as Icons from "@ant-design/icons-vue";
 
 const app = createApp(App);
 // 添加后端接口前缀
-const baseBackendURL = "http://localhost:7001";
+const baseBackendURL = "http://localhost:3000";
 axios.defaults.baseURL = `${baseBackendURL}/api/`;
 
 app.use(Antd).use(store).use(router);
