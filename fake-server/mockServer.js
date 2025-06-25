@@ -35,7 +35,11 @@ server.post("/users/loginByPhoneNumber", (req, res) => {
 // 获取验证码（不需要认证）
 server.post("/users/genVeriCode", (req, res) => {
   const veriCode = Math.floor(Math.random() * 9000 + 1000);
-  return res.status(200).jsonp({ veriCode });
+  return res.status(200).jsonp({
+    errno: 0,
+    data: { veriCode },
+    message: "验证码获取成功",
+  });
 });
 
 server.use((req, res, next) => {
@@ -56,6 +60,20 @@ server.use((req, res, next) => {
     res.jsonp(errorResp);
     return;
   }
+});
+
+// 获取用户信息（需要认证）
+server.get("/users/getUserInfo", (req, res) => {
+  res.status(200).jsonp({
+    errno: 0,
+    data: {
+      id: 1,
+      username: "vivion",
+      phoneNumber: "13612344324",
+      email: "test@example.com",
+    },
+    message: "获取用户信息成功",
+  });
 });
 
 router.render = (req, res) => {

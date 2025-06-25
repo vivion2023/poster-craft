@@ -3,21 +3,40 @@ import { GlobalDataProps } from "./index";
 import { RespData } from "@/store/respTypes";
 import axios from "axios";
 
+export interface UserDataProps {
+  username?: string;
+  id?: string;
+  phoneNumber?: string;
+  nickName?: string;
+  description?: string;
+  updatedAt?: string;
+  createdAt?: string;
+  iat?: number;
+  exp?: number;
+  picture?: string;
+  gender?: string;
+}
 export interface UserProps {
   isLogin: boolean;
   token?: string;
-  userName?: string;
+  data: UserDataProps;
 }
 
 const user: Module<UserProps, GlobalDataProps> = {
   state: {
     isLogin: false,
+    data: {},
   },
 
   mutations: {
-    login(state, rowData: RespData<{ token: string }>) {
-      const { token } = rowData.data;
+    login(state, rawData: RespData<{ token: string }>) {
+      const { token } = rawData.data;
       state.token = token;
+      axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+    },
+    fetchCurrentUser(state, rawData: RespData<UserDataProps>) {
+      state.isLogin = true;
+      state.data = { ...rawData.data };
     },
     logout(state) {
       state.isLogin = false;
@@ -31,6 +50,16 @@ const user: Module<UserProps, GlobalDataProps> = {
         .then((response) => {
           commit("login", response.data);
         });
+    },
+    fetchCurrentUser({ commit }) {
+      return axios.get("/users/getUserInfo").then((rawData) => {
+        commit("fetchCurrentUser", rawData.data);
+      });
+    },
+    loginAndFetch({ dispatch }, loginData) {
+      return dispatch("login", loginData).then(() => {
+        return dispatch("fetchCurrentUser");
+      });
     },
   },
 };

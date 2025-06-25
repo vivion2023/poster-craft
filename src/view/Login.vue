@@ -142,9 +142,13 @@ const login = () => {
         phoneNumber: form.cellphone,
         verityCode: form.verityCode,
       };
-      store.dispatch("login", payload);
-      // message.success("登录成功");
-      // resetFields();
+      store.dispatch("loginAndFetch", payload).then(() => {
+        message.success("登录成功 2秒后跳转首页");
+        setTimeout(() => {
+          router.push("/");
+        }, 2000);
+        resetFields();
+      });
     })
     .catch(() => {
       message.error("请输入正确的信息");
