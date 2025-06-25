@@ -2,6 +2,7 @@ import { Module } from "vuex";
 import { GlobalDataProps } from "./index";
 import { RespData } from "@/store/respTypes";
 import axios from "axios";
+import { actionWrapper } from "./index";
 
 export interface UserDataProps {
   username?: string;
@@ -44,18 +45,10 @@ const user: Module<UserProps, GlobalDataProps> = {
   },
 
   actions: {
-    login({ commit }, payload) {
-      return axios
-        .post("/users/loginByPhoneNumber", payload)
-        .then((response) => {
-          commit("login", response.data);
-        });
-    },
-    fetchCurrentUser({ commit }) {
-      return axios.get("/users/getUserInfo").then((rawData) => {
-        commit("fetchCurrentUser", rawData.data);
-      });
-    },
+    login: actionWrapper("/users/loginByPhoneNumber", "login", {
+      method: "POST",
+    }),
+    fetchCurrentUser: actionWrapper("/users/getUserInfo", "fetchCurrentUser"),
     loginAndFetch({ dispatch }, loginData) {
       return dispatch("login", loginData).then(() => {
         return dispatch("fetchCurrentUser");
