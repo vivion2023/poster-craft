@@ -2,7 +2,7 @@ import { Module } from "vuex";
 import { GlobalDataProps } from "./index";
 import { RespData } from "@/store/respTypes";
 import axios from "axios";
-import { actionWrapper } from "./index";
+import { actionWrapper } from "./utils";
 
 export interface UserDataProps {
   username?: string;
