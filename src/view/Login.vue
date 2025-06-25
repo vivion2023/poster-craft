@@ -74,9 +74,12 @@ import { UserOutlined, LockOutlined } from "@ant-design/icons-vue";
 import { Rule } from "ant-design-vue/es/form/interface";
 import type { FormInstance } from "ant-design-vue";
 import axios from "axios";
+import { useStore } from "vuex";
+
 const { Title, Paragraph } = Typography;
 const router = useRouter();
 const { useForm } = Form;
+const store = useStore();
 
 const toHome = () => {
   router.push("/");
@@ -135,8 +138,13 @@ const login = () => {
 
   validate()
     .then(() => {
-      message.success("登录成功");
-      resetFields();
+      const payload = {
+        phoneNumber: form.cellphone,
+        verityCode: form.verityCode,
+      };
+      store.dispatch("login", payload);
+      // message.success("登录成功");
+      // resetFields();
     })
     .catch(() => {
       message.error("请输入正确的信息");

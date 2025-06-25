@@ -25,7 +25,10 @@ server.post("/users/loginByPhoneNumber", (req, res) => {
   const { phoneNumber, veriCode } = req.body;
   const accessToken = createToken({ phoneNumber, veriCode });
   res.status(200).jsonp({
-    token: accessToken,
+    errno: 0,
+    data: {
+      token: accessToken,
+    },
   });
 });
 
