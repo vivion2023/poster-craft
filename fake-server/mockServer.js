@@ -67,10 +67,17 @@ server.get("/users/getUserInfo", (req, res) => {
   res.status(200).jsonp({
     errno: 0,
     data: {
+      username: "13612344324",
       id: 1,
-      username: "vivion",
       phoneNumber: "13612344324",
-      email: "test@example.com",
+      nickName: "vivion",
+      description: "测试用户",
+      updatedAt: "2025-06-25 10:00:00",
+      createdAt: "2025-06-25 10:00:00",
+      iat: 1719369600,
+      exp: 1719373200,
+      picture: "https://picsum.photos/200/300",
+      gender: "0",
     },
     message: "获取用户信息成功",
   });
