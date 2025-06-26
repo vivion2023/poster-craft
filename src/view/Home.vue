@@ -78,10 +78,10 @@
       <p>只需替换文字和图片，一键自动生成H5</p>
     </div>
 
-    <a-row :gutter="16" class="template-list">
+    <div class="template-container">
       <h1 v-if="isLoading">template is loading...</h1>
-      <template-list :list="testData"></template-list>
-    </a-row>
+      <template-list v-else :list="testData"></template-list>
+    </div>
     <a-row type="flex" justify="center">
       <a-button type="primary" size="large">加载更多</a-button>
     </a-row>

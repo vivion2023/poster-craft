@@ -122,11 +122,9 @@
     }
   }
 
-  .template-list {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
+  .template-container {
+    width: 100%;
+    max-width: 1200px;
   }
 }
 

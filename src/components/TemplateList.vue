@@ -1,7 +1,15 @@
 <template>
   <div class="template-list-component">
-    <a-row :gutter="16">
-      <a-col :span="6" v-for="item in list" :key="item.id" class="poster-item">
+    <a-row :gutter="[16, 16]" justify="start">
+      <a-col
+        :xs="24"
+        :sm="12"
+        :md="8"
+        :lg="6"
+        v-for="item in list"
+        :key="item.id"
+        class="poster-item"
+      >
         <router-link :to="{ name: 'template', params: { id: item.id } }">
           <a-card hoverable>
             <template v-slot:cover>

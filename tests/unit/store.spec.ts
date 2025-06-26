@@ -1,8 +1,9 @@
 import { testComponents, ComponentData } from "@/store/editor";
-import { testData } from "@/store/templates";
+// import { testData } from "@/store/templates";
 import { TextComponentProps } from "@/defaultProps";
 import { last, clone, values, update } from "lodash-es";
 import store from "@/store";
+const testData = [];
 const cloneComponents = clone(testComponents);
 describe("test vuex store", () => {
   it("should have three modules", () => {
