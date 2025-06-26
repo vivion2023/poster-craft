@@ -1,7 +1,7 @@
 import { Module } from "vuex";
 import { GlobalDataProps } from "./index";
 import { RespListData } from "./respTypes";
-import axios from "axios";
+import { actionWrapper } from "./utils";
 import { PageData } from "./editor";
 export type TemplateProps = Required<
   // 把结果中的顶层属性都变成必填
@@ -246,11 +246,7 @@ const templates: Module<TemplatesProps, GlobalDataProps> = {
   },
 
   actions: {
-    fetchTemplates({ commit }) {
-      return axios.get("/templates").then((resp) => {
-        commit("fetchTemplates", resp.data);
-      });
-    },
+    fetchTemplates: actionWrapper("/templates", "fetchTemplates"),
   },
 };
 
