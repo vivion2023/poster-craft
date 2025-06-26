@@ -1,5 +1,4 @@
 <template>
-  <a-spin :spinning="isLoading"></a-spin>
   <div class="login-container">
     <a-row class="login-row" style="min-height: 100vh">
       <a-col :span="11" class="login-left">
@@ -145,15 +144,21 @@ const login = () => {
     .then(() => {
       const payload = {
         phoneNumber: form.cellphone,
-        verityCode: form.verityCode,
+        veriCode: form.verityCode,
       };
-      store.dispatch("loginAndFetch", payload).then(() => {
-        message.success("登录成功 2秒后跳转首页");
-        setTimeout(() => {
-          router.push("/");
-        }, 2000);
-        resetFields();
-      });
+      store
+        .dispatch("loginAndFetch", payload)
+        .then(() => {
+          message.success("登录成功 2秒后跳转首页");
+          setTimeout(() => {
+            router.push("/");
+          }, 2000);
+          resetFields();
+        })
+        .catch((error) => {
+          // 显示服务器返回的具体错误信息
+          message.error(error.message || "登录失败，请重试");
+        });
     })
     .catch(() => {
       message.error("请输入正确的信息");
