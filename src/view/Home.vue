@@ -78,7 +78,7 @@
       <p>只需替换文字和图片，一键自动生成H5</p>
     </div>
 
-    <a-row :gutter="16">
+    <a-row :gutter="16" class="template-list">
       <h1 v-if="isLoading">template is loading...</h1>
       <template-list :list="testData"></template-list>
     </a-row>
@@ -89,14 +89,19 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed, onMounted } from "vue";
 import { Typography, InputSearch, Row, Col } from "ant-design-vue";
 import TemplateList from "@/components/TemplateList.vue";
-import { testData } from "@/store/templates";
 import { useStore } from "vuex";
 const { Title } = Typography;
 const store = useStore();
 const isLoading = computed(() => store.getters.isOpLoading("fetchTemplates"));
+const testData = computed(() => store.state.templates.data);
+
+// 组件挂载时获取模板数据
+onMounted(() => {
+  store.dispatch("fetchTemplates");
+});
 </script>
 
 <style scoped lang="scss">

@@ -1,0 +1,56 @@
+{
+  "list": [
+    {
+      "id": 72,
+      "uuid": "bacc",
+      "title": "樊登解读意志力",
+      "desc": "未命名作品",
+      "contentId": "5fa128349fa7b1005c9f0541",
+      "publishContentId": "5fa128749fa7b1005c9f0542",
+      "author": "136****5632",
+      "coverImg": "http://static-dev.imooc-lego.com/upload-files/screenshot-036563.png",
+      "isTemplate": true,
+      "status": 2,
+      "copiedCount": 8,
+      "latestPublishAt": "2020-11-20T07:16:20.000Z",
+      "isHot": true,
+      "isNew": true,
+      "orderIndex": 0,
+      "isPublic": true,
+      "createdAt": "2020-11-01T12:34:56.000Z",
+      "updatedAt": "2021-03-16T03:47:11.000Z",
+      "user": {
+        "userName": "136****5632",
+        "nickName": "Viking3",
+        "gender": 0,
+        "picture": "http://imooc-lego-resource-dev.oss-cn-hangzhou.aliyuncs.com/logo-915499.png"
+      }
+    },
+    {
+      "id": 73,
+      "uuid": "bacc",
+      "title": "樊登解读意志力2",
+      "desc": "未命名作品",
+      "contentId": "5fa128349fa7b1005c9f0541",
+      "publishContentId": "5fa128749fa7b1005c9f0542",
+      "author": "136****5632",
+      "coverImg": "https://static.imooc-lego.com/upload-files/screenshot-649919.png",
+      "isTemplate": true,
+      "status": 2,
+      "copiedCount": 8,
+      "latestPublishAt": "2020-11-20T07:16:20.000Z",
+      "isHot": true,
+      "isNew": true,
+      "orderIndex": 0,
+      "isPublic": true,
+      "createdAt": "2020-11-01T12:34:56.000Z",
+      "updatedAt": "2021-03-16T03:47:11.000Z",
+      "user": {
+        "userName": "136****5632",
+        "nickName": "Viking3",
+        "gender": 0,
+        "picture": "http://imooc-lego-resource-dev.oss-cn-hangzhou.aliyuncs.com/logo-915499.png"
+      }
+    }
+  ]
+}

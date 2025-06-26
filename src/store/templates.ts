@@ -226,11 +226,13 @@ export const testData: TemplateProps[] = [
 
 export interface TemplatesProps {
   data: typeof testData;
+  totalTemplates: number;
 }
 
 const templates: Module<TemplatesProps, GlobalDataProps> = {
   state: {
-    data: testData,
+    data: [], // 初始为空数组，这样可以看到loading效果
+    totalTemplates: 0,
   },
 
   getters: {
@@ -241,7 +243,9 @@ const templates: Module<TemplatesProps, GlobalDataProps> = {
 
   mutations: {
     fetchTemplates(state, rawData: RespListData<TemplateProps>) {
-      state.data = rawData.data.list;
+      const { count, list } = rawData.data;
+      state.data = [...state.data, ...list];
+      state.totalTemplates = count;
     },
   },
 

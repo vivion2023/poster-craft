@@ -7,6 +7,7 @@ const router = jsonServer.router(__dirname + "/db.json");
 const middlewares = jsonServer.defaults();
 const SECRET_KEY = "1234567890"; //密钥
 const expiresIn = "1h"; //过期时间
+const templateData = require("./template.json");
 
 // 内存存储验证码，格式：{ phoneNumber: { code: '1234', timestamp: 1234567890 } }
 const veriCodeStore = new Map();
@@ -40,7 +41,6 @@ server.post("/users/loginByPhoneNumber", (req, res) => {
   const { phoneNumber, veriCode } = req.body;
   console.log("登录请求: ", phoneNumber, veriCode);
   if (!phoneNumber || !veriCode) {
-    console.log("登录失败: 手机号或验证码为空");
     return res.status(200).jsonp({
       errno: 12001,
       message: "手机号和验证码不能为空",
@@ -107,6 +107,65 @@ server.post("/users/genVeriCode", (req, res) => {
     data: { veriCode },
     message: "验证码获取成功",
   });
+});
+
+// 获取模板列表（不需要认证，添加延迟模拟loading）
+server.get("/templates", (req, res) => {
+  // 添加3秒延迟来查看loading效果
+  setTimeout(() => {
+    // const templates = [
+    //   {
+    //     id: 1,
+    //     title: "前端架构师海报",
+    //     desc: "前端架构师海报",
+    //     coverImg:
+    //       "https://static.imooc-lego.com/upload-files/screenshot-889755.png",
+    //     uuid: "123",
+    //     author: "vivion",
+    //     copiedCount: 123,
+    //     isTemplate: true,
+    //     isHot: true,
+    //     isNew: true,
+    //     status: 13,
+    //     user: {
+    //       gender: "male",
+    //       nickName: "vivion",
+    //       picture:
+    //         "https://static.imooc-lego.com/upload-files/screenshot-889755.png",
+    //       userName: "13455556666",
+    //     },
+    //   },
+    //   {
+    //     id: 2,
+    //     title: "前端架构师海报2",
+    //     desc: "前端架构师海报",
+    //     coverImg: "http://static-dev.imooc-lego.com/imooc-test/sZHlgv.png",
+    //     uuid: "124",
+    //     author: "vivion",
+    //     copiedCount: 23,
+    //     isTemplate: true,
+    //     isHot: true,
+    //     isNew: true,
+    //     status: 1,
+    //     user: {
+    //       gender: "male",
+    //       nickName: "vivion",
+    //       picture:
+    //         "https://static.imooc-lego.com/upload-files/screenshot-889755.png",
+    //       userName: "13566667777",
+    //     },
+    //   },
+    // ];
+
+    res.status(200).jsonp({
+      errno: 0,
+      data: {
+        list: templateData.list,
+        count: templateData.list.length,
+      },
+      message: "获取模板列表成功",
+    });
+  }, 3000); // 3秒延迟
 });
 
 server.use((req, res, next) => {
