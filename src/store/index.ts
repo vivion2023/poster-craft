@@ -4,11 +4,13 @@ import user, { UserProps } from "./user";
 import editor, { EditorProps } from "./editor";
 import { ComponentData } from "./editor";
 export { ComponentData };
+import global, { GlobalStatus } from "./global";
 
 export interface GlobalDataProps {
   user: UserProps;
   templates: TemplatesProps;
   editor: EditorProps;
+  global: GlobalStatus;
 }
 
 const store = createStore({
@@ -16,6 +18,7 @@ const store = createStore({
     templates,
     user,
     editor,
+    global,
   },
   actions: {},
 });
