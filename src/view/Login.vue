@@ -54,7 +54,9 @@
           </a-form-item>
           <a-form-item>
             <Space :size="16">
-              <Button type="primary" @click="login">登录</Button>
+              <Button type="primary" @click="login" :loading="isLoginLoading"
+                >登录</Button
+              >
               <Button :disabled="codeButtonDisable" @click="getCode">{{
                 counter === 60 ? "获取验证码" : `${counter}秒后重发`
               }}</Button>
@@ -80,6 +82,8 @@ const { Title, Paragraph } = Typography;
 const router = useRouter();
 const { useForm } = Form;
 const store = useStore();
+const isLoading = computed(() => store.getters.isLoading);
+const isLoginLoading = computed(() => store.getters.isOpLoading("login"));
 
 const toHome = () => {
   router.push("/");
