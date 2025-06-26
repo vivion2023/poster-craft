@@ -31,7 +31,6 @@ axios.interceptors.response.use(
     const { errno, message: errorMessage } = data;
     if (errno && errno !== 0) {
       store.commit("setError", { status: true, message: errorMessage });
-      // 不抛出异常，让业务逻辑正常处理
       return resp;
     }
     return resp;
