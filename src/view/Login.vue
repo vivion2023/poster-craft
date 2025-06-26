@@ -1,261 +1,224 @@
 <template>
-  <div class="login-container">
-    <a-row class="login-row" style="min-height: 100vh">
-      <a-col :span="11" class="login-left">
-        <Space direction="vertical" :size="20">
-          <div class="logo-box" @click="toHome">
-            <Space :size="8">
-              <img src="@/assets/logo.png" alt="logo" />
-              <Title :level="1" class="title">慕课乐高</Title>
-            </Space>
-          </div>
-          <div class="content">
-            <Paragraph class="desc">
-              慕课乐高，一个专注于乐高教育的平台，致力于为乐高爱好者提供一个学习、交流、分享的平台。
-            </Paragraph>
-            <Paragraph class="writer"> vivion, 2025-04-24 </Paragraph>
-          </div>
-        </Space>
+  <div class="login-page">
+    <a-row>
+      <a-col :span="12" class="aside">
+        <div class="aside-inner">
+          <router-link to="/">
+            <img alt="logo" src="@/assets/logo.png" class="logo-img" />
+          </router-link>
+          <h2>你好，欢迎使用</h2>
+          <span class="text-white-70">vivion, 2025</span>
+        </div>
       </a-col>
-      <a-col :span="13" class="login-right">
-        <a-form
-          :model="form"
-          name="loginForm"
-          layout="vertical"
-          autocomplete="off"
-          ref="loginForm"
-          @finish="onFinish"
-          @finishFailed="onFinishFailed"
-          :rules="rules"
-        >
-          <h1 class="title">欢迎回来</h1>
-          <p class="desc">使用手机号码和验证码登录到慕课乐高</p>
-          <a-form-item name="cellphone" label="手机号码" required>
-            <a-input
-              shape="round"
-              placeholder="请输入手机号码"
-              v-model:value="form.cellphone"
-            >
-              <template #prefix>
-                <UserOutlined class="site-form-item-icon" />
-              </template>
+      <a-col :span="12" class="login-area">
+        <a-form layout="vertical" :model="form" :rules="rules" ref="loginForm">
+          <h2>欢迎回来</h2>
+          <p class="subTitle">使用手机号码和验证码登录到慕课乐高</p>
+          <a-form-item label="手机号码" required name="cellphone">
+            <a-input placeholder="手机号码" v-model:value="form.cellphone">
+              <template v-slot:prefix
+                ><UserOutlined style="color: rgba(0, 0, 0, 0.25)"
+              /></template>
             </a-input>
           </a-form-item>
-          <a-form-item name="verityCode" label="验证码" required>
-            <a-input
-              shape="round"
-              placeholder="请输入验证码"
-              v-model:value="form.verityCode"
-            >
-              <template #prefix>
-                <LockOutlined class="site-form-item-icon" />
-              </template>
+          <a-form-item label="验证码" required name="veriCode">
+            <a-input placeholder="四位验证码" v-model:value="form.veriCode">
+              <template v-slot:prefix
+                ><LockOutlined style="color: rgba(0, 0, 0, 0.25)"
+              /></template>
             </a-input>
           </a-form-item>
           <a-form-item>
-            <Space :size="16">
-              <Button type="primary" @click="login" :loading="isLoginLoading"
-                >登录</Button
-              >
-              <Button :disabled="codeButtonDisable" @click="getCode">{{
-                counter === 60 ? "获取验证码" : `${counter}秒后重发`
-              }}</Button>
-            </Space>
+            <a-button
+              type="primary"
+              size="large"
+              @click="login"
+              :loading="isLoginLoading"
+            >
+              登录
+            </a-button>
+            <a-button
+              size="large"
+              :style="{ marginLeft: '20px' }"
+              :disabled="codeButtonDisable"
+              @click="getCode"
+            >
+              {{ counter === 60 ? "获取验证码" : `${counter}秒后重发` }}
+            </a-button>
           </a-form-item>
         </a-form>
       </a-col>
     </a-row>
   </div>
 </template>
-
-<script setup lang="ts">
-import { Typography, Space, Button, message, Form } from "ant-design-vue";
-import { computed, reactive, ref } from "vue";
-import { useRouter } from "vue-router";
-import { UserOutlined, LockOutlined } from "@ant-design/icons-vue";
-import { Rule } from "ant-design-vue/es/form/interface";
-import type { FormInstance } from "ant-design-vue";
+<script lang="ts">
+import { defineComponent, reactive, ref, Ref, computed, watch } from "vue";
 import axios from "axios";
 import { useStore } from "vuex";
-
-const { Title, Paragraph } = Typography;
-const router = useRouter();
-const { useForm } = Form;
-const store = useStore();
-const isLoading = computed(() => store.getters.isLoading);
-const isLoginLoading = computed(() => store.getters.isOpLoading("login"));
-
-const toHome = () => {
-  router.push("/");
-};
-
-const loginForm = ref<FormInstance>(); // 表单实例
-const codeButtonDisable = computed(() => {
-  return !/^1[3-9]\d{9}$/.test(form.cellphone.trim()) || counter.value < 60;
-}); // 验证码按钮是否禁用
-const counter = ref(60); // 验证码倒计时
-
-const form = reactive({
-  cellphone: "",
-  verityCode: "",
-}); // 表单数据
-
-const startCount = () => {
-  counter.value--;
-  const timer = setInterval(() => {
-    counter.value--;
-    if (counter.value <= 0) {
-      clearInterval(timer);
-      counter.value = 60;
-    }
-  }, 1000);
-};
-
-const cellNumberValidator = (rule: Rule, value: string) => {
-  return new Promise((resolve, reject) => {
-    const passed = /^1[3-9]\d{9}$/.test(value.trim());
-    // trim用于去除字符串两端的空格
-    setTimeout(() => {
-      if (passed) {
-        resolve("");
-      } else {
-        reject("手机号格式不正确");
-      }
-    }, 500);
-  });
-};
-const rules = reactive({
-  cellphone: [
-    { required: true, message: "手机号不能为空", trigger: "blur" },
-    { validator: cellNumberValidator, trigger: "blur" },
-  ],
-  verityCode: [{ required: true, message: "验证码不能为空", trigger: "blur" }],
-});
-
-const { validate, resetFields } = useForm(form, rules);
-
-const login = () => {
-  if (!loginForm.value) {
-    message.error("请输入正确的信息");
-    return;
-  }
-
-  validate()
-    .then(() => {
-      const payload = {
-        phoneNumber: form.cellphone,
-        veriCode: form.verityCode,
-      };
-      store
-        .dispatch("loginAndFetch", payload)
-        .then(() => {
-          message.success("登录成功 2秒后跳转首页");
-          setTimeout(() => {
-            router.push("/");
-          }, 2000);
-          resetFields();
-        })
-        .catch((error) => {
-          // 显示服务器返回的具体错误信息
-          message.error(error.message || "登录失败，请重试");
-        });
-    })
-    .catch(() => {
-      message.error("请输入正确的信息");
+import { useRouter } from "vue-router";
+import { useForm } from "ant-design-vue/es/form";
+import { UserOutlined, LockOutlined } from "@ant-design/icons-vue";
+import { message } from "ant-design-vue";
+import { Rule } from "ant-design-vue/es/form/interface";
+import { GlobalDataProps } from "../store/index";
+interface RuleFormInstance {
+  validate: () => Promise<any>;
+}
+export default defineComponent({
+  components: {
+    UserOutlined,
+    LockOutlined,
+  },
+  setup() {
+    const store = useStore<GlobalDataProps>();
+    const isLoginLoading = computed(() => store.getters.isOpLoading("login"));
+    const router = useRouter();
+    const counter = ref(60);
+    let timer = 0;
+    const loginForm = ref() as Ref<RuleFormInstance>;
+    const form = reactive({
+      cellphone: "",
+      veriCode: "",
     });
-};
+    const codeButtonDisable = computed(() => {
+      return !/^1[3-9]\d{9}$/.test(form.cellphone.trim()) || counter.value < 60;
+    });
+    const startCounter = () => {
+      counter.value--;
+      timer = window.setInterval(() => {
+        counter.value--;
+      }, 1000);
+    };
+    watch(counter, (newValue) => {
+      if (newValue === 0) {
+        clearInterval(timer);
+        counter.value = 60;
+      }
+    });
+    const cellnumberValidator = (rule: Rule, value: string) => {
+      return new Promise((resolve, reject) => {
+        const passed = /^1[3-9]\d{9}$/.test(value.trim());
+        setTimeout(() => {
+          if (passed) {
+            resolve("");
+          } else {
+            reject("手机号码格式不正确");
+          }
+        }, 500);
+      });
+    };
+    const rules = reactive({
+      cellphone: [
+        { required: true, message: "手机号码不能为空", trigger: "blur" },
+        // { pattern: /^1[3-9]\d{9}$/, message: '手机号码格式不正确', trigger: 'blur' }
+        { asyncValidator: cellnumberValidator, trigger: "blur" },
+      ],
+      veriCode: [
+        { required: true, message: "验证码不能为空", trigger: "blur" },
+      ],
+    });
 
-const getCode = () => {
-  axios.post("/users/genVeriCode", { phoneNumber: form.cellphone }).then(() => {
-    message.success("验证码已发送,请注意查收", 5);
-    startCount();
-  });
-};
-
-const onFinish = (values: any) => {
-  console.log(values);
-};
-
-const onFinishFailed = (errorInfo: any) => {
-  console.log(errorInfo);
-};
+    const { validate, resetFields } = useForm(form, rules);
+    const login = () => {
+      validate().then(() => {
+        const payload = {
+          phoneNumber: form.cellphone,
+          veriCode: form.veriCode,
+        };
+        store
+          .dispatch("loginAndFetch", { data: payload })
+          .then(() => {
+            message.success("登录成功 2秒后跳转首页");
+            setTimeout(() => {
+              router.push("/");
+            }, 2000);
+          })
+          .catch(() => {
+            // 错误已经在 App.vue 中统一处理了，这里只需要捕获异常防止未处理的Promise
+            console.log("登录失败，错误已在App中统一处理");
+          });
+      });
+    };
+    const getCode = () => {
+      axios
+        .post("/users/genVeriCode", { phoneNumber: form.cellphone })
+        .then(() => {
+          message.success("验证码已发送，请注意查收", 5);
+          startCounter();
+        });
+    };
+    return {
+      form,
+      rules,
+      loginForm,
+      login,
+      codeButtonDisable,
+      getCode,
+      counter,
+      isLoginLoading,
+    };
+  },
+});
 </script>
-
-<style lang="scss" scoped>
-.login-container {
+<style>
+.logo-area {
+  position: absolute;
+  top: 30px;
+  width: 150px;
+}
+.aside {
   height: 100vh;
-
-  .login-left,
-  .login-right {
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .login-left {
-    background: url("@/assets/login-bg.png") center/cover no-repeat;
-    .logo-box {
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-right: 10px;
-    }
-    img {
-      width: 62px;
-      height: 62px;
-      display: block;
-    }
-    .title {
-      margin: 0;
-      padding: 0;
-      color: #fff;
-    }
-    .content {
-      margin: 0 100px;
-      text-align: center;
-      .desc {
-        color: #ccc;
-        font-size: 20px;
-        margin-bottom: 30px;
-      }
-      .writer {
-        color: rgba(211, 211, 211, 0.7);
-        font-size: 16px;
-      }
-    }
-  }
-
-  .login-right {
-    background: #fff;
-    form {
-      text-align: start;
-      font-size: 22px;
-      h1 {
-        color: #333;
-        margin-bottom: 10px;
-      }
-      .desc {
-        color: #666;
-      }
-      :deep(.ant-input) {
-        font-size: 18px;
-        width: 100%;
-      }
-
-      :deep(.ant-input-affix-wrapper) {
-        border-radius: 10px;
-      }
-
-      button {
-        margin-top: 20px;
-        border-radius: 20px;
-        height: 40px;
-        padding: 0 20px;
-        font-size: 20px;
-      }
-    }
-  }
+  background-color: #1a1919;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+.aside .logo-img {
+  width: 200px;
+  margin-bottom: 20px;
+}
+.aside h2 {
+  color: #cccccc;
+  font-size: 29px;
+}
+.aside-inner {
+  width: 60%;
+  text-align: center;
+}
+.login-area {
+  height: 100vh;
+}
+.login-area .ant-form {
+  width: 350px;
+}
+.text-white-70 {
+  color: #999;
+  display: block;
+  font-size: 19px;
+}
+.aside,
+.login-area {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+}
+.login-area h2 {
+  color: #333333;
+  font-size: 29px;
+}
+.login-area .subTitle {
+  color: #666666;
+  font-size: 19px;
+}
+.login-area .ant-form-item-label {
+  display: none;
+}
+.login-area .ant-input-prefix {
+  left: auto;
+  right: 30px;
+  font-size: 19px;
+}
+.login-area .ant-input {
+  font-size: 17px;
+  padding: 20px 45px 20px 30px;
 }
 </style>

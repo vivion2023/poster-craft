@@ -38,7 +38,7 @@ server.use(middlewares);
 // 用户登录
 server.post("/users/loginByPhoneNumber", (req, res) => {
   const { phoneNumber, veriCode } = req.body;
-
+  console.log("登录请求: ", phoneNumber, veriCode);
   if (!phoneNumber || !veriCode) {
     console.log("登录失败: 手机号或验证码为空");
     return res.status(200).jsonp({

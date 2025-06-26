@@ -1,38 +1,48 @@
 <template>
   <div class="app-container">
+    <a-spin v-if="showLoading" tip="读取中" class="global-spinner" />
     <router-view />
   </div>
 </template>
 
 <script lang="ts">
-import Uploader from "./components/Uploader.vue";
-import { ref } from "vue";
-export default {
+import { defineComponent, computed, watch } from "vue";
+import { useStore } from "vuex";
+import { useRoute } from "vue-router";
+import { message } from "ant-design-vue";
+import { GlobalDataProps } from "./store/index";
+export default defineComponent({
   name: "App",
   setup() {
-    const uploader = ref();
-    const callUpload = () => {
-      uploader.value.submit();
-    };
+    const store = useStore<GlobalDataProps>();
+    const route = useRoute();
+    const isLoading = computed(() => store.getters.isLoading);
+    const showLoading = computed(
+      () => isLoading.value && !route.meta.disableLoading
+    );
+    const error = computed(() => store.state.global.error);
+    watch(
+      () => error.value.status,
+      (errorValue) => {
+        if (errorValue) {
+          message.error(error.value.message || "未知错误", 3);
+          // 显示错误后清除错误状态，避免重复显示
+          setTimeout(() => {
+            store.commit("setError", { status: false, message: "" });
+          }, 100);
+        }
+      }
+    );
     return {
-      uploader,
-      callUpload,
+      showLoading,
     };
   },
-};
+});
 </script>
-
-<style lang="scss">
-.uploaded-area {
-  text-align: center;
-  h3 {
-    margin-top: 8px;
-    color: #666;
-  }
+<style>
+.app-container .global-spinner {
+  position: fixed;
+  top: 10px;
+  right: 50%;
 }
-// img {
-//   width: 10%;
-//   height: 10%;
-//   object-fit: cover;
-// }
 </style>

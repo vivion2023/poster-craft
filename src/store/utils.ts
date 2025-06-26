@@ -15,8 +15,8 @@ export const actionWrapper = (
     const { data } = await axios(url, newConfig);
 
     // 检查响应是否成功
-    if (data.errno !== 0) {
-      // 如果有错误，抛出异常而不是提交mutation
+    if (data.errno && data.errno !== 0) {
+      // 如果有错误，抛出异常阻止mutation执行
       const error = new Error(data.message || "请求失败");
       (error as any).errno = data.errno;
       throw error;

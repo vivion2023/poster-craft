@@ -23,6 +23,7 @@
     "jsonwebtoken": "^9.0.2",
     "lego-components": "^0.1.7",
     "lodash-es": "^4.17.21",
+    "path-to-regexp": "^8.2.0",
     "qrcode.vue": "^3.6.0",
     "rgb-hex": "^4.1.0",
     "uuid": "^11.1.0",
