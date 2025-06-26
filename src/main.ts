@@ -1,5 +1,5 @@
 import { createApp } from "vue";
-import axios from "axios";
+import axios, { AxiosRequestConfig } from "axios";
 import App from "./App.vue";
 import router from "./router";
 import store from "./store/index";
@@ -7,11 +7,25 @@ import Antd from "ant-design-vue";
 import "ant-design-vue/dist/reset.css";
 import "cropperjs/dist/cropper.css";
 import * as Icons from "@ant-design/icons-vue";
+export type ICustomAxiosConfig = AxiosRequestConfig & {
+  opName?: string;
+};
 
 const app = createApp(App);
 // 添加后端接口前缀
 const baseBackendURL = "http://localhost:3000";
 axios.defaults.baseURL = `${baseBackendURL}/api/`;
+axios.interceptors.request.use((config) => {
+  const newConfig = config as ICustomAxiosConfig;
+  store.commit("startLoading", { opName: newConfig.opName });
+  return config;
+});
+axios.interceptors.response.use((resp) => {
+  const { config } = resp;
+  const newConfig = config as ICustomAxiosConfig;
+  store.commit("finishLoading", { opName: newConfig.opName });
+  return resp;
+});
 
 app.use(Antd).use(store).use(router);
 

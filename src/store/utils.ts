@@ -11,7 +11,7 @@ export const actionWrapper = (
   // 第一步：先返回一个函数和原来的函数处理一模一样
   return async (context: ActionContext<any, any>, payload?: any) => {
     // 第三部，写重复的逻辑
-    const newConfig = { ...config, data: payload };
+    const newConfig = { ...config, data: payload, opName: commitName };
     const { data } = await axios(url, newConfig);
     context.commit(commitName, data);
     return data;
