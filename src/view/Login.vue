@@ -1,4 +1,5 @@
 <template>
+  <a-spin :spinning="isLoading"></a-spin>
   <div class="login-container">
     <a-row class="login-row" style="min-height: 100vh">
       <a-col :span="11" class="login-left">

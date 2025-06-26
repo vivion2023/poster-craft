@@ -79,6 +79,7 @@
     </div>
 
     <a-row :gutter="16">
+      <h1 v-if="isLoading">template is loading...</h1>
       <template-list :list="testData"></template-list>
     </a-row>
     <a-row type="flex" justify="center">
@@ -88,10 +89,14 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from "vue";
 import { Typography, InputSearch, Row, Col } from "ant-design-vue";
 import TemplateList from "@/components/TemplateList.vue";
 import { testData } from "@/store/templates";
+import { useStore } from "vuex";
 const { Title } = Typography;
+const store = useStore();
+const isLoading = computed(() => store.getters.isOpLoading("fetchTemplates"));
 </script>
 
 <style scoped lang="scss">
