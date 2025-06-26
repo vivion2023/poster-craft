@@ -126,7 +126,7 @@ export default defineComponent({
           veriCode: form.veriCode,
         };
         store
-          .dispatch("loginAndFetch", { data: payload })
+          .dispatch("loginAndFetch", payload)
           .then(() => {
             message.success("登录成功 2秒后跳转首页");
             setTimeout(() => {
