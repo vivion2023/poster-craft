@@ -209,6 +209,51 @@ server.get("/users/getUserInfo", (req, res) => {
   });
 });
 
+// 新增作品（需要身份验证）
+server.post("/works", (req, res) => {
+  // ① 可选：校验登录
+  const authHeader = req.headers.authorization;
+  if (!authHeader) {
+    return res.status(401).jsonp({ errno: 14001, message: "未登录" });
+  }
+  try {
+    verifyToken(authHeader.split(" ")[1]);
+  } catch {
+    return res.status(401).jsonp({ errno: 14002, message: "登录失效" });
+  }
+
+  // ② 读取并校验请求体
+  const { title, desc, coverImg } = req.body;
+  if (!title || !desc || !coverImg) {
+    return res.status(200).jsonp({
+      errno: 14003,
+      message: "标题、描述和封面不能为空",
+    });
+  }
+
+  // ③ 生成新作品数据
+  const worksDB = router.db.get("works"); // 假设 db.json 里有 "works": []
+  const newId = Date.now(); // 简单生成唯一 ID
+  const newWork = {
+    id: newId,
+    title,
+    desc,
+    coverImg,
+    copiedCount: 0,
+    isTemplate: false,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  };
+
+  // ④ 写入数据库并返回结果
+  worksDB.push(newWork).write();
+  return res.status(200).jsonp({
+    errno: 0,
+    data: newWork,
+    message: "作品创建成功",
+  });
+});
+
 router.render = (req, res) => {
   res.jsonp({
     list: res.locals.data,

@@ -1,7 +1,15 @@
 {
   "posts": [
-    { "id": "1", "title": "a title", "views": 100 },
-    { "id": "2", "title": "another title", "views": 200 }
+    {
+      "id": "1",
+      "title": "a title",
+      "views": 100
+    },
+    {
+      "id": "2",
+      "title": "another title",
+      "views": 200
+    }
   ],
   "comments": [
     {
@@ -60,6 +68,16 @@
       "coverImg": "https://static.imooc-lego.com/upload-files/screenshot-649919.png",
       "isTemplate": true,
       "status": 2
+    },
+    {
+      "id": 1751285158740,
+      "title": "作品x",
+      "desc": "啦啦啦",
+      "coverImg": "coverImg: 'https://vivion-377477.postman.co/workspace/vivion's-Workspace~5ac785d7-2845-43b2-8b68-9405643ee784/request/45679852-1e322ad3-23ae-4e04-b831-41a239c39578?action=share&source=copy-link&creator=45679852&ctx=documentation'",
+      "copiedCount": 0,
+      "isTemplate": false,
+      "createdAt": "2025-06-30T12:05:58.740Z",
+      "updatedAt": "2025-06-30T12:05:58.740Z"
     }
   ]
 }
