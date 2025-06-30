@@ -93,26 +93,13 @@ import { computed, onMounted } from "vue";
 import { Typography, InputSearch, Row, Col, message } from "ant-design-vue";
 import TemplateList from "@/components/TemplateList.vue";
 import { useStore } from "vuex";
-import axios from "axios";
 const { Title } = Typography;
 const store = useStore();
 const isLoading = computed(() => store.getters.isOpLoading("fetchTemplates"));
 const testData = computed(() => store.state.templates.data);
-const currentUser = computed(() => store.state.user);
 // 组件挂载时获取模板数据
 onMounted(() => {
   store.dispatch("fetchTemplates");
-  if (!currentUser.value.isLogin && currentUser.value.token) {
-    // 设置axios header
-    axios.defaults.headers.common.Authorization = `Bearer ${currentUser.value.token}`;
-    // 尝试获取用户信息验证token有效性
-    store.dispatch("fetchCurrentUser").catch(() => {
-      message.error("登录状态已过期，请重新登录", 2);
-      localStorage.removeItem("token");
-      delete axios.defaults.headers.common.Authorization;
-      store.commit("logout");
-    });
-  }
 });
 </script>
 
