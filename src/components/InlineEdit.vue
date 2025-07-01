@@ -98,12 +98,14 @@ useKeyPress("Escape", () => {
   cursor: pointer;
   width: 100%;
   position: relative;
+  color: #fff;
 }
 
 .inline-edit .ant-input {
   width: 100% !important;
   min-width: 0;
   box-sizing: border-box;
+  color: rgb(58, 58, 58);
 }
 
 .truncated-text {

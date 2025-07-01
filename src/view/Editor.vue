@@ -2,7 +2,8 @@
   <Layout class="editor">
     <LayoutHeader class="editor-header">
       <div class="editor-header-left">
-        <Logo></Logo>
+        <img src="@/assets/logo.png" alt="logo" />
+        <inline-edit :value="page.title" @change="titleChange" />
       </div>
       <div class="editor-header-right">
         <a-button class="editor-header-button" type="primary">
@@ -133,13 +134,13 @@ import { computed, DefineComponent, onMounted, ref } from "vue";
 import { LText, LImage, LShape } from "lego-components";
 import defaultTextTemplates from "@/defaultTemplates";
 import PropsTable from "@/components/PropsTable.vue";
-import Logo from "@/components/Logo.vue";
 import UserProfile from "@/components/UserProfile.vue";
 import ComponentList from "@/components/ComponentList.vue";
 import EditWrapper from "@/components/EditWrapper.vue";
 import HistoryArea from "@/view/editor/HistoryArea.vue";
 import LayerList from "@/components/LayerList.vue";
 import EditGroup from "@/components/EditGroup.vue";
+import InlineEdit from "@/components/InlineEdit.vue";
 import { AllComponentProps } from "@/defaultProps";
 import { pickBy } from "lodash-es";
 import initContextMenu from "@/plugins/contextMenu";
@@ -198,6 +199,10 @@ const pageChange = (e: any) => {
   console.log("page", e);
   store.commit("updatePage", e);
 };
+
+const titleChange = (newTitle: string) => {
+  store.commit("updatePage", { key: "title", value: newTitle, isRoot: true });
+};
 </script>
 
 <style scoped lang="scss">
@@ -218,6 +223,17 @@ const pageChange = (e: any) => {
     justify-content: space-between;
     align-items: center;
     padding: 0 24px;
+
+    .editor-header-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      img {
+        width: 34px;
+        height: 34px;
+        display: block;
+      }
+    }
 
     .editor-header-right {
       display: flex;
