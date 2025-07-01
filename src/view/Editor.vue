@@ -9,7 +9,13 @@
         <a-button class="editor-header-button" type="primary">
           预览和设置
         </a-button>
-        <a-button class="editor-header-button" type="primary">保存</a-button>
+        <a-button
+          class="editor-header-button"
+          type="primary"
+          @click="saveWork"
+          :loading="saveIsLoading"
+          >保存</a-button
+        >
         <a-button class="editor-header-button" type="primary">发布</a-button>
         <UserProfile />
       </div>
@@ -145,6 +151,7 @@ import { AllComponentProps } from "@/defaultProps";
 import { pickBy } from "lodash-es";
 import initContextMenu from "@/plugins/contextMenu";
 import { useRoute } from "vue-router";
+import useSaveWork from "@/hooks/useSaveWork";
 export type TabType = "component" | "layer" | "page";
 initHotKeys();
 initContextMenu();
@@ -168,6 +175,8 @@ const componentMap: {
   "l-image": LImage,
   "l-shape": LShape,
 };
+
+const { saveWork, saveIsLoading } = useSaveWork();
 
 onMounted(() => {
   if (currentWorkId) {

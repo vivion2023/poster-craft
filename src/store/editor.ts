@@ -393,7 +393,7 @@ const editor: Module<EditorProps, GlobalDataProps> = {
         clone.id = uuidv4();
         clone.layerName = clone.layerName + "副本";
         state.components.push(clone);
-        message.success("已黏贴当前图层", 1);
+        message.success("已粘贴当前图层", 1);
         pushHistory(state, {
           id: uuidv4(),
           componentId: clone.id,
@@ -529,6 +529,9 @@ const editor: Module<EditorProps, GlobalDataProps> = {
       }
       state.components = content.components;
     },
+    saveWork(state) {
+      state.isDirty = false;
+    },
   },
   actions: {
     addComponent({ commit }, component: ComponentData) {
@@ -541,6 +544,7 @@ const editor: Module<EditorProps, GlobalDataProps> = {
       commit("deleteComponent", id);
     },
     fetchWork: actionWrapper("/works/:id", "fetchWork"),
+    saveWork: actionWrapper("/works/:id", "saveWork", { method: "patch" }),
   },
 };
 

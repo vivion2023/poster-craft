@@ -108,9 +108,9 @@
             "props": {
               "text": "Hello",
               "fontSize": "20px",
-              "color": "#333",
-              "top": "10px",
-              "left": "10px"
+              "color": "#f5222d",
+              "top": "153.39288330078125px",
+              "left": "145.64288330078125px"
             }
           }
         ],
