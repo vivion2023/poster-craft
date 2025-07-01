@@ -13,6 +13,7 @@ export interface GlobalDataProps {
   editor: EditorProps;
   global: GlobalStatus;
 }
+// 传递参数
 export interface ActionPayload {
   urlParams?: { [key: string]: any };
   data?: any;

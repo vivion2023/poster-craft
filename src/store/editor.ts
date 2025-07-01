@@ -1,9 +1,10 @@
 import { Module, Mutation } from "vuex";
-import { GlobalDataProps } from "./index";
+import { GlobalDataProps, actionWrapper } from "./index";
 import { v4 as uuidv4 } from "uuid";
 import { message } from "ant-design-vue";
 import { cloneDeep } from "lodash-es";
 import { insertAt } from "@/helper";
+import { RespData } from "./respTypes";
 import {
   textDefaultProps,
   imageDefaultProps,
@@ -520,6 +521,14 @@ const editor: Module<EditorProps, GlobalDataProps> = {
       }
       state.historyIndex++;
     },
+    fetchWork(state, { data }: RespData<any>) {
+      const { content, ...rest } = data;
+      state.page = { ...state.page, ...rest };
+      if (content.props) {
+        state.page.props = content.props;
+      }
+      state.components = content.components;
+    },
   },
   actions: {
     addComponent({ commit }, component: ComponentData) {
@@ -531,6 +540,7 @@ const editor: Module<EditorProps, GlobalDataProps> = {
     deleteComponent({ commit }, id: string) {
       commit("deleteComponent", id);
     },
+    fetchWork: actionWrapper("/works/:id", "fetchWork"),
   },
 };
 

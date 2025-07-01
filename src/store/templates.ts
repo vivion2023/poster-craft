@@ -1,44 +1,50 @@
 import { Module } from "vuex";
-import { GlobalDataProps } from "./index";
-import { RespListData } from "./respTypes";
-import { actionWrapper } from "./utils";
+import { GlobalDataProps, actionWrapper } from "./index";
+import { RespListData, RespData } from "./respTypes";
 import { PageData } from "./editor";
-export type TemplateProps = Required<
-  // 把结果中的顶层属性都变成必填
-  Omit<
-    // 先删除指定的两个键
-    PageData, // 原始类型
-    "props" | "setting" // 需要排除的键
-  >
->;
+
+export type TemplateProps = Required<Omit<PageData, "props" | "setting">>;
 
 export interface TemplatesProps {
   data: TemplateProps[];
   totalTemplates: number;
+  works: TemplateProps[];
+  totalWorks: number;
 }
 
 const templates: Module<TemplatesProps, GlobalDataProps> = {
   state: {
-    data: [], // 初始为空数组
+    data: [],
     totalTemplates: 0,
+    works: [],
+    totalWorks: 0,
   },
-
-  getters: {
-    getTemplateById: (state) => (id: number) => {
-      return state.data.find((item) => item.id === id);
-    },
-  },
-
   mutations: {
     fetchTemplates(state, rawData: RespListData<TemplateProps>) {
       const { count, list } = rawData.data;
       state.data = [...state.data, ...list];
       state.totalTemplates = count;
     },
+    fetchWorks(state, rawData: RespListData<TemplateProps>) {
+      const { count, list } = rawData.data;
+      console.log("fetchWorks", list);
+      console.log("fetchWorks", count);
+      state.works = list;
+      state.totalWorks = count;
+    },
+    fetchTemplate(state, rawData: RespData<TemplateProps>) {
+      state.data = [rawData.data];
+    },
   },
-
   actions: {
     fetchTemplates: actionWrapper("/templates", "fetchTemplates"),
+    fetchWorks: actionWrapper("/works", "fetchWorks"),
+    fetchTemplate: actionWrapper("/templates/:id", "fetchTemplate"),
+  },
+  getters: {
+    getTemplateById: (state) => (id: number) => {
+      return state.data.find((t) => t.id === id);
+    },
   },
 };
 

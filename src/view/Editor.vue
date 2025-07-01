@@ -124,11 +124,12 @@
 </template>
 
 <script setup lang="ts">
-import { ComponentData, GlobalDataProps } from "@/store";
+import { GlobalDataProps } from "@/store";
+import { ComponentData } from "@/store/editor";
 import { PageProps } from "@/store/editor";
 import { useStore } from "vuex";
 import initHotKeys from "@/plugins/hotKeys";
-import { computed, DefineComponent, ref } from "vue";
+import { computed, DefineComponent, onMounted, ref } from "vue";
 import { LText, LImage, LShape } from "lego-components";
 import defaultTextTemplates from "@/defaultTemplates";
 import PropsTable from "@/components/PropsTable.vue";
@@ -142,10 +143,13 @@ import EditGroup from "@/components/EditGroup.vue";
 import { AllComponentProps } from "@/defaultProps";
 import { pickBy } from "lodash-es";
 import initContextMenu from "@/plugins/contextMenu";
+import { useRoute } from "vue-router";
 export type TabType = "component" | "layer" | "page";
 initHotKeys();
 initContextMenu();
 const store = useStore<GlobalDataProps>();
+const route = useRoute();
+const currentWorkId = route.params.id;
 const components = computed(() => store.state.editor.components);
 const page = computed(() => store.state.editor.page);
 const defaultComponents = computed(() => defaultTextTemplates);
@@ -163,6 +167,12 @@ const componentMap: {
   "l-image": LImage,
   "l-shape": LShape,
 };
+
+onMounted(() => {
+  if (currentWorkId) {
+    store.dispatch("fetchWork", { urlParams: { id: currentWorkId } });
+  }
+});
 
 const addItem = (component: any) => {
   store.commit("addComponent", component);

@@ -38,7 +38,7 @@ server.use(rewriter);
 server.use(middlewares);
 // 用户登录
 server.post("/users/loginByPhoneNumber", (req, res) => {
-  const { phoneNumber, veriCode } = req.body;
+  const { phoneNumber, veriCode } = req.body.data;
   console.log("登录请求: ", phoneNumber, veriCode);
   if (!phoneNumber || !veriCode) {
     return res.status(200).jsonp({
@@ -255,10 +255,25 @@ server.post("/works", (req, res) => {
 });
 
 router.render = (req, res) => {
-  res.jsonp({
-    list: res.locals.data,
-    count: res.locals.data.length,
-  });
+  const data = res.locals.data;
+  if (Array.isArray(data)) {
+    // 列表接口：/works  /templates ...
+    res.jsonp({
+      errno: 0,
+      data: {
+        list: data,
+        count: data.length,
+      },
+      message: "获取列表成功",
+    });
+  } else {
+    // 详情接口：/works/:id  /templates/:id ...
+    res.jsonp({
+      errno: 0,
+      data,
+      message: "success",
+    });
+  }
 };
 
 server.use(router);

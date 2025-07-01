@@ -78,6 +78,49 @@
       "isTemplate": false,
       "createdAt": "2025-06-30T12:05:58.740Z",
       "updatedAt": "2025-06-30T12:05:58.740Z"
+    },
+    {
+      "id": 71,
+      "uuid": "8e55",
+      "title": "大山深处的美好",
+      "desc": "心灵的港湾",
+      "contentId": "5fa128349fa7b1005c9f0541",
+      "publishContentId": "5fa128749fa7b1005c9f0542",
+      "author": "185****5632",
+      "coverImg": "https://static.imooc-lego.com/upload-files/screenshot-649919.png",
+      "isTemplate": false,
+      "status": 2,
+      "copiedCount": 4,
+      "createdAt": "2025-06-30T12:05:58.740Z",
+      "updatedAt": "2025-06-30T12:05:58.740Z",
+      "user": {
+        "gender": "0",
+        "userName": "185****5632",
+        "nickName": "viking3",
+        "picture": "https://static.imooc-lego.com/upload-files/screenshot-649919.png"
+      },
+      "content": {
+        "components": [
+          {
+            "id": "comp-1",
+            "name": "l-text",
+            "layerName": "标题",
+            "props": {
+              "text": "Hello",
+              "fontSize": "20px",
+              "color": "#333",
+              "top": "10px",
+              "left": "10px"
+            }
+          }
+        ],
+        "props": {
+          "backgroundColor": "green",
+          "backgroundRepeat": "no-repeat",
+          "backgroundSize": "cover",
+          "height": "600px"
+        }
+      }
     }
   ]
 }
