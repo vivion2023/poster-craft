@@ -15,6 +15,8 @@ export type ICustomAxiosConfig = AxiosRequestConfig & {
 const app = createApp(App);
 // 添加后端接口前缀
 const baseBackendURL = "http://localhost:3000";
+const baseH5URL = "http://localhost:8082";
+export { baseBackendURL, baseH5URL };
 
 axios.defaults.baseURL = `${baseBackendURL}/api/`;
 axios.interceptors.request.use((config) => {
