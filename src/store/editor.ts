@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from "uuid";
 import { message } from "ant-design-vue";
 import { cloneDeep } from "lodash-es";
 import { insertAt } from "@/helper";
-import { RespData } from "./respTypes";
+import { RespData, RespListData } from "./respTypes";
 import {
   textDefaultProps,
   imageDefaultProps,
@@ -31,6 +31,8 @@ export interface EditorProps {
   maxHistoryNumber: number;
   // 数据是否有修改
   isDirty: boolean;
+  // 当前 work 的 channels
+  channels: ChannelProps[];
 }
 
 // 历史记录
@@ -48,6 +50,14 @@ export interface UpdateComponentData {
   value: string | string[];
   id: string;
   isRoot?: boolean;
+}
+
+// 频道数据
+export interface ChannelProps {
+  id: number;
+  name: string;
+  workId: number;
+  status: number;
 }
 
 // 页面属性
@@ -286,6 +296,7 @@ const editor: Module<EditorProps, GlobalDataProps> = {
     cachedOldValues: null,
     maxHistoryNumber: 5,
     isDirty: false,
+    channels: [],
   },
   getters: {
     getCurrentElement: (state) => {
@@ -532,6 +543,20 @@ const editor: Module<EditorProps, GlobalDataProps> = {
     saveWork(state) {
       state.isDirty = false;
     },
+    fetchChannels(state, { data }: RespListData<ChannelProps>) {
+      state.channels = data.list;
+    },
+    createChannel(state, { data }: RespData<ChannelProps>) {
+      state.channels = [...state.channels, data];
+    },
+    deleteChannel(state, { payload }: RespData<any>) {
+      if (payload && payload.urlParams) {
+        const { urlParams } = payload;
+        state.channels = state.channels.filter(
+          (channel) => channel.id !== urlParams.id
+        );
+      }
+    },
   },
   actions: {
     addComponent({ commit }, component: ComponentData) {
@@ -545,6 +570,19 @@ const editor: Module<EditorProps, GlobalDataProps> = {
     },
     fetchWork: actionWrapper("/works/:id", "fetchWork"),
     saveWork: actionWrapper("/works/:id", "saveWork", { method: "patch" }),
+    publishWork: actionWrapper("/works/publish/:id", "publishWork", {
+      method: "post",
+    }),
+    fetchChannels: actionWrapper(
+      "/channel/getWorkChannels/:id",
+      "fetchChannels"
+    ),
+    createChannel: actionWrapper("/channel/", "createChannel", {
+      method: "post",
+    }),
+    deleteChannel: actionWrapper("/channel/:id", "deleteChannel", {
+      method: "delete",
+    }),
   },
 };
 
