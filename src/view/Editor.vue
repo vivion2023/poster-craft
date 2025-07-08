@@ -1,12 +1,24 @@
 <template>
   <Layout class="editor">
+    <a-modal
+      title="发布成功"
+      v-model:visible="showPublishForm"
+      width="700px"
+      :footer="null"
+    >
+      <publish-form />
+    </a-modal>
+    <preview-form
+      v-model:visible="showPreviewForm"
+      v-if="showPreviewForm"
+    ></preview-form>
     <LayoutHeader class="editor-header">
       <div class="editor-header-left">
         <img src="@/assets/logo.png" alt="logo" />
         <inline-edit :value="page.title" @change="titleChange" />
       </div>
       <div class="editor-header-right">
-        <a-button class="editor-header-button" type="primary">
+        <a-button class="editor-header-button" type="primary" @click="preview">
           预览和设置
         </a-button>
         <a-button
@@ -16,7 +28,13 @@
           :loading="saveIsLoading"
           >保存</a-button
         >
-        <a-button class="editor-header-button" type="primary">发布</a-button>
+        <a-button
+          class="editor-header-button"
+          type="primary"
+          @click="publish"
+          :loading="isPublishing"
+          >发布</a-button
+        >
         <UserProfile />
       </div>
     </LayoutHeader>
@@ -60,7 +78,12 @@
         </div>
         <!-- 阻止右键菜单 -->
         <div class="preview-content" @contextmenu.prevent>
-          <div class="preview-list" id="canvas-area" :style="page.props">
+          <div
+            class="preview-list"
+            id="canvas-area"
+            :class="{ 'canvas-fix': canvasFix }"
+            :style="page.props"
+          >
             <edit-wrapper
               @set-active="setActive"
               @update-position="updatePosition"
@@ -136,7 +159,7 @@ import { ComponentData } from "@/store/editor";
 import { PageProps } from "@/store/editor";
 import { useStore } from "vuex";
 import initHotKeys from "@/plugins/hotKeys";
-import { computed, DefineComponent, onMounted, ref } from "vue";
+import { computed, DefineComponent, nextTick, onMounted, ref } from "vue";
 import { LText, LImage, LShape } from "lego-components";
 import defaultTextTemplates from "@/defaultTemplates";
 import PropsTable from "@/components/PropsTable.vue";
@@ -152,11 +175,18 @@ import { pickBy } from "lodash-es";
 import initContextMenu from "@/plugins/contextMenu";
 import { useRoute } from "vue-router";
 import useSaveWork from "@/hooks/useSaveWork";
+import usePublishWork from "@/hooks/usePublishWork";
+import PublishForm from "@/view/editor/PublishForm.vue";
+import PreviewForm from "@/view/editor/PreviewForm.vue";
+
 export type TabType = "component" | "layer" | "page";
 initHotKeys();
 initContextMenu();
 const store = useStore<GlobalDataProps>();
 const route = useRoute();
+const canvasFix = ref(false);
+const showPublishForm = ref(false);
+const showPreviewForm = ref(false);
 const currentWorkId = route.params.id;
 const components = computed(() => store.state.editor.components);
 const page = computed(() => store.state.editor.page);
@@ -177,7 +207,7 @@ const componentMap: {
 };
 
 const { saveWork, saveIsLoading } = useSaveWork();
-
+const { publishWork, isPublishing } = usePublishWork();
 onMounted(() => {
   if (currentWorkId) {
     store.dispatch("fetchWork", { urlParams: { id: currentWorkId } });
@@ -196,6 +226,15 @@ const handleChange = (value: { key: string; value: any }) => {
   store.commit("updateComponent", value);
 };
 
+const pageChange = (e: any) => {
+  console.log("page", e);
+  store.commit("updatePage", e);
+};
+
+const titleChange = (newTitle: string) => {
+  store.commit("updatePage", { key: "title", value: newTitle, isRoot: true });
+};
+
 const updatePosition = (data: { left: number; top: number; id: string }) => {
   const { id } = data;
   const updatedData = pickBy<number>(data, (v, k) => k !== "id");
@@ -204,13 +243,24 @@ const updatePosition = (data: { left: number; top: number; id: string }) => {
   store.commit("updateComponent", { key: keysArr, value: valuesArr, id });
 };
 
-const pageChange = (e: any) => {
-  console.log("page", e);
-  store.commit("updatePage", e);
+const publish = async () => {
+  // remove select element
+  store.commit("setActive", "");
+  const el = document.getElementById("canvas-area") as HTMLElement;
+  canvasFix.value = true;
+  await nextTick();
+  try {
+    await publishWork(el);
+    showPublishForm.value = true;
+  } catch (e) {
+    console.error(e);
+  } finally {
+    canvasFix.value = false;
+  }
 };
-
-const titleChange = (newTitle: string) => {
-  store.commit("updatePage", { key: "title", value: newTitle, isRoot: true });
+const preview = async () => {
+  await saveWork();
+  showPreviewForm.value = true;
 };
 </script>
 

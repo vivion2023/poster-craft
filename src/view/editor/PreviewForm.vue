@@ -79,8 +79,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, reactive, watch, onMounted } from "vue";
-import { useForm } from "@ant-design-vue/use";
+import { computed, reactive, onMounted, defineProps, defineEmits } from "vue";
+import { useForm } from "ant-design-vue/es/form";
 import { GlobalDataProps } from "../../store/index";
 import { baseH5URL } from "../../main";
 import { useStore } from "vuex";
@@ -89,88 +89,71 @@ import useSaveWork from "../../hooks/useSaveWork";
 import { generateQRCode, timeout } from "../../helper";
 import StyledUploader from "../../components/StyledUploader.vue";
 import { RespUploadData } from "../../store/respTypes";
-export default defineComponent({
-  props: {
-    visible: {
-      type: Boolean,
-      defaults: false,
-    },
-  },
-  components: {
-    StyledUploader,
-  },
-  emits: ["update:visible"],
-  setup(props, { emit }) {
-    const store = useStore<GlobalDataProps>();
-    const pageState = computed(() => store.state.editor.page);
-    const previewURL = computed(
-      () =>
-        `${baseH5URL}/p/preview/${pageState.value.id}-${pageState.value.uuid}`
-    );
-    const { title, desc, setting } = pageState.value;
-    const { saveWork, saveIsLoading } = useSaveWork(true);
-    const form = reactive({
-      title: title || "",
-      desc: desc || "",
-      uploaded: {
-        data: {
-          url:
-            (setting && setting.shareImg) ||
-            "http://vue-maker.oss-cn-hangzhou.aliyuncs.com/vue-marker/5f79389d4737571e2e1dc7cb.png",
-        },
-      },
-    });
-    const rules = reactive({
-      title: [{ required: true, message: "标题不能为空", trigger: "blur" }],
-      desc: [{ required: true, message: "描述不能为空", trigger: "blur" }],
-    });
 
-    onMounted(async () => {
-      try {
-        await timeout(100);
-        await generateQRCode("preview-barcode-container", previewURL.value);
-      } catch (e) {
-        console.error(e);
-      }
-    });
-    const updateAvatar = (rawData: { resp: RespUploadData; file: File }) => {
-      const url = rawData.resp.data.urls[0];
-      form.uploaded = {
-        data: { url },
-      };
-    };
-    const { validate } = useForm(form, rules);
-    const validateAndSave = async () => {
-      await validate();
-      forEach(form, (value, key) => {
-        if (key === "uploaded" && typeof value !== "string") {
-          store.commit("updatePage", {
-            key: "shareImg",
-            value: value.data.url,
-            isSetting: true,
-          });
-        } else {
-          store.commit("updatePage", { key, value, isRoot: true });
-        }
-      });
-      await saveWork();
-      emit("update:visible", false);
-    };
-    const onCancel = () => {
-      emit("update:visible", false);
-    };
-    return {
-      pageState,
-      previewURL,
-      form,
-      rules,
-      saveIsLoading,
-      validateAndSave,
-      onCancel,
-      updateAvatar,
-    };
+const props = defineProps({
+  visible: {
+    type: Boolean,
+    default: false,
   },
 });
+const emit = defineEmits(["update:visible"]);
+const store = useStore<GlobalDataProps>();
+const pageState = computed(() => store.state.editor.page);
+const previewURL = computed(
+  () => `${baseH5URL}/p/preview/${pageState.value.id}-${pageState.value.uuid}`
+);
+const { title, desc, setting } = pageState.value;
+const { saveWork, saveIsLoading } = useSaveWork(true);
+const form = reactive({
+  title: title || "",
+  desc: desc || "",
+  uploaded: {
+    data: {
+      url:
+        (setting && setting.shareImg) ||
+        "http://vue-maker.oss-cn-hangzhou.aliyuncs.com/vue-marker/5f79389d4737571e2e1dc7cb.png",
+    },
+  },
+});
+const rules = reactive({
+  title: [{ required: true, message: "标题不能为空", trigger: "blur" }],
+  desc: [{ required: true, message: "描述不能为空", trigger: "blur" }],
+});
+
+onMounted(async () => {
+  try {
+    await timeout(100);
+    await generateQRCode("preview-barcode-container", previewURL.value);
+  } catch (e) {
+    console.error(e);
+  }
+});
+const updateAvatar = (rawData: { resp: RespUploadData; file: File }) => {
+  const url = rawData.resp.data.urls[0];
+  form.uploaded = {
+    data: { url },
+  };
+};
+const { validate } = useForm(form, rules);
+const validateAndSave = async () => {
+  await validate();
+  forEach(form, (value, key) => {
+    if (key === "uploaded" && typeof value !== "string") {
+      store.commit("updatePage", {
+        key: "shareImg",
+        value: value.data.url,
+        isSetting: true,
+      });
+    } else {
+      store.commit("updatePage", { key, value, isRoot: true });
+    }
+  });
+  await saveWork();
+  emit("update:visible", false);
+};
+const onCancel = () => {
+  emit("update:visible", false);
+};
 </script>
 
 <style>
