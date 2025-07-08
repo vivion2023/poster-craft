@@ -67,14 +67,18 @@ router.beforeEach(async (to, from) => {
     if (token) {
       axios.defaults.headers.common.Authorization = `Bearer ${token}`;
       try {
-        await store.dispatch("fetchCurrentUser");
+        // 优先使用token验证，如果成功则获取用户信息
+        await store.dispatch("verifyTokenAndFetch");
         if (redirectAlreadyLogin) {
           return "/";
         }
       } catch {
-        message.error("登陆状态已过期 请重新登陆", 2);
+        // Token验证失败，清除token并跳转到登录页
+        console.log("Token验证失败，清除登录状态");
         store.commit("logout");
-        return "/login";
+        if (requiredLogin) {
+          return "/login";
+        }
       }
     } else {
       if (requiredLogin) {

@@ -112,6 +112,7 @@ export async function takeScreenshotAndUpload(ele: HTMLElement) {
     useCORS: true,
     scale: 1,
   });
+  console.log(canvas);
   // transform canvas to blob
   const canvasBlob = await getCanvasBlob(canvas);
   if (canvasBlob) {

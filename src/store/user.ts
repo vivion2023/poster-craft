@@ -54,9 +54,18 @@ const user: Module<UserProps, GlobalDataProps> = {
     login: actionWrapper("/users/loginByPhoneNumber", "login", {
       method: "POST",
     }),
+    loginByToken: actionWrapper("/users/loginByToken", "login", {
+      method: "POST",
+    }),
     fetchCurrentUser: actionWrapper("/users/getUserInfo", "fetchCurrentUser"),
     loginAndFetch({ dispatch }, loginData) {
       return dispatch("login", loginData).then(() => {
+        return dispatch("fetchCurrentUser");
+      });
+    },
+    // 使用token验证并获取用户信息
+    verifyTokenAndFetch({ dispatch }) {
+      return dispatch("loginByToken").then(() => {
         return dispatch("fetchCurrentUser");
       });
     },

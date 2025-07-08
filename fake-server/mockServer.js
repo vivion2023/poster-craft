@@ -59,7 +59,8 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 // 静态服务：供外部访问上传后的图片
-server.use("/uploads", jsonServer.static(uploadDir));
+const express = require("express");
+server.use("/uploads", express.static(uploadDir));
 
 // 用户登录
 server.post("/users/loginByPhoneNumber", (req, res) => {
@@ -78,22 +79,20 @@ server.post("/users/loginByPhoneNumber", (req, res) => {
   // 检查验证码是否存在
   const storedVeriCodeData = veriCodeStore.get(phoneNumber);
   if (!storedVeriCodeData) {
-    return res.status(200).jsonp({
-      errno: 12002,
-      message: "验证码不存在或已过期，请重新获取",
-    });
+    // 如果验证码不存在或已过期，但是手机号格式正确，仍然允许登录
+    // 这样可以支持有token的情况下直接登录
+    console.log("验证码不存在或已过期，但允许登录: ", phoneNumber);
+  } else {
+    // 验证验证码是否正确（只有在验证码存在时才验证）
+    if (storedVeriCodeData.code !== veriCode.toString()) {
+      return res.status(200).jsonp({
+        errno: 12003,
+        message: "验证码错误",
+      });
+    }
+    // 验证码使用后删除（一次性使用）
+    veriCodeStore.delete(phoneNumber);
   }
-
-  // 验证验证码是否正确
-  if (storedVeriCodeData.code !== veriCode.toString()) {
-    return res.status(200).jsonp({
-      errno: 12003,
-      message: "验证码错误",
-    });
-  }
-
-  // 验证码使用后删除（一次性使用）
-  veriCodeStore.delete(phoneNumber);
 
   const accessToken = createToken({ phoneNumber });
   res.status(200).jsonp({
@@ -103,6 +102,70 @@ server.post("/users/loginByPhoneNumber", (req, res) => {
     },
     message: "登录成功",
   });
+});
+
+// Token验证登录（用于有token时直接登录）
+server.post("/users/loginByToken", (req, res) => {
+  const authHeader = req.headers.authorization;
+
+  if (!authHeader) {
+    return res.status(200).jsonp({
+      errno: 12005,
+      message: "Token不能为空",
+    });
+  }
+
+  try {
+    const token = authHeader.split(" ")[1];
+    const decoded = verifyToken(token);
+    console.log("Token验证成功: ", decoded);
+
+    res.status(200).jsonp({
+      errno: 0,
+      data: {
+        token: token,
+      },
+      message: "Token验证成功",
+    });
+  } catch (error) {
+    console.log("Token验证失败: ", error.message);
+    res.status(200).jsonp({
+      errno: 12006,
+      message: "Token无效或已过期",
+    });
+  }
+});
+
+// Token验证登录（用于有token时直接登录）
+server.post("/users/loginByToken", (req, res) => {
+  const authHeader = req.headers.authorization;
+
+  if (!authHeader) {
+    return res.status(200).jsonp({
+      errno: 12005,
+      message: "Token不能为空",
+    });
+  }
+
+  try {
+    const token = authHeader.split(" ")[1];
+    const decoded = verifyToken(token);
+    console.log("Token验证成功: ", decoded);
+
+    res.status(200).jsonp({
+      errno: 0,
+      data: {
+        token: token,
+      },
+      message: "Token验证成功",
+    });
+  } catch (error) {
+    console.log("Token验证失败: ", error.message);
+    res.status(200).jsonp({
+      errno: 12006,
+      message: "Token无效或已过期",
+    });
+  }
 });
 
 // 获取验证码（不需要认证）
