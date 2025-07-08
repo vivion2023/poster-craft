@@ -8,6 +8,9 @@ const middlewares = jsonServer.defaults();
 const SECRET_KEY = "1234567890"; //密钥
 const expiresIn = "1h"; //过期时间
 const templateData = require("./template.json");
+const path = require("path");
+const fs = require("fs");
+const multer = require("multer");
 
 // 内存存储验证码，格式：{ phoneNumber: { code: '1234', timestamp: 1234567890 } }
 const veriCodeStore = new Map();
@@ -36,6 +39,28 @@ const rewriter = jsonServer.rewriter({
 server.use(bodyParser.json());
 server.use(rewriter);
 server.use(middlewares);
+
+// 创建上传目录，如果不存在
+const uploadDir = path.join(__dirname, "uploads");
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir, { recursive: true });
+}
+
+// 配置 multer 存储
+const storage = multer.diskStorage({
+  destination: function (_req, _file, cb) {
+    cb(null, uploadDir);
+  },
+  filename: function (_req, file, cb) {
+    const ext = path.extname(file.originalname) || "";
+    cb(null, `${Date.now()}${ext}`);
+  },
+});
+const upload = multer({ storage });
+
+// 静态服务：供外部访问上传后的图片
+server.use("/uploads", jsonServer.static(uploadDir));
+
 // 用户登录
 server.post("/users/loginByPhoneNumber", (req, res) => {
   const { phoneNumber, veriCode } = req.body.data;
@@ -175,6 +200,11 @@ server.use((req, res, next) => {
   };
 
   const authHeader = req.headers.authorization;
+  // 上传图片接口不需要登录校验
+  if (req.path === "/utils/upload-img") {
+    next();
+    return;
+  }
   if (authHeader === undefined) {
     res.jsonp(errorResp);
     return;
@@ -251,6 +281,22 @@ server.post("/works", (req, res) => {
     errno: 0,
     data: newWork,
     message: "作品创建成功",
+  });
+});
+
+// 上传图片接口（不需要认证）
+server.post("/utils/upload-img", upload.any(), (req, res) => {
+  if (!req.files || req.files.length === 0) {
+    return res
+      .status(400)
+      .jsonp({ errno: 15001, message: "没有检测到上传文件" });
+  }
+  const file = req.files[0];
+  const fileUrl = `http://localhost:3000/uploads/${file.filename}`;
+  return res.status(200).jsonp({
+    errno: 0,
+    data: { url: fileUrl },
+    message: "上传成功",
   });
 });
 

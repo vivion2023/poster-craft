@@ -78,7 +78,7 @@
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { computed, reactive, onMounted, defineProps, defineEmits } from "vue";
 import { useForm } from "ant-design-vue/es/form";
 import { GlobalDataProps } from "../../store/index";

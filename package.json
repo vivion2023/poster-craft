@@ -35,7 +35,8 @@
     "vue": "^3.3.0",
     "vue-router": "^4.0.13",
     "vuedraggable": "^4.1.0",
-    "vuex": "^4.0.2"
+    "vuex": "^4.0.2",
+    "multer": "^1.4.5"
   },
   "devDependencies": {
     "@babel/core": "^7.27.4",
