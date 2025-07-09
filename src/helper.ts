@@ -1,4 +1,4 @@
-import { RespUploadData } from "./store/respTypes";
+import { RespLocalUploadData } from "./store/respTypes";
 import { message } from "ant-design-vue";
 import html2canvas from "html2canvas";
 import axios from "axios";
@@ -85,18 +85,29 @@ export function isMobile(mobile: string) {
 }
 export async function uploadFile<R = any>(
   file: Blob,
-  url = "/utils/upload-img",
+  url = "/utils/upload-local-img",
   fileName = "screenshot.png"
 ) {
   const newFile = file instanceof File ? file : new File([file], fileName);
   const formData = new FormData();
   formData.append(newFile.name, newFile);
-  const { data } = await axios.post<R>(url, formData, {
+
+  // 使用本地上传端点，直接调用完整URL
+  const fullUrl = `http://localhost:3000/api${url}`;
+  const { data } = await axios.post<R>(fullUrl, formData, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
   });
   return data;
+
+  // 注释掉原来的远程上传逻辑
+  // const { data } = await axios.post<R>(url, formData, {
+  //   headers: {
+  //     "Content-Type": "multipart/form-data",
+  //   },
+  // });
+  // return data;
 }
 function getCanvasBlob(canvas: HTMLCanvasElement) {
   return new Promise<Blob | null>((resolve) => {
@@ -116,8 +127,8 @@ export async function takeScreenshotAndUpload(ele: HTMLElement) {
   // transform canvas to blob
   const canvasBlob = await getCanvasBlob(canvas);
   if (canvasBlob) {
-    // upload blob to server
-    const data = await uploadFile<RespUploadData>(canvasBlob);
+    // upload blob to server using local upload endpoint
+    const data = await uploadFile<RespLocalUploadData>(canvasBlob);
     return data;
   }
 }

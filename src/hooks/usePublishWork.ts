@@ -19,12 +19,20 @@ function usePublishWork() {
       //1 take screenshot and upload
       const resp = await takeScreenshotAndUpload(el);
       if (resp) {
-        // 2 update page coverImg in store
+        // 2 update page coverImg in store - 使用本地上传的响应格式
         store.commit("updatePage", {
           key: "coverImg",
-          value: resp.data.urls[0],
+          value: resp.data.url,
           isRoot: true,
         });
+
+        // 注释掉原来针对远程上传的响应处理逻辑
+        // store.commit("updatePage", {
+        //   key: "coverImg",
+        //   value: resp.data.urls[0],
+        //   isRoot: true,
+        // });
+
         // 3 save work
         await saveWork();
         // 4 publish work

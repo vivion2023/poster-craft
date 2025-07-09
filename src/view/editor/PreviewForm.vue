@@ -183,12 +183,22 @@ const takeScreenshot = async () => {
     // 调用截图上传函数
     const resp = await takeScreenshotAndUpload(canvasElement);
     console.log(resp);
-    if (resp && resp.data && resp.data.urls && resp.data.urls[0]) {
-      screenshotUrl.value = resp.data.urls[0];
+
+    // 处理本地上传的响应格式：{ errno: 0, data: { url: "http://localhost:3000/uploads/filename" } }
+    if (resp && resp.data && resp.data.url) {
+      screenshotUrl.value = resp.data.url;
       message.success("截图生成成功");
     } else {
       message.error("截图生成失败");
     }
+
+    // 注释掉原来针对远程上传的响应处理逻辑
+    // if (resp && resp.data && resp.data.urls && resp.data.urls[0]) {
+    //   screenshotUrl.value = resp.data.urls[0];
+    //   message.success("截图生成成功");
+    // } else {
+    //   message.error("截图生成失败");
+    // }
   } catch (error) {
     console.error("截图失败:", error);
     message.error("截图生成失败，请重试");
