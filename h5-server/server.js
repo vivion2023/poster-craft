@@ -11,8 +11,8 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
 
-// 预览页面路由 - 匹配 /p/:workId-:uuid 格式
-app.get("/p/:workId-:uuid", (req, res) => {
+// 预览页面路由 - 匹配 /p/preview/:workId-:uuid 格式
+app.get("/p/preview/:workId-:uuid", (req, res) => {
   const { workId, uuid } = req.params;
   console.log(`预览请求: workId=${workId}, uuid=${uuid}`);
 

@@ -20,16 +20,19 @@ npm install
 ## 启动服务
 
 ### 开发模式（自动重启）
+
 ```bash
 npm run dev
 ```
 
 ### 生产模式
+
 ```bash
 npm start
 ```
 
 ### 从主项目启动
+
 ```bash
 # 在主项目根目录执行
 npm run h5        # 生产模式
@@ -39,29 +42,35 @@ npm run h5:dev    # 开发模式
 ## 访问地址
 
 - 服务地址: `http://localhost:8082`
-- 预览URL格式: `http://localhost:8082/p/{workId}-{uuid}`
+- 预览 URL 格式: `http://localhost:8082/p/preview/{workId}-{uuid}`
 
 ## API 接口
 
-### GET /p/:workId-:uuid
+### GET /p/preview/:workId-:uuid
+
 预览页面路由，返回渲染好的 HTML 页面。
 
 **参数:**
-- `workId`: 作品ID
+
+- `workId`: 作品 ID
 - `uuid`: 作品唯一标识
 
 **示例:**
+
 ```
-http://localhost:8082/p/123-abc123def456
+http://localhost:8082/p/preview/123-abc123def456
 ```
 
 ### GET /api/work/:workId
+
 获取作品数据的 API 接口。
 
 **参数:**
-- `workId`: 作品ID
+
+- `workId`: 作品 ID
 
 **响应格式:**
+
 ```json
 {
   "errno": 0,
