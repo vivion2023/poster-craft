@@ -9,7 +9,10 @@
     "test:unit": "vue-cli-service test:unit",
     "test:watch": "vue-cli-service test:unit --watch",
     "lint": "vue-cli-service lint",
-    "mock": "nodemon ./fake-server/mockServer.js"
+    "mock": "nodemon ./fake-server/mockServer.js",
+    "h5": "cd h5-server && npm start",
+    "h5:dev": "cd h5-server && npm run dev",
+    "h5:install": "cd h5-server && node install.js"
   },
   "dependencies": {
     "@ant-design-vue/use": "^0.0.1-alpha.10",

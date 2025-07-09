@@ -263,8 +263,16 @@ server.use((req, res, next) => {
   };
 
   const authHeader = req.headers.authorization;
-  // 上传图片接口不需要登录校验
-  if (req.path === "/utils/upload-img") {
+  // 以下接口不需要登录校验
+  const publicPaths = [
+    "/utils/upload-img",
+    "/utils/upload-local-img",
+    "/works/", // 允许访问作品详情（用于预览）
+  ];
+
+  // 检查是否是公开接口
+  const isPublicPath = publicPaths.some((path) => req.path.startsWith(path));
+  if (isPublicPath) {
     next();
     return;
   }
