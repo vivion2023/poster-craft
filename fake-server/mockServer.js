@@ -455,6 +455,50 @@ server.post("/works/publish/:id", (req, res) => {
   });
 });
 
+// 获取作品渠道接口
+server.get("/channel/getWorkChannels/:id", (req, res) => {
+  // ① 校验登录
+  const authHeader = req.headers.authorization;
+  if (!authHeader) {
+    return res.status(401).jsonp({ errno: 14001, message: "未登录" });
+  }
+  try {
+    verifyToken(authHeader.split(" ")[1]);
+  } catch {
+    return res.status(401).jsonp({ errno: 14002, message: "登录失效" });
+  }
+
+  // ② 获取作品ID
+  const workId = req.params.id;
+  if (!workId) {
+    return res.status(400).jsonp({ errno: 14004, message: "作品ID不能为空" });
+  }
+
+  // ③ 查找作品
+  const worksDB = router.db.get("works");
+  // 支持字符串和数字类型的ID
+  const certianWork = worksDB
+    .find((work) => work.id == workId || work.id === parseInt(workId))
+    .value();
+
+  if (certianWork) {
+    const { channels } = certianWork;
+    return res.status(200).jsonp({
+      errno: 0,
+      data: {
+        count: (channels && channels.length) || 0,
+        list: channels || [],
+      },
+      message: "获取作品渠道成功",
+    });
+  } else {
+    return res.status(200).jsonp({
+      errno: 16001,
+      message: "渠道操作失败，作品不存在",
+    });
+  }
+});
+
 router.render = (req, res) => {
   const data = res.locals.data;
   if (Array.isArray(data)) {

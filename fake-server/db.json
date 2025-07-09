@@ -55,7 +55,21 @@
       "author": "136****5632",
       "coverImg": "http://static-dev.imooc-lego.com/upload-files/screenshot-036563.png",
       "isTemplate": true,
-      "status": 2
+      "status": 2,
+      "channels": [
+        {
+          "id": 1,
+          "name": "微信朋友圈",
+          "workId": 1,
+          "status": 1
+        },
+        {
+          "id": 2,
+          "name": "微博",
+          "workId": 1,
+          "status": 1
+        }
+      ]
     },
     {
       "id": "2",
@@ -67,7 +81,15 @@
       "author": "185****5632",
       "coverImg": "https://static.imooc-lego.com/upload-files/screenshot-649919.png",
       "isTemplate": true,
-      "status": 2
+      "status": 2,
+      "channels": [
+        {
+          "id": 3,
+          "name": "抖音",
+          "workId": 2,
+          "status": 1
+        }
+      ]
     },
     {
       "id": 1751285158740,
@@ -77,7 +99,8 @@
       "copiedCount": 0,
       "isTemplate": false,
       "createdAt": "2025-06-30T12:05:58.740Z",
-      "updatedAt": "2025-06-30T12:05:58.740Z"
+      "updatedAt": "2025-06-30T12:05:58.740Z",
+      "channels": []
     },
     {
       "id": 71,
@@ -87,12 +110,12 @@
       "contentId": "5fa128349fa7b1005c9f0541",
       "publishContentId": "5fa128749fa7b1005c9f0542",
       "author": "185****5632",
-      "coverImg": "http://localhost:3000/uploads/1752051681549.png",
+      "coverImg": "http://localhost:3000/uploads/1752070532645.png",
       "isTemplate": false,
       "status": 2,
       "copiedCount": 4,
       "createdAt": "2025-06-30T12:05:58.740Z",
-      "updatedAt": "2025-07-09T09:01:21.591Z",
+      "updatedAt": "2025-07-09T14:15:32.668Z",
       "user": {
         "gender": "0",
         "userName": "185****5632",
@@ -157,7 +180,21 @@
           "height": "600px"
         }
       },
-      "publishedAt": "2025-07-09T09:01:21.591Z"
+      "publishedAt": "2025-07-09T14:15:32.668Z",
+      "channels": [
+        {
+          "id": 4,
+          "name": "小红书",
+          "workId": 71,
+          "status": 1
+        },
+        {
+          "id": 5,
+          "name": "知乎",
+          "workId": 71,
+          "status": 1
+        }
+      ]
     }
   ]
 }
