@@ -125,13 +125,13 @@ server.post("/users/loginByToken", (req, res) => {
       data: {
         token: token,
       },
-      message: "Token验证成功",
+      message: "登录成功",
     });
   } catch (error) {
     console.log("Token验证失败: ", error.message);
     res.status(200).jsonp({
       errno: 12006,
-      message: "Token无效或已过期",
+      message: "登录信息已过期，请重新登录",
     });
   }
 });
@@ -143,7 +143,7 @@ server.post("/users/loginByToken", (req, res) => {
   if (!authHeader) {
     return res.status(200).jsonp({
       errno: 12005,
-      message: "Token不能为空",
+      message: "登录信息不能为空",
     });
   }
 
@@ -157,13 +157,13 @@ server.post("/users/loginByToken", (req, res) => {
       data: {
         token: token,
       },
-      message: "Token验证成功",
+      message: "登录成功",
     });
   } catch (error) {
     console.log("Token验证失败: ", error.message);
     res.status(200).jsonp({
       errno: 12006,
-      message: "Token无效或已过期",
+      message: "登录信息已过期，请重新登录",
     });
   }
 });
@@ -349,6 +349,22 @@ server.post("/works", (req, res) => {
 
 // 上传图片接口（不需要认证）
 server.post("/utils/upload-img", upload.any(), (req, res) => {
+  if (!req.files || req.files.length === 0) {
+    return res
+      .status(400)
+      .jsonp({ errno: 15001, message: "没有检测到上传文件" });
+  }
+  const file = req.files[0];
+  const fileUrl = `http://localhost:3000/uploads/${file.filename}`;
+  return res.status(200).jsonp({
+    errno: 0,
+    data: { url: fileUrl },
+    message: "上传成功",
+  });
+});
+
+// 本地图片上传接口（不需要认证）
+server.post("/utils/upload-local-img", upload.any(), (req, res) => {
   if (!req.files || req.files.length === 0) {
     return res
       .status(400)

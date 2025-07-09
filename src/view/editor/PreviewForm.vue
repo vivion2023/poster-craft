@@ -1,5 +1,5 @@
 <template>
-  <div class="preview-form" v-if="visible">
+  <div class="preview-form" v-if="props.visible">
     <div class="final-preview">
       <div class="final-preview-inner">
         <div class="preview-title">
@@ -25,7 +25,7 @@
       placement="right"
       width="400"
       :closable="true"
-      :visible="visible"
+      :visible="props.visible"
       @close="onCancel"
     >
       <div class="publish-form-container">
@@ -79,16 +79,24 @@
 </template>
 
 <script setup lang="ts">
-import { computed, reactive, onMounted, defineProps, defineEmits } from "vue";
+import {
+  computed,
+  reactive,
+  onMounted,
+  defineProps,
+  defineEmits,
+  ref,
+} from "vue";
 import { useForm } from "ant-design-vue/es/form";
 import { GlobalDataProps } from "../../store/index";
 import { baseH5URL } from "../../main";
 import { useStore } from "vuex";
 import { forEach } from "lodash-es";
 import useSaveWork from "../../hooks/useSaveWork";
-import { generateQRCode, timeout } from "../../helper";
+import { generateQRCode, timeout, takeScreenshotAndUpload } from "../../helper";
 import StyledUploader from "../../components/StyledUploader.vue";
 import { RespUploadData } from "../../store/respTypes";
+import { message } from "ant-design-vue";
 
 const props = defineProps({
   visible: {
@@ -99,9 +107,18 @@ const props = defineProps({
 const emit = defineEmits(["update:visible"]);
 const store = useStore<GlobalDataProps>();
 const pageState = computed(() => store.state.editor.page);
-const previewURL = computed(
-  () => `${baseH5URL}/p/preview/${pageState.value.id}-${pageState.value.uuid}`
-);
+
+// 截图相关状态
+const screenshotUrl = ref<string>("");
+const screenshotLoading = ref(false);
+
+// 动态计算预览URL：如果有截图则显示截图，否则显示原预览页面
+const previewURL = computed(() => {
+  if (screenshotUrl.value) {
+    return screenshotUrl.value;
+  }
+  return `${baseH5URL}/p/preview/${pageState.value.id}-${pageState.value.uuid}`;
+});
 const { title, desc, setting } = pageState.value;
 const { saveWork, saveIsLoading } = useSaveWork(true);
 const form = reactive({
@@ -151,6 +168,35 @@ const validateAndSave = async () => {
   await saveWork();
   emit("update:visible", false);
 };
+
+// 截图功能
+const takeScreenshot = async () => {
+  try {
+    screenshotLoading.value = true;
+    // 获取编辑器画布元素
+    const canvasElement = document.getElementById("canvas-area") as HTMLElement;
+    if (!canvasElement) {
+      message.error("未找到画布元素");
+      return;
+    }
+
+    // 调用截图上传函数
+    const resp = await takeScreenshotAndUpload(canvasElement);
+    console.log(resp);
+    if (resp && resp.data && resp.data.urls && resp.data.urls[0]) {
+      screenshotUrl.value = resp.data.urls[0];
+      message.success("截图生成成功");
+    } else {
+      message.error("截图生成失败");
+    }
+  } catch (error) {
+    console.error("截图失败:", error);
+    message.error("截图生成失败，请重试");
+  } finally {
+    screenshotLoading.value = false;
+  }
+};
+
 const onCancel = () => {
   emit("update:visible", false);
 };
