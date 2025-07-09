@@ -553,7 +553,7 @@ const editor: Module<EditorProps, GlobalDataProps> = {
       if (payload && payload.urlParams) {
         const { urlParams } = payload;
         state.channels = state.channels.filter(
-          (channel) => channel.id !== urlParams.id
+          (channel) => channel.id != urlParams.id
         );
       }
     },
