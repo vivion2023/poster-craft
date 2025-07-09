@@ -499,6 +499,141 @@ server.get("/channel/getWorkChannels/:id", (req, res) => {
   }
 });
 
+// 创建渠道接口
+server.post("/channel", (req, res) => {
+  // ① 校验登录
+  const authHeader = req.headers.authorization;
+  if (!authHeader) {
+    return res.status(401).jsonp({ errno: 14001, message: "未登录" });
+  }
+  try {
+    verifyToken(authHeader.split(" ")[1]);
+  } catch {
+    return res.status(401).jsonp({ errno: 14002, message: "登录失效" });
+  }
+
+  // ② 获取请求数据
+  const { name, workId } = req.body;
+  if (!name || !workId) {
+    return res.status(400).jsonp({
+      errno: 16002,
+      message: "渠道名称和作品ID不能为空",
+    });
+  }
+
+  // ③ 查找作品
+  const worksDB = router.db.get("works");
+  const work = worksDB
+    .find((work) => work.id == workId || work.id === parseInt(workId))
+    .value();
+
+  if (!work) {
+    return res.status(404).jsonp({
+      errno: 16003,
+      message: "作品不存在",
+    });
+  }
+
+  // ④ 生成新渠道数据
+  const newChannelId = Date.now(); // 使用时间戳作为唯一ID
+  const newChannel = {
+    id: newChannelId,
+    name,
+    workId: parseInt(workId),
+    status: 1,
+  };
+
+  // ⑤ 更新作品的渠道列表
+  const currentChannels = work.channels || [];
+  const updatedChannels = [...currentChannels, newChannel];
+
+  worksDB
+    .find((work) => work.id == workId || work.id === parseInt(workId))
+    .assign({ channels: updatedChannels })
+    .write();
+
+  // ⑥ 返回创建的渠道数据
+  return res.status(200).jsonp({
+    errno: 0,
+    data: newChannel,
+    message: "创建渠道成功",
+  });
+});
+
+// 删除渠道接口
+server.delete("/channel/:id", (req, res) => {
+  // ① 校验登录
+  const authHeader = req.headers.authorization;
+  if (!authHeader) {
+    return res.status(401).jsonp({ errno: 14001, message: "未登录" });
+  }
+  try {
+    verifyToken(authHeader.split(" ")[1]);
+  } catch {
+    return res.status(401).jsonp({ errno: 14002, message: "登录失效" });
+  }
+
+  // ② 获取渠道ID
+  const channelId = req.params.id;
+  if (!channelId) {
+    return res.status(400).jsonp({
+      errno: 16004,
+      message: "渠道ID不能为空",
+    });
+  }
+
+  // ③ 查找包含该渠道的作品
+  const worksDB = router.db.get("works");
+  const allWorks = worksDB.value();
+  let targetWork = null;
+  let channelIndex = -1;
+
+  for (const work of allWorks) {
+    if (work.channels && work.channels.length > 0) {
+      channelIndex = work.channels.findIndex(
+        (channel) =>
+          channel.id == channelId || channel.id === parseInt(channelId)
+      );
+      if (channelIndex !== -1) {
+        targetWork = work;
+        break;
+      }
+    }
+  }
+
+  if (!targetWork || channelIndex === -1) {
+    return res.status(404).jsonp({
+      errno: 16005,
+      message: "渠道不存在",
+    });
+  }
+
+  // ④ 检查是否是最后一个渠道（不允许删除最后一个渠道）
+  if (targetWork.channels.length === 1) {
+    return res.status(400).jsonp({
+      errno: 16006,
+      message: "不能删除最后一个渠道",
+    });
+  }
+
+  // ⑤ 删除渠道
+  const updatedChannels = targetWork.channels.filter(
+    (channel) => channel.id != channelId && channel.id !== parseInt(channelId)
+  );
+
+  worksDB
+    .find((work) => work.id === targetWork.id)
+    .assign({ channels: updatedChannels })
+    .write();
+
+  // ⑥ 返回删除结果
+  return res.status(200).jsonp({
+    errno: 0,
+    data: { id: channelId },
+    message: "删除渠道成功",
+  });
+});
+
 router.render = (req, res) => {
   const data = res.locals.data;
   if (Array.isArray(data)) {

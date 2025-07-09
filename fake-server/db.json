@@ -110,12 +110,12 @@
       "contentId": "5fa128349fa7b1005c9f0541",
       "publishContentId": "5fa128749fa7b1005c9f0542",
       "author": "185****5632",
-      "coverImg": "http://localhost:3000/uploads/1752070532645.png",
+      "coverImg": "http://localhost:3000/uploads/1752071151849.png",
       "isTemplate": false,
       "status": 2,
       "copiedCount": 4,
       "createdAt": "2025-06-30T12:05:58.740Z",
-      "updatedAt": "2025-07-09T14:15:32.668Z",
+      "updatedAt": "2025-07-09T14:25:51.882Z",
       "user": {
         "gender": "0",
         "userName": "185****5632",
@@ -180,7 +180,7 @@
           "height": "600px"
         }
       },
-      "publishedAt": "2025-07-09T14:15:32.668Z",
+      "publishedAt": "2025-07-09T14:25:51.882Z",
       "channels": [
         {
           "id": 4,
@@ -189,8 +189,8 @@
           "status": 1
         },
         {
-          "id": 5,
-          "name": "知乎",
+          "id": 1752071115105,
+          "name": "微信",
           "workId": 71,
           "status": 1
         }

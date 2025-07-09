@@ -139,7 +139,7 @@ export default defineComponent({
     };
     const deleteDisabled = computed(() => channels.value.length === 1);
     const deleteChannel = (id: number) => {
-      store.dispatch("deleteChannel", { urlParams: { id } });
+      store.dispatch("deleteChannel", { urlParams: { id: id.toString() } });
     };
     onMounted(() => {
       const clipboard = new ClipboardJS(".copy-button");
