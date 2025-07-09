@@ -1,5 +1,5 @@
 <template>
-  <div class="preview-form" v-if="props.visible">
+  <div class="preview-form" v-if="props.open">
     <div class="final-preview">
       <div class="final-preview-inner">
         <div class="preview-title">
@@ -25,7 +25,7 @@
       placement="right"
       width="400"
       :closable="true"
-      :visible="props.visible"
+      :open="props.open"
       @close="onCancel"
     >
       <div class="publish-form-container">
@@ -99,12 +99,12 @@ import { RespUploadData } from "../../store/respTypes";
 import { message } from "ant-design-vue";
 
 const props = defineProps({
-  visible: {
+  open: {
     type: Boolean,
     default: false,
   },
 });
-const emit = defineEmits(["update:visible"]);
+const emit = defineEmits(["update:open"]);
 const store = useStore<GlobalDataProps>();
 const pageState = computed(() => store.state.editor.page);
 
@@ -166,7 +166,7 @@ const validateAndSave = async () => {
     }
   });
   await saveWork();
-  emit("update:visible", false);
+  emit("update:open", false);
 };
 
 // 截图功能
@@ -208,7 +208,7 @@ const takeScreenshot = async () => {
 };
 
 const onCancel = () => {
-  emit("update:visible", false);
+  emit("update:open", false);
 };
 </script>
 

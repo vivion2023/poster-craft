@@ -2,14 +2,14 @@
   <Layout class="editor">
     <a-modal
       title="发布成功"
-      v-model:visible="showPublishForm"
+      v-model:open="showPublishForm"
       width="700px"
       :footer="null"
     >
       <publish-form />
     </a-modal>
     <preview-form
-      v-model:visible="showPreviewForm"
+      v-model:open="showPreviewForm"
       v-if="showPreviewForm"
     ></preview-form>
     <LayoutHeader class="editor-header">

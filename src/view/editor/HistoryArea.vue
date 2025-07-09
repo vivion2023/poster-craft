@@ -31,7 +31,7 @@
 
     <!-- 快捷键提示弹窗 -->
     <a-modal
-      v-model:visible="shortcutModalVisible"
+      v-model:open="shortcutModalVisible"
       title="快捷操作"
       :footer="null"
       width="500px"

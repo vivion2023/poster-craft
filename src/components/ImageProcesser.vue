@@ -2,7 +2,7 @@
   <div class="image-processer">
     <a-modal
       title="裁剪图片"
-      v-model:visible="showModal"
+      v-model:open="showModal"
       @ok="handleOk"
       @cancel="showModal = false"
       okText="确认"
