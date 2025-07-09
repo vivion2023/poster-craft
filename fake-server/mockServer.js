@@ -379,6 +379,74 @@ server.post("/utils/upload-local-img", upload.any(), (req, res) => {
   });
 });
 
+// 发布作品接口
+server.post("/works/publish/:id", (req, res) => {
+  // ① 校验登录
+  const authHeader = req.headers.authorization;
+  if (!authHeader) {
+    return res.status(401).jsonp({ errno: 14001, message: "未登录" });
+  }
+  try {
+    verifyToken(authHeader.split(" ")[1]);
+  } catch {
+    return res.status(401).jsonp({ errno: 14002, message: "登录失效" });
+  }
+
+  // ② 获取作品ID
+  const workId = req.params.id;
+  if (!workId) {
+    return res.status(400).jsonp({ errno: 14004, message: "作品ID不能为空" });
+  }
+
+  // ③ 检查作品是否存在
+  const worksDB = router.db.get("works");
+  const work = worksDB.find({ id: parseInt(workId) }).value();
+  if (!work) {
+    return res.status(404).jsonp({ errno: 14005, message: "作品不存在" });
+  }
+
+  // ④ 获取查询参数，判断是否发布为模板
+  const { isTemplate } = req.query;
+  const isTemplateFlag = isTemplate === "true";
+
+  // ⑤ 生成发布URL
+  const baseUrl = "http://localhost:8082"; // H5预览地址
+  const publishUrl = `${baseUrl}/p/${workId}-${work.uuid || Date.now()}`;
+
+  // ⑥ 更新作品状态
+  const updateData = {
+    status: 2, // 已发布状态
+    publishedAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  };
+
+  // 如果是发布为模板，则添加到模板表
+  if (isTemplateFlag) {
+    updateData.isTemplate = true;
+    const templatesDB = router.db.get("templates");
+    const templateData = {
+      ...work,
+      ...updateData,
+      id: Date.now(), // 模板使用新的ID
+      originalWorkId: work.id, // 记录原作品ID
+    };
+    templatesDB.push(templateData).write();
+  }
+
+  // 更新原作品
+  worksDB
+    .find({ id: parseInt(workId) })
+    .assign(updateData)
+    .write();
+
+  // ⑦ 返回发布结果
+  return res.status(200).jsonp({
+    errno: 0,
+    data: { url: publishUrl },
+    message: isTemplateFlag ? "发布为模板成功" : "作品发布成功",
+  });
+});
+
 router.render = (req, res) => {
   const data = res.locals.data;
   if (Array.isArray(data)) {
