@@ -95,6 +95,21 @@
         font-size: 14px;
         color: #6c757d;
       }
+
+      /* 顶部刘海提示条样式 */
+      .canvas-area-header {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 34px;
+        color: #ffffff;
+        background: red;
+        font-size: 14px;
+        text-align: center;
+        line-height: 32px;
+        z-index: 2;
+      }
     </style>
   </head>
   <body>
@@ -168,7 +183,14 @@
         }
 
         // 渲染组件
-        canvasArea.innerHTML = generateComponentsHTML(components);
+        // 保留顶部提示条，防止被覆盖
+        const headerHTML =
+          canvasArea.querySelector(".canvas-area-header")?.outerHTML ||
+          '<div class="canvas-area-header">仅供预览，请发布作品后，再正式使用</div>';
+
+        canvasArea.innerHTML = `${headerHTML}\n${generateComponentsHTML(
+          components
+        )}`;
 
         // 隐藏加载状态，显示内容
         document.getElementById("loading").style.display = "none";

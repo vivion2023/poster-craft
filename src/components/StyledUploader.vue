@@ -1,7 +1,7 @@
 <template>
   <Uploader
     class="styled-uploader"
-    action="http://localhost:7001/api/utils/upload-local-img"
+    action="http://localhost:3000/api/utils/upload-local-img"
     :show-upload-list="showUploadList"
     :auto-upload="autoUpload"
     :beforeUpload="commonUploadCheck"

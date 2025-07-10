@@ -37,7 +37,7 @@
         </a-row>
         <a-row type="flex" align="middle" :style="{ marginBottom: '20px' }">
           <a-col :span="6"> 上传封面： </a-col>
-          <a-col :span="10">
+          <a-col :span="18">
             <styled-uploader
               text="上传封面"
               :uploaded="form.uploaded"
@@ -95,7 +95,6 @@ import { forEach } from "lodash-es";
 import useSaveWork from "../../hooks/useSaveWork";
 import { generateQRCode, timeout, takeScreenshotAndUpload } from "../../helper";
 import StyledUploader from "../../components/StyledUploader.vue";
-import { RespUploadData } from "../../store/respTypes";
 import { message } from "ant-design-vue";
 
 const props = defineProps({
@@ -145,8 +144,9 @@ onMounted(async () => {
     console.error(e);
   }
 });
-const updateAvatar = (rawData: { resp: RespUploadData; file: File }) => {
-  const url = rawData.resp.data.urls[0];
+const updateAvatar = (rawData: { resp: any; file: File }) => {
+  // 处理本地上传的响应格式：{ errno: 0, data: { url: "..." } }
+  const url = rawData.resp.data.url;
   form.uploaded = {
     data: { url },
   };
