@@ -14,7 +14,7 @@
     ></preview-form>
     <LayoutHeader class="editor-header">
       <div class="editor-header-left">
-        <img src="@/assets/logo.png" alt="logo" />
+        <img src="@/assets/logo.png" alt="logo" @click="toHome" />
         <inline-edit :value="page.title" @change="titleChange" />
       </div>
       <div class="editor-header-right">
@@ -178,12 +178,14 @@ import useSaveWork from "@/hooks/useSaveWork";
 import usePublishWork from "@/hooks/usePublishWork";
 import PublishForm from "@/view/editor/PublishForm.vue";
 import PreviewForm from "@/view/editor/PreviewForm.vue";
+import { useRouter } from "vue-router";
 
 export type TabType = "component" | "layer" | "page";
 initHotKeys();
 initContextMenu();
 const store = useStore<GlobalDataProps>();
 const route = useRoute();
+const router = useRouter();
 const canvasFix = ref(false);
 const showPublishForm = ref(false);
 const showPreviewForm = ref(false);
@@ -262,6 +264,10 @@ const preview = async () => {
   await saveWork();
   showPreviewForm.value = true;
 };
+
+const toHome = () => {
+  router.push("/");
+};
 </script>
 
 <style scoped lang="scss">
@@ -291,6 +297,7 @@ const preview = async () => {
         width: 34px;
         height: 34px;
         display: block;
+        cursor: pointer;
       }
     }
 
