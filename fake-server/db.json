@@ -42,6 +42,309 @@
       "coverImg": "https://static.imooc-lego.com/upload-files/screenshot-649919.png",
       "isTemplate": true,
       "status": 2
+    },
+    {
+      "id": 1752114113300,
+      "uuid": "8e55",
+      "title": "大山深处的美好",
+      "desc": "心灵的港湾",
+      "contentId": "5fa128349fa7b1005c9f0541",
+      "publishContentId": "5fa128749fa7b1005c9f0542",
+      "author": "185****5632",
+      "coverImg": "http://localhost:3000/uploads/1752114048121.png",
+      "isTemplate": true,
+      "status": 2,
+      "copiedCount": 4,
+      "createdAt": "2025-06-30T12:05:58.740Z",
+      "updatedAt": "2025-07-10T02:21:53.300Z",
+      "user": {
+        "gender": "0",
+        "userName": "185****5632",
+        "nickName": "viking3",
+        "picture": "https://static.imooc-lego.com/upload-files/screenshot-649919.png"
+      },
+      "content": {
+        "components": [
+          {
+            "id": "comp-1",
+            "name": "l-text",
+            "layerName": "标题",
+            "props": {
+              "text": "Hello",
+              "fontSize": "20px",
+              "color": "#f5222d",
+              "top": "153.39288330078125px",
+              "left": "145.64288330078125px"
+            }
+          },
+          {
+            "id": "3c9c1f58-ac1c-4b7d-8e00-68830ddd3d5a",
+            "name": "l-text",
+            "props": {
+              "text": "按钮内容",
+              "fontSize": "14px",
+              "fontFamily": "",
+              "fontWeight": "normal",
+              "fontStyle": "normal",
+              "textDecoration": "none",
+              "lineHeight": "1",
+              "textAlign": "left",
+              "color": "#fff",
+              "backgroundColor": "#1890ff",
+              "tag": "button",
+              "actionType": "",
+              "url": "",
+              "height": "",
+              "width": "",
+              "paddingLeft": "10px",
+              "paddingRight": "10px",
+              "paddingTop": "4px",
+              "paddingBottom": "4px",
+              "borderStyle": "none",
+              "borderColor": "#1890ff",
+              "borderWidth": "1px",
+              "borderRadius": "4px",
+              "boxShadow": "0 0 0 rgb(244, 238, 238)",
+              "opacity": "1",
+              "position": "absolute",
+              "left": "223.64288330078125px",
+              "top": "151.7857208251953px",
+              "right": "0"
+            },
+            "layerName": "图层2"
+          }
+        ],
+        "props": {
+          "backgroundColor": "green",
+          "backgroundRepeat": "no-repeat",
+          "backgroundSize": "cover",
+          "height": "800px"
+        }
+      },
+      "publishedAt": "2025-07-10T02:21:53.300Z",
+      "channels": [
+        {
+          "id": 4,
+          "name": "小红书",
+          "workId": 71,
+          "status": 1
+        },
+        {
+          "id": 1752071515078,
+          "name": "知乎",
+          "workId": 71,
+          "status": 1
+        },
+        {
+          "id": 1752113379804,
+          "name": "微信",
+          "workId": 71,
+          "status": 1
+        }
+      ],
+      "originalWorkId": 71
+    },
+    {
+      "id": 1752114122655,
+      "uuid": "8e55",
+      "title": "大山深处的美好",
+      "desc": "心灵的港湾",
+      "contentId": "5fa128349fa7b1005c9f0541",
+      "publishContentId": "5fa128749fa7b1005c9f0542",
+      "author": "185****5632",
+      "coverImg": "http://localhost:3000/uploads/1752114048121.png",
+      "isTemplate": true,
+      "status": 2,
+      "copiedCount": 4,
+      "createdAt": "2025-06-30T12:05:58.740Z",
+      "updatedAt": "2025-07-10T02:22:02.655Z",
+      "user": {
+        "gender": "0",
+        "userName": "185****5632",
+        "nickName": "viking3",
+        "picture": "https://static.imooc-lego.com/upload-files/screenshot-649919.png"
+      },
+      "content": {
+        "components": [
+          {
+            "id": "comp-1",
+            "name": "l-text",
+            "layerName": "标题",
+            "props": {
+              "text": "Hello",
+              "fontSize": "20px",
+              "color": "#f5222d",
+              "top": "153.39288330078125px",
+              "left": "145.64288330078125px"
+            }
+          },
+          {
+            "id": "3c9c1f58-ac1c-4b7d-8e00-68830ddd3d5a",
+            "name": "l-text",
+            "props": {
+              "text": "按钮内容",
+              "fontSize": "14px",
+              "fontFamily": "",
+              "fontWeight": "normal",
+              "fontStyle": "normal",
+              "textDecoration": "none",
+              "lineHeight": "1",
+              "textAlign": "left",
+              "color": "#fff",
+              "backgroundColor": "#1890ff",
+              "tag": "button",
+              "actionType": "",
+              "url": "",
+              "height": "",
+              "width": "",
+              "paddingLeft": "10px",
+              "paddingRight": "10px",
+              "paddingTop": "4px",
+              "paddingBottom": "4px",
+              "borderStyle": "none",
+              "borderColor": "#1890ff",
+              "borderWidth": "1px",
+              "borderRadius": "4px",
+              "boxShadow": "0 0 0 rgb(244, 238, 238)",
+              "opacity": "1",
+              "position": "absolute",
+              "left": "223.64288330078125px",
+              "top": "151.7857208251953px",
+              "right": "0"
+            },
+            "layerName": "图层2"
+          }
+        ],
+        "props": {
+          "backgroundColor": "green",
+          "backgroundRepeat": "no-repeat",
+          "backgroundSize": "cover",
+          "height": "800px"
+        }
+      },
+      "publishedAt": "2025-07-10T02:22:02.655Z",
+      "channels": [
+        {
+          "id": 4,
+          "name": "小红书",
+          "workId": 71,
+          "status": 1
+        },
+        {
+          "id": 1752071515078,
+          "name": "知乎",
+          "workId": 71,
+          "status": 1
+        },
+        {
+          "id": 1752113379804,
+          "name": "微信",
+          "workId": 71,
+          "status": 1
+        }
+      ],
+      "originalWorkId": 71
+    },
+    {
+      "id": 1752114328230,
+      "uuid": "8e55",
+      "title": "大山深处的美好",
+      "desc": "心灵的港湾",
+      "contentId": "5fa128349fa7b1005c9f0541",
+      "publishContentId": "5fa128749fa7b1005c9f0542",
+      "author": "185****5632",
+      "coverImg": "http://localhost:3000/uploads/1752114319673.png",
+      "isTemplate": true,
+      "status": 2,
+      "copiedCount": 4,
+      "createdAt": "2025-06-30T12:05:58.740Z",
+      "updatedAt": "2025-07-10T02:25:28.230Z",
+      "user": {
+        "gender": "0",
+        "userName": "185****5632",
+        "nickName": "viking3",
+        "picture": "https://static.imooc-lego.com/upload-files/screenshot-649919.png"
+      },
+      "content": {
+        "components": [
+          {
+            "id": "comp-1",
+            "name": "l-text",
+            "layerName": "标题",
+            "props": {
+              "text": "Hello",
+              "fontSize": "20px",
+              "color": "#f5222d",
+              "top": "153.39288330078125px",
+              "left": "145.64288330078125px"
+            }
+          },
+          {
+            "id": "3c9c1f58-ac1c-4b7d-8e00-68830ddd3d5a",
+            "name": "l-text",
+            "props": {
+              "text": "按钮内容",
+              "fontSize": "14px",
+              "fontFamily": "",
+              "fontWeight": "normal",
+              "fontStyle": "normal",
+              "textDecoration": "none",
+              "lineHeight": "1",
+              "textAlign": "left",
+              "color": "#fff",
+              "backgroundColor": "#1890ff",
+              "tag": "button",
+              "actionType": "",
+              "url": "",
+              "height": "",
+              "width": "",
+              "paddingLeft": "10px",
+              "paddingRight": "10px",
+              "paddingTop": "4px",
+              "paddingBottom": "4px",
+              "borderStyle": "none",
+              "borderColor": "#1890ff",
+              "borderWidth": "1px",
+              "borderRadius": "4px",
+              "boxShadow": "0 0 0 rgb(244, 238, 238)",
+              "opacity": "1",
+              "position": "absolute",
+              "left": "223.64288330078125px",
+              "top": "151.7857208251953px",
+              "right": "0"
+            },
+            "layerName": "图层2"
+          }
+        ],
+        "props": {
+          "backgroundColor": "green",
+          "backgroundRepeat": "no-repeat",
+          "backgroundSize": "cover",
+          "height": "800px"
+        }
+      },
+      "publishedAt": "2025-07-10T02:25:28.230Z",
+      "channels": [
+        {
+          "id": 4,
+          "name": "小红书",
+          "workId": 71,
+          "status": 1
+        },
+        {
+          "id": 1752071515078,
+          "name": "知乎",
+          "workId": 71,
+          "status": 1
+        },
+        {
+          "id": 1752113379804,
+          "name": "微信",
+          "workId": 71,
+          "status": 1
+        }
+      ],
+      "originalWorkId": 71
     }
   ],
   "works": [
@@ -110,12 +413,12 @@
       "contentId": "5fa128349fa7b1005c9f0541",
       "publishContentId": "5fa128749fa7b1005c9f0542",
       "author": "185****5632",
-      "coverImg": "http://localhost:3000/uploads/1752113299523.png",
-      "isTemplate": false,
+      "coverImg": "http://localhost:3000/uploads/1752114319673.png",
+      "isTemplate": true,
       "status": 2,
       "copiedCount": 4,
       "createdAt": "2025-06-30T12:05:58.740Z",
-      "updatedAt": "2025-07-10T02:08:19.576Z",
+      "updatedAt": "2025-07-10T02:25:28.230Z",
       "user": {
         "gender": "0",
         "userName": "185****5632",
@@ -180,7 +483,7 @@
           "height": "800px"
         }
       },
-      "publishedAt": "2025-07-10T02:08:19.576Z",
+      "publishedAt": "2025-07-10T02:25:28.230Z",
       "channels": [
         {
           "id": 4,
@@ -191,6 +494,12 @@
         {
           "id": 1752071515078,
           "name": "知乎",
+          "workId": 71,
+          "status": 1
+        },
+        {
+          "id": 1752113379804,
+          "name": "微信",
           "workId": 71,
           "status": 1
         }

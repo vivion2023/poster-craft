@@ -387,8 +387,8 @@ server.post("/utils/upload-local-img", upload.any(), (req, res) => {
   });
 });
 
-// 发布作品接口
-server.post("/works/publish/:id", (req, res) => {
+// 通用发布函数
+function publishWork(req, res, isTemplate = false) {
   // ① 校验登录
   const authHeader = req.headers.authorization;
   if (!authHeader) {
@@ -413,15 +413,11 @@ server.post("/works/publish/:id", (req, res) => {
     return res.status(404).jsonp({ errno: 14005, message: "作品不存在" });
   }
 
-  // ④ 获取查询参数，判断是否发布为模板
-  const { isTemplate } = req.query;
-  const isTemplateFlag = isTemplate === "true";
-
-  // ⑤ 生成发布URL
+  // ④ 生成发布URL
   const baseUrl = "http://localhost:8082"; // H5预览地址
   const publishUrl = `${baseUrl}/p/${workId}-${work.uuid || Date.now()}`;
 
-  // ⑥ 更新作品状态
+  // ⑤ 更新作品状态
   const updateData = {
     status: 2, // 已发布状态
     publishedAt: new Date().toISOString(),
@@ -429,7 +425,7 @@ server.post("/works/publish/:id", (req, res) => {
   };
 
   // 如果是发布为模板，则添加到模板表
-  if (isTemplateFlag) {
+  if (isTemplate) {
     updateData.isTemplate = true;
     const templatesDB = router.db.get("templates");
     const templateData = {
@@ -447,12 +443,22 @@ server.post("/works/publish/:id", (req, res) => {
     .assign(updateData)
     .write();
 
-  // ⑦ 返回发布结果
+  // ⑥ 返回发布结果
   return res.status(200).jsonp({
     errno: 0,
     data: { url: publishUrl },
-    message: isTemplateFlag ? "发布为模板成功" : "作品发布成功",
+    message: isTemplate ? "发布为模板成功" : "作品发布成功",
   });
+}
+
+// 发布作品接口
+server.post("/works/publish/:id", (req, res) => {
+  return publishWork(req, res, false);
+});
+
+// 发布为模板接口
+server.post("/works/publish-template/:id", (req, res) => {
+  return publishWork(req, res, true);
 });
 
 // 获取作品渠道接口

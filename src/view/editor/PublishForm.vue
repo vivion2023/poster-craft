@@ -79,7 +79,27 @@
               </a-form-item>
             </a-form>
           </a-tab-pane>
-          <a-tab-pane key="template" tab="发布为模版"> </a-tab-pane>
+          <a-tab-pane key="template" tab="发布为模版">
+            <div class="template-publish-container">
+              <a-alert
+                message="发布为模版说明"
+                description="发布为模版后，其他用户可以使用您的作品作为模版创建新的作品。"
+                type="info"
+                show-icon
+                :style="{ marginBottom: '20px' }"
+              />
+              <div class="template-submit">
+                <a-button
+                  type="primary"
+                  size="large"
+                  @click="publishAsTemplate"
+                  :loading="isPublishingTemplate"
+                >
+                  发布为模版
+                </a-button>
+              </div>
+            </div>
+          </a-tab-pane>
         </a-tabs>
       </a-col>
     </a-row>
@@ -143,6 +163,23 @@ export default defineComponent({
     const deleteChannel = (id: number) => {
       store.dispatch("deleteChannel", { urlParams: { id: id.toString() } });
     };
+
+    // 发布为模板相关
+    const isPublishingTemplate = ref(false);
+    const publishAsTemplate = async () => {
+      try {
+        isPublishingTemplate.value = true;
+        await store.dispatch("publishTemplate", {
+          urlParams: { id: currentWorkId },
+        });
+        message.success("发布为模版成功", 2);
+      } catch (e) {
+        console.error(e);
+        message.error("发布为模版失败", 2);
+      } finally {
+        isPublishingTemplate.value = false;
+      }
+    };
     onMounted(() => {
       const clipboard = new ClipboardJS(".copy-button");
       clipboardInstance.value = clipboard;
@@ -195,6 +232,8 @@ export default defineComponent({
       deleteDisabled,
       deleteChannel,
       generateChannelURL,
+      publishAsTemplate,
+      isPublishingTemplate,
     };
   },
 });

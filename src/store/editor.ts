@@ -543,6 +543,15 @@ const editor: Module<EditorProps, GlobalDataProps> = {
     saveWork(state) {
       state.isDirty = false;
     },
+    publishWork(state, { data: _data }: RespData<any>) {
+      // 发布作品成功后的状态更新
+      state.page.status = 2; // 已发布状态
+    },
+    publishTemplate(state, { data: _data }: RespData<any>) {
+      // 发布为模板成功后的状态更新
+      state.page.status = 2; // 已发布状态
+      state.page.isTemplate = true;
+    },
     fetchChannels(state, { data }: RespListData<ChannelProps>) {
       state.channels = data.list;
     },
@@ -573,6 +582,13 @@ const editor: Module<EditorProps, GlobalDataProps> = {
     publishWork: actionWrapper("/works/publish/:id", "publishWork", {
       method: "post",
     }),
+    publishTemplate: actionWrapper(
+      "/works/publish-template/:id",
+      "publishTemplate",
+      {
+        method: "post",
+      }
+    ),
     fetchChannels: actionWrapper(
       "/channel/getWorkChannels/:id",
       "fetchChannels"
