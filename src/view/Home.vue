@@ -79,8 +79,8 @@
     </div>
 
     <div class="template-container">
+      <template-list :list="testData"></template-list>
       <h1 v-if="isLoading">template is loading...</h1>
-      <template-list v-else :list="testData"></template-list>
     </div>
     <a-row type="flex" justify="center">
       <a-row type="flex" justify="center">
