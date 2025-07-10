@@ -199,56 +199,19 @@ server.post("/users/genVeriCode", (req, res) => {
 
 // 获取模板列表（不需要认证，添加延迟模拟loading）
 server.get("/templates", (req, res) => {
+  // 新增：处理分页参数
+  const { pageIndex = 0, pageSize = 4 } = req.query;
+  const pageIndexNum = parseInt(pageIndex, 10);
+  const pageSizeNum = parseInt(pageSize, 10);
+  const start = pageIndexNum * pageSizeNum;
+  const end = start + pageSizeNum;
+  const paginatedList = templateData.list.slice(start, end);
   // 添加3秒延迟来查看loading效果
   setTimeout(() => {
-    // const templates = [
-    //   {
-    //     id: 1,
-    //     title: "前端架构师海报",
-    //     desc: "前端架构师海报",
-    //     coverImg:
-    //       "https://static.imooc-lego.com/upload-files/screenshot-889755.png",
-    //     uuid: "123",
-    //     author: "vivion",
-    //     copiedCount: 123,
-    //     isTemplate: true,
-    //     isHot: true,
-    //     isNew: true,
-    //     status: 13,
-    //     user: {
-    //       gender: "male",
-    //       nickName: "vivion",
-    //       picture:
-    //         "https://static.imooc-lego.com/upload-files/screenshot-889755.png",
-    //       userName: "13455556666",
-    //     },
-    //   },
-    //   {
-    //     id: 2,
-    //     title: "前端架构师海报2",
-    //     desc: "前端架构师海报",
-    //     coverImg: "http://static-dev.imooc-lego.com/imooc-test/sZHlgv.png",
-    //     uuid: "124",
-    //     author: "vivion",
-    //     copiedCount: 23,
-    //     isTemplate: true,
-    //     isHot: true,
-    //     isNew: true,
-    //     status: 1,
-    //     user: {
-    //       gender: "male",
-    //       nickName: "vivion",
-    //       picture:
-    //         "https://static.imooc-lego.com/upload-files/screenshot-889755.png",
-    //       userName: "13566667777",
-    //     },
-    //   },
-    // ];
-
     res.status(200).jsonp({
       errno: 0,
       data: {
-        list: templateData.list,
+        list: paginatedList,
         count: templateData.list.length,
       },
       message: "获取模板列表成功",

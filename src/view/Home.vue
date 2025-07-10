@@ -83,7 +83,16 @@
       <template-list v-else :list="testData"></template-list>
     </div>
     <a-row type="flex" justify="center">
-      <a-button type="primary" size="large">加载更多</a-button>
+      <a-row type="flex" justify="center">
+        <a-button
+          type="primary"
+          size="large"
+          @click="loadMorePage"
+          v-if="!isLastPage"
+          :loading="isLoading"
+          >加载更多</a-button
+        >
+      </a-row>
     </a-row>
   </div>
 </template>
@@ -93,13 +102,21 @@ import { computed, onMounted } from "vue";
 import { Typography, InputSearch, Row, Col, message } from "ant-design-vue";
 import TemplateList from "@/components/TemplateList.vue";
 import { useStore } from "vuex";
+import useLoadMore from "@/hooks/useLoadMore";
 const { Title } = Typography;
 const store = useStore();
 const isLoading = computed(() => store.getters.isOpLoading("fetchTemplates"));
 const testData = computed(() => store.state.templates.data);
+const total = computed(() => store.state.templates.totalTemplates);
+const { loadMorePage, isLastPage } = useLoadMore("fetchTemplates", total, {
+  pageIndex: 0,
+  pageSize: 4,
+});
 // 组件挂载时获取模板数据
 onMounted(() => {
-  store.dispatch("fetchTemplates");
+  store.dispatch("fetchTemplates", {
+    searchParams: { pageIndex: 0, pageSize: 4 },
+  });
 });
 </script>
 
