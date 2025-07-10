@@ -13,8 +13,8 @@ app.use(express.static(path.join(__dirname, "public")));
 
 // 预览页面路由 - 匹配 /p/preview/:workId-:uuid 格式
 app.get("/p/preview/:workId-:uuid", (req, res) => {
-  const { workId, uuid } = req.params;
-  console.log(`预览请求: workId=${workId}, uuid=${uuid}`);
+  const { workId, uuid, channel } = req.params;
+  console.log(`预览请求: workId=${workId}, uuid=${uuid}, channel=${channel}`);
 
   // 直接返回预览页面，让前端JavaScript处理数据加载
   res.sendFile(path.join(__dirname, "public", "preview.html"));

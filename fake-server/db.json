@@ -110,12 +110,12 @@
       "contentId": "5fa128349fa7b1005c9f0541",
       "publishContentId": "5fa128749fa7b1005c9f0542",
       "author": "185****5632",
-      "coverImg": "http://localhost:3000/uploads/1752073795634.png",
+      "coverImg": "http://localhost:3000/uploads/1752113299523.png",
       "isTemplate": false,
       "status": 2,
       "copiedCount": 4,
       "createdAt": "2025-06-30T12:05:58.740Z",
-      "updatedAt": "2025-07-09T15:09:55.745Z",
+      "updatedAt": "2025-07-10T02:08:19.576Z",
       "user": {
         "gender": "0",
         "userName": "185****5632",
@@ -177,10 +177,10 @@
           "backgroundColor": "green",
           "backgroundRepeat": "no-repeat",
           "backgroundSize": "cover",
-          "height": "600px"
+          "height": "800px"
         }
       },
-      "publishedAt": "2025-07-09T15:09:55.745Z",
+      "publishedAt": "2025-07-10T02:08:19.576Z",
       "channels": [
         {
           "id": 4,

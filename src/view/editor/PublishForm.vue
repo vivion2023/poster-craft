@@ -92,6 +92,7 @@ import {
   reactive,
   computed,
   onMounted,
+  onBeforeUnmount,
   watch,
   ref,
 } from "vue";
@@ -113,6 +114,7 @@ export default defineComponent({
     const currentWorkId = route.params.id as string;
     const page = computed(() => store.state.editor.page);
     const channels = computed(() => store.state.editor.channels);
+    const clipboardInstance = ref<ClipboardJS | null>(null);
     const form = reactive({
       channelName: "",
     });
@@ -123,7 +125,7 @@ export default defineComponent({
     });
     const { validate } = useForm(form, rules);
     const generateChannelURL = (id: number) =>
-      `${baseH5URL}/p/${page.value.id}-${page.value.uuid}?channel=${id}`;
+      `${baseH5URL}/p/preview/${page.value.id}-${page.value.uuid}?channel=${id}`;
     const createChannel = async () => {
       const payload = {
         name: form.channelName,
@@ -143,6 +145,7 @@ export default defineComponent({
     };
     onMounted(() => {
       const clipboard = new ClipboardJS(".copy-button");
+      clipboardInstance.value = clipboard;
       clipboard.on("success", (e: any) => {
         message.success("复制成功", 1);
         e.clearSelection();
@@ -157,6 +160,13 @@ export default defineComponent({
           console.error(e);
         }
       });
+    });
+
+    onBeforeUnmount(() => {
+      if (clipboardInstance.value) {
+        clipboardInstance.value.destroy();
+        clipboardInstance.value = null;
+      }
     });
     watch(
       channels,
