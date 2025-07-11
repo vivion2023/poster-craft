@@ -26,12 +26,20 @@ function verifyToken(token) {
 // 清理过期的验证码
 function cleanExpiredVeriCodes() {
   const now = Date.now();
+  let cleanedCount = 0;
   for (const [phoneNumber, data] of veriCodeStore.entries()) {
     if (now - data.timestamp > VERI_CODE_EXPIRE_TIME) {
       veriCodeStore.delete(phoneNumber);
+      cleanedCount++;
     }
   }
+  if (cleanedCount > 0) {
+    console.log(`清理了 ${cleanedCount} 个过期验证码`);
+  }
 }
+
+// 定期清理过期验证码 - 每5分钟执行一次
+setInterval(cleanExpiredVeriCodes, 5 * 60 * 1000);
 
 const rewriter = jsonServer.rewriter({
   "/api/*": "/$1",

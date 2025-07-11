@@ -7,6 +7,7 @@ export interface GlobalStatus {
     status: boolean;
     message?: string;
   };
+  loadingTimers: { [key: string]: number };
 }
 
 const global: Module<GlobalStatus, GlobalDataProps> = {
@@ -16,6 +17,7 @@ const global: Module<GlobalStatus, GlobalDataProps> = {
     error: {
       status: false,
     },
+    loadingTimers: {},
   },
   mutations: {
     startLoading(state, { opName }) {
@@ -25,10 +27,32 @@ const global: Module<GlobalStatus, GlobalDataProps> = {
       }
     },
     finishLoading(state, { opName }) {
-      setTimeout(() => {
+      // 清理之前的定时器
+      if (opName && state.loadingTimers[opName]) {
+        clearTimeout(state.loadingTimers[opName]);
+        delete state.loadingTimers[opName];
+      }
+
+      const timerId = window.setTimeout(() => {
         state.requestNumber--;
-        delete state.opNames[opName];
+        if (opName) {
+          delete state.opNames[opName];
+          delete state.loadingTimers[opName];
+        }
       }, 1000);
+
+      // 存储定时器ID
+      if (opName) {
+        state.loadingTimers[opName] = timerId;
+      }
+    },
+    clearLoadingTimer(state, { opName }) {
+      if (opName && state.loadingTimers[opName]) {
+        clearTimeout(state.loadingTimers[opName]);
+        delete state.loadingTimers[opName];
+        delete state.opNames[opName];
+        state.requestNumber = Math.max(0, state.requestNumber - 1);
+      }
     },
     setError(state, e) {
       state.error = e;

@@ -21,19 +21,29 @@
 <script setup lang="ts">
 import { message } from "ant-design-vue";
 import { useRouter } from "vue-router";
-import { computed } from "vue";
+import { computed, ref, onUnmounted } from "vue";
 import { useStore } from "vuex";
 const router = useRouter();
 const store = useStore();
 const user = computed(() => store.state.user);
 
+// 存储定时器ID以便清理
+const logoutTimer = ref<number | null>(null);
+
 const logout = () => {
   store.commit("logout");
   message.success("退出登录成功, 2秒后跳转至首页", 2);
-  setTimeout(() => {
+  logoutTimer.value = window.setTimeout(() => {
     router.push("/");
   }, 2000);
 };
+
+// 组件销毁时清理定时器
+onUnmounted(() => {
+  if (logoutTimer.value) {
+    clearTimeout(logoutTimer.value);
+  }
+});
 </script>
 
 <style scoped lang="scss">

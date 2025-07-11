@@ -141,21 +141,34 @@ export function generateQRCode(id: string, url: string, width = 100) {
 export function copyToClipboard(text: string) {
   // create a fake textarea, set value to text
   const textarea = document.createElement("textarea");
-  textarea.value = text;
-  // define styles to be hidden
-  textarea.style.position = "fixed";
-  textarea.style.top = "0";
-  textarea.style.left = "-9999px";
-  // append to body and select
-  document.body.appendChild(textarea);
-  textarea.select();
-  // run execCommand in try/catch
+  let isAppended = false;
+
   try {
+    textarea.value = text;
+    // define styles to be hidden
+    textarea.style.position = "fixed";
+    textarea.style.top = "0";
+    textarea.style.left = "-9999px";
+    textarea.style.opacity = "0";
+    textarea.style.pointerEvents = "none";
+
+    // append to body and select
+    document.body.appendChild(textarea);
+    isAppended = true;
+
+    textarea.select();
+    textarea.setSelectionRange(0, 99999); // 兼容移动设备
+
+    // run execCommand
     return document.execCommand("copy");
   } catch (e) {
     console.warn("copy failed", e);
+    return false;
   } finally {
-    document.body.removeChild(textarea);
+    // 确保清理DOM节点
+    if (isAppended && textarea.parentNode) {
+      document.body.removeChild(textarea);
+    }
   }
 }
 

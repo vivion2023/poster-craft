@@ -52,7 +52,15 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, reactive, ref, Ref, computed, watch } from "vue";
+import {
+  defineComponent,
+  reactive,
+  ref,
+  Ref,
+  computed,
+  watch,
+  onUnmounted,
+} from "vue";
 import axios from "axios";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
@@ -93,6 +101,13 @@ export default defineComponent({
       if (newValue === 0) {
         clearInterval(timer);
         counter.value = 60;
+      }
+    });
+
+    // 组件销毁时清理定时器
+    onUnmounted(() => {
+      if (timer) {
+        clearInterval(timer);
       }
     });
     const cellnumberValidator = (rule: Rule, value: string) => {
