@@ -428,18 +428,6 @@
       "content": {
         "components": [
           {
-            "id": "comp-1",
-            "name": "l-text",
-            "layerName": "标题",
-            "props": {
-              "text": "Hello",
-              "fontSize": "20px",
-              "color": "#f5222d",
-              "top": "153.39288330078125px",
-              "left": "145.64288330078125px"
-            }
-          },
-          {
             "id": "3c9c1f58-ac1c-4b7d-8e00-68830ddd3d5a",
             "name": "l-text",
             "props": {
@@ -469,11 +457,73 @@
               "boxShadow": "0 0 0 rgb(244, 238, 238)",
               "opacity": "1",
               "position": "absolute",
-              "left": "223.64288330078125px",
-              "top": "151.7857208251953px",
+              "left": "199.857177734375px",
+              "top": "150.70538330078125px",
               "right": "0"
             },
             "layerName": "图层2"
+          },
+          {
+            "id": "7253a202-9865-4889-8445-a2438a4ec9c7",
+            "name": "l-image",
+            "props": {
+              "src": "http://localhost:3000/uploads/1752476338015.jpg",
+              "actionType": "",
+              "url": "",
+              "height": "",
+              "width": "200px",
+              "paddingLeft": "0px",
+              "paddingRight": "0px",
+              "paddingTop": "0px",
+              "paddingBottom": "0px",
+              "borderStyle": "none",
+              "borderColor": "#000",
+              "borderWidth": "0",
+              "borderRadius": "0",
+              "boxShadow": "0 0 0 #000000",
+              "opacity": "1",
+              "position": "absolute",
+              "left": "81.21429443359375px",
+              "top": "24.919647216796875px",
+              "right": "0"
+            },
+            "layerName": "图层3"
+          },
+          {
+            "id": "3a3736e6-6cb7-46ec-a840-d94c037159a6",
+            "name": "l-text",
+            "props": {
+              "text": "hello",
+              "fontSize": "24px",
+              "fontFamily": "",
+              "fontWeight": "bold",
+              "fontStyle": "normal",
+              "textDecoration": "none",
+              "lineHeight": "1",
+              "textAlign": "left",
+              "color": "#f5222d",
+              "backgroundColor": "",
+              "tag": "p",
+              "actionType": "",
+              "url": "",
+              "height": "",
+              "width": "",
+              "paddingLeft": "0px",
+              "paddingRight": "0px",
+              "paddingTop": "0px",
+              "paddingBottom": "0px",
+              "borderStyle": "none",
+              "borderColor": "#000",
+              "borderWidth": "0",
+              "borderRadius": "0",
+              "boxShadow": "0 0 0 #000000",
+              "opacity": "1",
+              "position": "absolute",
+              "left": "119.2857666015625px",
+              "top": "150.4285888671875px",
+              "right": "0"
+            },
+            "layerName": "图层4"
           }
         ],
         "props": {
