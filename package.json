@@ -6,7 +6,7 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "build:analyze": "vue-cli-service build --mode analyze",
+    "build:analyze": "cross-env ANALYZE_MODE=true vue-cli-service build",
     "test:unit": "vue-cli-service test:unit",
     "test:watch": "vue-cli-service test:unit --watch",
     "lint": "vue-cli-service lint",
@@ -71,6 +71,7 @@
     "babel-jest": "^27.0.6",
     "babel-loader": "^10.0.0",
     "babel-preset-vue-app": "^2.0.0",
+    "cross-env": "^7.0.3",
     "eslint": "^8.0.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",
