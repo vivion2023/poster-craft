@@ -111,7 +111,7 @@ useKeyPress("Escape", () => {
 .truncated-text {
   max-width: 100%;
   overflow: hidden;
-  color: #333;
+  color: #fff;
   text-overflow: ellipsis;
   white-space: nowrap;
   width: 100%;
