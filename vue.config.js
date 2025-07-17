@@ -16,5 +16,35 @@ module.exports = defineConfig({
     if (isAnalyzeMode) {
       config.plugins.push(new BundleAnalyzerPlugin());
     }
+
+    config.optimization.splitChunks = {
+      maxInitialRequests: Infinity,
+      minSize: 300 * 1024,
+      chunks: "all",
+      cacheGroups: {
+        vendor: {
+          test: /[\\/]node_modules[\\/]/,
+          name(module) {
+            // 确保 module.context 存在
+            if (!module.context) {
+              return "vendor";
+            }
+
+            // 匹配 node_modules 中的包名
+            const match = module.context.match(
+              /[\\/]node_modules[\\/](.*?)([\\/]|$)/
+            );
+
+            if (!match || !match[1]) {
+              return "vendor";
+            }
+
+            const packageName = match[1];
+            // 处理 scoped packages (如 @vue/xxx)
+            return `npm.${packageName.replace("@", "")}`;
+          },
+        },
+      },
+    };
   },
 });
