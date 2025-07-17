@@ -83,12 +83,12 @@ export default defineComponent({
             const {
               valueProp = "value",
               eventName = "change",
-              initalTransform,
+              initialTransform,
               afterTransform,
             } = item;
             const newItem: FormProps = {
               ...item,
-              value: initalTransform ? initalTransform(value) : value,
+              value: initialTransform ? initialTransform(value) : value,
               valueProp,
               eventName,
               events: {
