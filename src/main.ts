@@ -6,7 +6,6 @@ import store from "./store/index";
 import configAntD from "./configAntD";
 import "ant-design-vue/dist/reset.css";
 import "cropperjs/dist/cropper.css";
-import * as Icons from "@ant-design/icons-vue";
 import { RespData } from "./store/respTypes";
 export type ICustomAxiosConfig = AxiosRequestConfig & {
   opName?: string;
@@ -47,10 +46,5 @@ axios.interceptors.response.use(
 );
 
 app.use(configAntD).use(store).use(router);
-
-// 全局注册所有图标
-Object.keys(Icons).forEach((key) => {
-  app.component(key, Icons[key as keyof typeof Icons]);
-});
 
 app.mount("#app");

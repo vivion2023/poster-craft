@@ -1,4 +1,4 @@
-// import all used components in whole projects
+// import all used components and icons in whole projects
 
 import {
   Space,
@@ -25,6 +25,26 @@ import {
   Select,
   Empty,
 } from "ant-design-vue";
+// 按需导入项目中使用的图标
+import {
+  FontSizeOutlined,
+  PictureOutlined,
+  AppstoreOutlined,
+  LoadingOutlined,
+  FileImageOutlined,
+  FileOutlined,
+  DeleteOutlined,
+  ScissorOutlined,
+  UserOutlined,
+  LockOutlined,
+  EyeOutlined,
+  EyeInvisibleOutlined,
+  UnlockOutlined,
+  DragOutlined,
+  RedoOutlined,
+  UndoOutlined,
+  QuestionOutlined,
+} from "@ant-design/icons-vue";
 import { App } from "vue";
 const components = [
   Space,
@@ -65,9 +85,37 @@ const components = [
   Select.Option,
   Empty,
 ];
+
+// 项目中使用的图标
+const icons = [
+  FontSizeOutlined,
+  PictureOutlined,
+  AppstoreOutlined,
+  LoadingOutlined,
+  FileImageOutlined,
+  FileOutlined,
+  DeleteOutlined,
+  ScissorOutlined,
+  UserOutlined,
+  LockOutlined,
+  EyeOutlined,
+  EyeInvisibleOutlined,
+  UnlockOutlined,
+  DragOutlined,
+  RedoOutlined,
+  UndoOutlined,
+  QuestionOutlined,
+];
+
 const install = (app: App) => {
+  // 注册 Ant Design 组件
   components.forEach((component) => {
     app.component(component.name as string, component);
+  });
+
+  // 注册项目中使用的图标
+  icons.forEach((icon) => {
+    app.component(icon.name, icon);
   });
 };
 export default {

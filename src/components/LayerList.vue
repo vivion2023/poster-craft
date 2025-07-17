@@ -60,13 +60,7 @@
 <script setup lang="ts">
 import { defineProps, defineEmits } from "vue";
 import draggable from "vuedraggable";
-import {
-  EyeOutlined,
-  EyeInvisibleOutlined,
-  LockOutlined,
-  UnlockOutlined,
-  DragOutlined,
-} from "@ant-design/icons-vue";
+// 图标已通过 configAntD.ts 全局注册，无需导入
 import { ComponentData } from "../store/editor";
 import InlineEdit from "../components/InlineEdit.vue";
 

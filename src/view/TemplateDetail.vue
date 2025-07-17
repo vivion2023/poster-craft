@@ -39,7 +39,7 @@
 
 <script setup lang="ts">
 // 组件已通过 configAntD.ts 全局注册，无需导入
-import { UserOutlined } from "@ant-design/icons-vue";
+// 图标已通过 configAntD.ts 全局注册，无需导入
 import QrcodeVue from "qrcode.vue";
 import type { SizeType } from "ant-design-vue/es/config-provider";
 import { ref, computed } from "vue";

@@ -65,7 +65,7 @@ import axios from "axios";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import { useForm } from "ant-design-vue/es/form";
-import { UserOutlined, LockOutlined } from "@ant-design/icons-vue";
+// 图标已通过 configAntD.ts 全局注册，无需导入
 import { message } from "ant-design-vue";
 import { Rule } from "ant-design-vue/es/form/interface";
 import { GlobalDataProps } from "../store/index";
@@ -74,8 +74,7 @@ interface RuleFormInstance {
 }
 export default defineComponent({
   components: {
-    UserOutlined,
-    LockOutlined,
+    // 图标已通过 configAntD.ts 全局注册，无需在此注册
   },
   setup() {
     const store = useStore<GlobalDataProps>();

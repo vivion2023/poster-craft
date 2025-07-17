@@ -85,11 +85,7 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
 import { useStore } from "vuex";
-import {
-  RedoOutlined,
-  UndoOutlined,
-  QuestionOutlined,
-} from "@ant-design/icons-vue";
+// 图标已通过 configAntD.ts 全局注册，无需导入
 import { GlobalDataProps } from "../../store/index";
 
 const store = useStore<GlobalDataProps>();

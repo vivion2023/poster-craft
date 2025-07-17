@@ -30,13 +30,12 @@
 <script lang="ts">
 import Uploader from "./Uploader.vue";
 import { commonUploadCheck } from "../helper";
-import { FileImageOutlined, LoadingOutlined } from "@ant-design/icons-vue";
+// 图标已通过 configAntD.ts 全局注册，无需导入
 export default {
   name: "StyledUploader",
   components: {
     Uploader,
-    FileImageOutlined,
-    LoadingOutlined,
+    // 图标已通过 configAntD.ts 全局注册，无需在此注册
   },
   props: {
     showUploadList: {

@@ -89,12 +89,7 @@
 
 <script lang="ts">
 import { defineComponent, reactive, ref, computed, PropType } from "vue";
-import {
-  LoadingOutlined,
-  FileOutlined,
-  DeleteOutlined,
-} from "@ant-design/icons-vue";
-// 组件已通过 configAntD.ts 全局注册，无需导入
+// 图标已通过 configAntD.ts 全局注册，无需导入
 import axios, { type AxiosProgressEvent } from "axios";
 import { last } from "lodash-es";
 import { v4 as uuidv4 } from "uuid";
@@ -115,10 +110,7 @@ export interface UploadFile {
 }
 export default defineComponent({
   components: {
-    LoadingOutlined,
-    FileOutlined,
-    DeleteOutlined,
-    // Tooltip 已通过 configAntD.ts 全局注册，无需在此注册
+    // 图标和组件已通过 configAntD.ts 全局注册，无需在此注册
   },
   props: {
     action: {

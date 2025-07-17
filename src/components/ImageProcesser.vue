@@ -48,7 +48,7 @@ import {
 import { message } from "ant-design-vue";
 import Cropper from "cropperjs";
 import "cropperjs/dist/cropper.css";
-import { DeleteOutlined, ScissorOutlined } from "@ant-design/icons-vue";
+// 图标已通过 configAntD.ts 全局注册，无需导入
 import StyledUploader from "./StyledUploader.vue";
 import axios from "axios";
 import { UploadData } from "@/store/respTypes";
