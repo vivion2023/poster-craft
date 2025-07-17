@@ -7,8 +7,10 @@
       <div class="right-container">
         <div class="right-container">
           <div class="title-container">
-            <Title :level="3">{{ template?.title }}</Title>
-            <Paragraph>未命名作品</Paragraph>
+            <a-typography-title :level="3">{{
+              template?.title
+            }}</a-typography-title>
+            <a-typography-paragraph>未命名作品</a-typography-paragraph>
           </div>
 
           <div class="writer">
@@ -36,7 +38,7 @@
 </template>
 
 <script setup lang="ts">
-import { Typography } from "ant-design-vue";
+// 组件已通过 configAntD.ts 全局注册，无需导入
 import { UserOutlined } from "@ant-design/icons-vue";
 import QrcodeVue from "qrcode.vue";
 import type { SizeType } from "ant-design-vue/es/config-provider";
@@ -44,8 +46,6 @@ import { ref, computed } from "vue";
 import { useRoute } from "vue-router";
 import { useStore } from "vuex";
 import { GlobalDataProps } from "@/store/index";
-
-const { Title, Paragraph } = Typography;
 const size = ref<SizeType>("large");
 const qrcodeValue = "https://www.baidu.com";
 

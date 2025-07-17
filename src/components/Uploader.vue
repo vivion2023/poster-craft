@@ -94,7 +94,7 @@ import {
   FileOutlined,
   DeleteOutlined,
 } from "@ant-design/icons-vue";
-import { Tooltip } from "ant-design-vue";
+// 组件已通过 configAntD.ts 全局注册，无需导入
 import axios, { type AxiosProgressEvent } from "axios";
 import { last } from "lodash-es";
 import { v4 as uuidv4 } from "uuid";
@@ -118,7 +118,7 @@ export default defineComponent({
     LoadingOutlined,
     FileOutlined,
     DeleteOutlined,
-    ATooltip: Tooltip,
+    // Tooltip 已通过 configAntD.ts 全局注册，无需在此注册
   },
   props: {
     action: {

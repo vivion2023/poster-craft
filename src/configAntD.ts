@@ -1,0 +1,75 @@
+// import all used components in whole projects
+
+import {
+  Space,
+  Typography,
+  Tooltip,
+  Avatar,
+  Button,
+  Spin,
+  Modal,
+  Drawer,
+  Card,
+  Tag,
+  Layout,
+  Tabs,
+  Menu,
+  Row,
+  Col,
+  Form,
+  Dropdown,
+  Input,
+  InputNumber,
+  Slider,
+  Radio,
+  Select,
+  Empty,
+} from "ant-design-vue";
+import { App } from "vue";
+const components = [
+  Space,
+  Typography.Title,
+  Typography.Paragraph,
+  Tooltip,
+  Avatar,
+  Button,
+  Spin,
+  Modal,
+  Drawer,
+  Card,
+  Card.Meta,
+  Tag,
+  Layout,
+  Layout.Header,
+  Layout.Footer,
+  Layout.Sider,
+  Layout.Content,
+  Tabs,
+  Tabs.TabPane,
+  Menu,
+  Menu.Item,
+  Row,
+  Col,
+  Form,
+  Form.Item,
+  Dropdown,
+  Dropdown.Button,
+  Input,
+  Input.Search,
+  InputNumber,
+  Input.TextArea,
+  Slider,
+  Radio.Group,
+  Radio.Button,
+  Select,
+  Select.Option,
+  Empty,
+];
+const install = (app: App) => {
+  components.forEach((component) => {
+    app.component(component.name as string, component);
+  });
+};
+export default {
+  install,
+};

@@ -80,14 +80,7 @@
 </template>
 
 <script setup lang="ts">
-import {
-  Layout,
-  LayoutHeader,
-  LayoutContent,
-  LayoutFooter,
-  Row,
-  Col,
-} from "ant-design-vue";
+// 组件已通过 configAntD.ts 全局注册，无需导入
 import LogoBox from "@/components/Logo.vue";
 import UserProfile from "@/components/UserProfile.vue";
 </script>

@@ -3,8 +3,6 @@ import { mount } from "@vue/test-utils";
 import { VueWrapper } from "@vue/test-utils";
 import { message } from "ant-design-vue";
 import store from "@/store/index";
-import { useRouter } from "vue-router";
-const msg = "new message";
 let wrapper: VueWrapper<any>;
 jest.mock("ant-design-vue", () => ({
   message: {

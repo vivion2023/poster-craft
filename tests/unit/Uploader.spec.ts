@@ -1,8 +1,7 @@
-import { shallowMount, VueWrapper, mount } from "@vue/test-utils";
+import { VueWrapper, mount } from "@vue/test-utils";
 import Uploader from "@/components/Uploader.vue";
 import axios from "axios";
 import flushPromises from "flush-promises";
-import { emptyProps } from "ant-design-vue/es/empty";
 jest.mock("axios");
 jest.useFakeTimers();
 // 模拟axios

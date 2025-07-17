@@ -1,15 +1,14 @@
 <template>
   <div class="logo-box">
-    <Space>
+    <a-space>
       <img src="@/assets/logo.png" alt="logo" />
-      <Title class="title">慕课乐高</Title>
-    </Space>
+      <a-typography-title class="title">慕课乐高</a-typography-title>
+    </a-space>
   </div>
 </template>
 
 <script setup lang="ts">
-import { Space, Typography } from "ant-design-vue";
-const { Title } = Typography;
+// 组件已通过 configAntD.ts 全局注册，无需导入
 </script>
 
 <script lang="ts">

@@ -3,7 +3,7 @@ import axios, { AxiosRequestConfig, AxiosResponse, AxiosError } from "axios";
 import App from "./App.vue";
 import router from "./router";
 import store from "./store/index";
-import Antd from "ant-design-vue";
+import configAntD from "./configAntD";
 import "ant-design-vue/dist/reset.css";
 import "cropperjs/dist/cropper.css";
 import * as Icons from "@ant-design/icons-vue";
@@ -46,7 +46,7 @@ axios.interceptors.response.use(
   }
 );
 
-app.use(Antd).use(store).use(router);
+app.use(configAntD).use(store).use(router);
 
 // 全局注册所有图标
 Object.keys(Icons).forEach((key) => {

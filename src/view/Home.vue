@@ -1,8 +1,10 @@
 <template>
   <div class="banner">
     <div class="banner-text">
-      <Title class="title">海量精彩设计 一键生成</Title>
-      <InputSearch
+      <a-typography-title class="title"
+        >海量精彩设计 一键生成</a-typography-title
+      >
+      <a-input-search
         class="search-input"
         placeholder="搜索一下，快速找模版"
         enter-button
@@ -13,8 +15,8 @@
 
   <div class="welcome-container">
     <div class="welcome-inner">
-      <Row :gutter="[16, 24]">
-        <Col :span="8" class="welcome-item">
+      <a-row :gutter="[16, 24]">
+        <a-col :span="8" class="welcome-item">
           <svg
             t="1745402536718"
             class="icon"
@@ -31,8 +33,8 @@
           </svg>
           <h3>专注H5 始终如一</h3>
           <p>三年保持行业领先</p>
-        </Col>
-        <Col :span="8" class="welcome-item">
+        </a-col>
+        <a-col :span="8" class="welcome-item">
           <svg
             t="1745397822363"
             class="icon"
@@ -49,8 +51,8 @@
           </svg>
           <h3>海量 H5 模版</h3>
           <p>一键生成，一分钟轻松制作</p>
-        </Col>
-        <Col :span="8" class="welcome-item">
+        </a-col>
+        <a-col :span="8" class="welcome-item">
           <svg
             t="1745397949552"
             class="icon"
@@ -67,8 +69,8 @@
           </svg>
           <h3>极致体验</h3>
           <p>用户的一致选择</p>
-        </Col>
-      </Row>
+        </a-col>
+      </a-row>
     </div>
   </div>
 
@@ -99,11 +101,10 @@
 
 <script setup lang="ts">
 import { computed, onMounted } from "vue";
-import { Typography, InputSearch, Row, Col, message } from "ant-design-vue";
 import TemplateList from "@/components/TemplateList.vue";
 import { useStore } from "vuex";
 import useLoadMore from "@/hooks/useLoadMore";
-const { Title } = Typography;
+// 组件已通过 configAntD.ts 全局注册，无需导入
 const store = useStore();
 const isLoading = computed(() => store.getters.isOpLoading("fetchTemplates"));
 const testData = computed(() => store.state.templates.data);
