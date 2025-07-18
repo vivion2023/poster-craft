@@ -13,17 +13,7 @@
 
 <script>
 import { defineComponent } from "vue";
-import {
-  BoldOutlined,
-  ItalicOutlined,
-  UnderlineOutlined,
-} from "@ant-design/icons-vue";
 export default defineComponent({
-  components: {
-    BoldOutlined,
-    ItalicOutlined,
-    UnderlineOutlined,
-  },
   props: {
     iconName: {
       type: String,

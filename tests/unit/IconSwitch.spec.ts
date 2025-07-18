@@ -1,7 +1,7 @@
 import { mount } from "@vue/test-utils";
 import IconSwitch from "@/components/IconSwitch.vue";
 import { VueWrapper } from "@vue/test-utils";
-import { BoldOutlined } from "@ant-design/icons-vue";
+import { BoldOutlined } from "../../src/configAntD";
 import rgbHex from "rgb-hex";
 
 let wrapper: VueWrapper<any>;

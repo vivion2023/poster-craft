@@ -54,11 +54,15 @@ import {
   RedoOutlined,
   UndoOutlined,
   QuestionOutlined,
+  BoldOutlined,
+  ItalicOutlined,
+  UnderlineOutlined,
 } from "@ant-design/icons-vue";
 import { App } from "vue";
 
 // 导出 message 供其他组件使用
 export { message };
+export { BoldOutlined };
 const components = [
   Space,
   Typography.Title,
@@ -118,6 +122,9 @@ const icons = [
   RedoOutlined,
   UndoOutlined,
   QuestionOutlined,
+  BoldOutlined,
+  ItalicOutlined,
+  UnderlineOutlined,
 ];
 
 const install = (app: App) => {
