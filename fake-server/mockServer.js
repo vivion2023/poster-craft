@@ -224,7 +224,7 @@ server.get("/templates", (req, res) => {
       },
       message: "获取模板列表成功",
     });
-  }, 3000); // 3秒延迟
+  }, 100); // 3秒延迟
 });
 
 server.use((req, res, next) => {

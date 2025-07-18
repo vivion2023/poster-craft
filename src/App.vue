@@ -9,7 +9,7 @@
 import { defineComponent, computed, watch, onUnmounted } from "vue";
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
-import { message } from "ant-design-vue";
+import { message } from "@/configAntD";
 import { GlobalDataProps } from "./store/index";
 export default defineComponent({
   name: "App",

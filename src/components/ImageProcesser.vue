@@ -45,7 +45,7 @@ import {
   defineProps,
   defineEmits,
 } from "vue";
-import { message } from "ant-design-vue";
+import { message } from "@/configAntD";
 import Cropper from "cropperjs";
 import "cropperjs/dist/cropper.css";
 // 图标已通过 configAntD.ts 全局注册，无需导入

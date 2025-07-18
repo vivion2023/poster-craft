@@ -2,7 +2,7 @@ import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 import Home from "../view/Home.vue";
 import MainLayout from "@/layouts/MainLayout.vue";
 import TemplateDetail from "@/view/TemplateDetail.vue";
-import { message } from "ant-design-vue";
+import { message } from "@/configAntD";
 import store from "@/store";
 import axios from "axios";
 

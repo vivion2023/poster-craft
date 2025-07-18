@@ -19,7 +19,7 @@ import StyledUploader from "@/components/StyledUploader.vue";
 import { UploadResp } from "@/extraType";
 import { v4 as uuidv4 } from "uuid";
 import { imageDefaultProps } from "@/defaultProps";
-import { message } from "ant-design-vue";
+import { message } from "@/configAntD";
 import { getImageDimensions } from "@/helper";
 const props = defineProps<{
   list: any[];

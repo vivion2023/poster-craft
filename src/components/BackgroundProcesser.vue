@@ -19,7 +19,7 @@
 
 <script setup lang="ts">
 import { defineProps, defineEmits } from "vue";
-import { message } from "ant-design-vue";
+import { message } from "@/configAntD";
 import ImageProcesser from "./ImageProcesser.vue";
 import StyledUploader from "./StyledUploader.vue";
 

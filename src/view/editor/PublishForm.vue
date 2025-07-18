@@ -120,7 +120,7 @@ import { useStore } from "vuex";
 import { useRoute } from "vue-router";
 import { last } from "lodash-es";
 import ClipboardJS from "clipboard";
-import { message } from "ant-design-vue";
+import { message } from "@/configAntD";
 import { GlobalDataProps } from "../../store/index";
 import { baseH5URL } from "../../main";
 import { generateQRCode } from "../../helper";

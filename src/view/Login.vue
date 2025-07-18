@@ -66,7 +66,7 @@ import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import { useForm } from "ant-design-vue/es/form";
 // 图标已通过 configAntD.ts 全局注册，无需导入
-import { message } from "ant-design-vue";
+import { message } from "@/configAntD";
 import { Rule } from "ant-design-vue/es/form/interface";
 import { GlobalDataProps } from "../store/index";
 interface RuleFormInstance {
